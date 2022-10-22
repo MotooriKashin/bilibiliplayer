@@ -1,0 +1,94 @@
+.bilibili-player-three-click {
+    position: relative;
+    font-size: 0
+}
+
+.bilibili-player-three-click.bilibili-player-hide .bilibili-player-three {
+    opacity: 0
+}
+
+.bilibili-player-three-click.bilibili-player-hide .bilibili-player-three-animate,
+.bilibili-player-three-click.bilibili-player-hide .bilibili-player-three-cyc {
+    opacity: 1
+}
+
+.bilibili-player-three-click .bilibili-player-three {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex
+}
+
+.bilibili-player-three-click .bilibili-player-three>span {
+    display: inline-block;
+    padding: 10px;
+    width: 22px;
+    height: 22px
+}
+
+.bilibili-player-three-click .bilibili-player-three>span svg {
+    fill: #fff;
+    vertical-align: top
+}
+
+.bilibili-player-three-click .bilibili-player-three>span.bilibili-player-active svg {
+    fill: #00a1d6
+}
+
+.bilibili-player-three-click .bilibili-player-three .bp-svgicon {
+    pointer-events: none;
+    vertical-align: top
+}
+
+.bilibili-player-three-click .bilibili-player-three-animate,
+.bilibili-player-three-click .bilibili-player-three-cyc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: 0
+}
+
+.bilibili-player-three-click .bilibili-player-three-animate>span,
+.bilibili-player-three-click .bilibili-player-three-cyc>span {
+    position: absolute;
+    display: inline-block;
+    width: 106px;
+    height: 106px;
+    padding: 0;
+    top: -32px
+}
+
+.bilibili-player-three-click .bilibili-player-three-animate>span.bilibili-player-animate-like {
+    left: -32px
+}
+
+.bilibili-player-three-click .bilibili-player-three-animate>span.bilibili-player-animate-coin {
+    left: 10px
+}
+
+.bilibili-player-three-click .bilibili-player-three-animate>span.bilibili-player-animate-collect {
+    left: 53px
+}
+
+.bilibili-player-three-click .bilibili-player-three-animate>span.bilibili-player-animate-bg {
+    position: absolute;
+    top: -10px;
+    left: -14px;
+    width: 172px;
+    height: 62px;
+    padding: 0;
+    pointer-events: none
+}
+
+.bilibili-player-three-click .bilibili-player-three-cyc>span.bilibili-player-cyc-like {
+    left: -33px;
+    top: -32px
+}
+
+.bilibili-player-three-click .bilibili-player-three-cyc>span.bilibili-player-cyc-coin {
+    left: 10px
+}
+
+.bilibili-player-three-click .bilibili-player-three-cyc>span.bilibili-player-cyc-collect {
+    left: 53px
+}

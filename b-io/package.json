@@ -1,0 +1,8 @@
+{
+  "name": "@jsc/b-io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "get-cid.ts",
+  "author": "bilibili",
+  "license": "MIT"
+}

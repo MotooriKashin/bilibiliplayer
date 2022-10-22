@@ -1,0 +1,16 @@
+{
+  "name": "@shared/utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "author": "bilibili",
+  "license": "MIT",
+  "dependencies": {
+    "events": "^3.3.0",
+    "md5": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/events": "^3.0.0",
+    "@types/md5": "^2.3.2"
+  }
+}

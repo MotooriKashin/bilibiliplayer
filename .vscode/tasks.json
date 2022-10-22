@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "tsc",
+			"problemMatcher": [],
+			"label": "语义检查",
+			"detail": "运行typescript语义检查"
+		},
+		{
+			"type": "npm",
+			"script": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "编译打包",
+			"detail": "运行esbuild编译打包源码"
+		}
+	]
+}

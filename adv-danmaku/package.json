@@ -1,0 +1,8 @@
+{
+  "name": "@jsc/adv-danmaku",
+  "version": "1.0.0",
+  "description": "",
+  "main": "manager.ts",
+  "author": "bilibili",
+  "license": "MIT"
+}

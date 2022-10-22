@@ -1,0 +1,12 @@
+{
+  "name": "@jsc/flv.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "flv.js",
+  "author": "bilibili",
+  "license": "MIT",
+  "types": "./flv.d.ts",
+  "dependencies": {
+    "buffer": "^6.0.3"
+  }
+}

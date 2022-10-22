@@ -1,0 +1,108 @@
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video {
+    cursor: -webkit-grab;
+    cursor: grab
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video .bilibili-player-webgl {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 11
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video.video-mirror .bilibili-player-webgl {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg)
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-btn-pip {
+    opacity: .4;
+    pointer-events: none;
+    cursor: default
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control {
+    position: absolute;
+    opacity: .6;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    z-index: 39;
+    outline: none;
+    left: 10px;
+    top: 12px;
+    background-color: #fff
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control.webgl-dragging,
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control:hover {
+    opacity: 1
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-horizontal {
+    position: absolute;
+    width: 16px;
+    top: 50%;
+    margin: -8px 0 0;
+    cursor: pointer
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-vertical {
+    position: absolute;
+    width: 18px;
+    left: 50%;
+    margin: 0 0 0 -8px;
+    cursor: pointer
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-left {
+    left: 0
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-up {
+    top: 0
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-right {
+    right: -2px
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-down {
+    bottom: -2px
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area.webgl-state-dragging .bilibili-player-video-wrap .bilibili-player-video {
+    cursor: -webkit-grabbing;
+    cursor: grabbing
+}
+
+.bilibili-player.bilibili-player-panoramic-video .bilibili-player-area.video-state-blackside .bilibili-player-video-wrap .bilibili-player-sphere-control {
+    left: 14px;
+    top: 56px
+}
+
+.bilibili-player.bilibili-player-panoramic-video.mode-fullscreen .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control,
+.bilibili-player.bilibili-player-panoramic-video.mode-webfullscreen .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control {
+    left: 19px;
+    top: 56px;
+    width: 75px;
+    height: 75px
+}
+
+.bilibili-player.bilibili-player-panoramic-video.mode-fullscreen .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-horizontal,
+.bilibili-player.bilibili-player-panoramic-video.mode-webfullscreen .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-horizontal {
+    width: 22px;
+    margin-top: -12px
+}
+
+.bilibili-player.bilibili-player-panoramic-video.mode-fullscreen .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-vertical,
+.bilibili-player.bilibili-player-panoramic-video.mode-webfullscreen .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control-vertical {
+    width: 26px;
+    margin-left: -12px
+}
+
+.bilibili-player.bilibili-player-panoramic-video.mode-miniscreen .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-sphere-control {
+    display: none !important
+}

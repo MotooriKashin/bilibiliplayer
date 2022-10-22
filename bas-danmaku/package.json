@@ -1,0 +1,8 @@
+{
+  "name": "@jsc/bas-danmaku",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js/index.ts",
+  "author": "bilibili",
+  "license": "MIT"
+}

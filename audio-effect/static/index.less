@@ -1,0 +1,275 @@
+body,
+div,
+html,
+input,
+li,
+ol,
+p,
+textarea,
+ul {
+    margin: 0;
+    padding: 0
+}
+
+img {
+    border: 0
+}
+
+li {
+    list-style: none outside none
+}
+
+a,
+a:active,
+a:hover,
+a:link,
+a:link:hover,
+a:visited {
+    text-decoration: none
+}
+
+.bl-audio-panel {
+    display: none;
+    position: absolute;
+    z-index: 71;
+    pointer-events: auto;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 4px;
+    background: rgba(25, 25, 25, .88)
+}
+
+.bl-audio-panel-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    height: 22px;
+    width: 22px;
+    fill: #fff;
+    z-index: 2;
+    cursor: pointer
+}
+
+.bl-audio-panel-move {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex
+}
+
+.bl-audio-panel-move.bl-audio-right {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%)
+}
+
+.bl-audio-panel-preset-btn {
+    display: block;
+    width: 20%;
+    padding: 6px 8px;
+    margin: 9px;
+    cursor: pointer;
+    background: hsla(0, 0%, 100%, .3)
+}
+
+.bl-audio-panel-preset-btn:hover {
+    background: #757575
+}
+
+.bl-audio-panel-preset-btn.bl-audio-active {
+    background: #00a1d6
+}
+
+.bl-audio-panel-preset-btn.bl-audio-active[data-val=default] {
+    background: hsla(0, 0%, 100%, .3)
+}
+
+.bl-audio-panel-left {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    width: 100%
+}
+
+.bl-audio-panel-left-header {
+    line-height: 40px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid hsla(0, 0%, 100%, .12);
+    font-size: 18px
+}
+
+.bl-audio-panel-left-gain {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 10px
+}
+
+.bl-audio-panel-left-gain-center {
+    width: 220px
+}
+
+.bl-audio-panel-left-preset {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 0 10px
+}
+
+.bl-audio-panel-left-reset {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 8px 0;
+    border-top: 1px solid hsla(0, 0%, 100%, .12)
+}
+
+.bl-audio-panel-left-show-more {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    text-decoration: underline;
+    cursor: pointer
+}
+
+.bl-audio-panel-left-show-more:hover {
+    color: #00a1d6
+}
+
+.bl-audio-panel-right {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.bl-audio-panel-right-return {
+    position: absolute;
+    top: 14px;
+    left: 102%;
+    text-decoration: underline;
+    cursor: pointer;
+    z-index: 3
+}
+
+.bl-audio-panel-right-return:hover {
+    color: #00a1d6
+}
+
+.bl-audio-panel-right-header {
+    position: relative;
+    z-index: 2;
+    padding: 10px 40px;
+    border-bottom: 1px solid hsla(0, 0%, 100%, .12);
+    line-height: 1.5;
+    font-size: 12px
+}
+
+.bl-audio-panel-right-body-eq,
+.bl-audio-panel-right-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around
+}
+
+.bl-audio-panel-right-body-eq {
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 10px;
+    height: 150px
+}
+
+.bl-audio-panel-right-body-eq-slider.bpui-slider {
+    height: 140px;
+    margin: 10px 0
+}
+
+.bl-audio-panel-right-body-eq-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin: 10px 0 22px
+}
+
+.bl-audio-panel-right-body.bl-audio-panel-3 .bl-audio-panel-right-body-eq-item3,
+.bl-audio-panel-right-body.bl-audio-panel-3 .bl-audio-panel-right-body-eq-item4,
+.bl-audio-panel-right-body.bl-audio-panel-3 .bl-audio-panel-right-body-eq-item5,
+.bl-audio-panel-right-body.bl-audio-panel-3 .bl-audio-panel-right-body-eq-item6,
+.bl-audio-panel-right-body.bl-audio-panel-3 .bl-audio-panel-right-body-eq-item7,
+.bl-audio-panel-right-body.bl-audio-panel-3 .bl-audio-panel-right-body-eq-item8,
+.bl-audio-panel-right-body.bl-audio-panel-3 .bl-audio-panel-right-body-eq-item9,
+.bl-audio-panel-right-body.bl-audio-panel-5 .bl-audio-panel-right-body-eq-item5,
+.bl-audio-panel-right-body.bl-audio-panel-5 .bl-audio-panel-right-body-eq-item6,
+.bl-audio-panel-right-body.bl-audio-panel-5 .bl-audio-panel-right-body-eq-item7,
+.bl-audio-panel-right-body.bl-audio-panel-5 .bl-audio-panel-right-body-eq-item8,
+.bl-audio-panel-right-body.bl-audio-panel-5 .bl-audio-panel-right-body-eq-item9 {
+    display: none
+}
+
+.bl-audio-panel-right-reset {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-top: 10px;
+    border-top: 1px solid hsla(0, 0%, 100%, .12)
+}
+
+.bl-audio-panel-right .bl-audio-panel-preset-btn.bl-audio-active {
+    background: hsla(0, 0%, 100%, .3)
+}
+
+.bl-audio-red.bl-audio-panel .bl-audio-panel-preset-btn.bl-audio-active {
+    background: #b22d43
+}
+
+.bl-audio-red.bl-audio-panel .bl-audio-panel-left-show-more:hover,
+.bl-audio-red.bl-audio-panel .bl-audio-panel-right-return:hover {
+    color: #d12e49
+}
+
+.bl-audio-green.bl-audio-panel .bl-audio-panel-preset-btn.bl-audio-active {
+    background: #0ba396
+}
+
+.bl-audio-green.bl-audio-panel .bl-audio-panel-left-show-more:hover,
+.bl-audio-green.bl-audio-panel .bl-audio-panel-right-return:hover {
+    color: #0eccbc
+}
+
+.bl-audio-panel-right-header-eq-select,
+.bl-audio-panel-right-header-fre-select {
+    width: 70px
+}

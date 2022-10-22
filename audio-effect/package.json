@@ -1,0 +1,8 @@
+{
+  "name": "@jsc/audio-effect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "audioEffect.ts",
+  "author": "bilibili",
+  "license": "MIT"
+}

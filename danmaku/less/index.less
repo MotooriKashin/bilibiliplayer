@@ -1,0 +1,306 @@
+.b-danmaku {
+    position: absolute;
+    line-height: 1.125;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: pre;
+    -webkit-perspective: 500px;
+    perspective: 500px;
+    will-change: transform;
+    pointer-events: none
+}
+
+.b-danmaku.b-danmaku-hover {
+    z-index: 10
+}
+
+.b-danmaku-up {
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 16px;
+    position: absolute;
+    padding: 4px 16px 3px 40px;
+    z-index: 1
+}
+
+.b-danmaku-up-img {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden
+}
+
+.b-danmaku-up-img>img {
+    width: 100%;
+    height: 100%;
+    border: none
+}
+
+.b-danmaku-up-tip {
+    position: absolute;
+    bottom: 2px;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    font-size: 0;
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%
+}
+
+.b-danmaku-up-tip>svg {
+    width: 100%;
+    height: 100%
+}
+
+.b-danmaku-up-tip.b-danmaku-up-text {
+    width: auto;
+    height: 16px;
+    top: 2px;
+    padding: 2px 8px;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: none;
+    -webkit-writing-mode: horizontal-tb;
+    -ms-writing-mode: lr-tb;
+    writing-mode: horizontal-tb;
+    line-height: 1;
+    border-radius: 12px;
+    background-color: #00a1d6;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0
+}
+
+.b-danmaku.b-danmaku-liked {
+    z-index: 2
+}
+
+.b-danmaku.b-danmaku-liked .b-danmaku-liked-icon {
+    opacity: 1
+}
+
+.b-danmaku.b-danmaku-liked .b-danmaku-high-plus {
+    -webkit-animation: tipsPlus .45s forwards;
+    animation: tipsPlus .45s forwards
+}
+
+.b-danmaku-liked-icon {
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+    -webkit-transition: opacity .15s ease-in-out;
+    -o-transition: opacity .15s ease-in-out;
+    transition: opacity .15s ease-in-out;
+    font-size: 0
+}
+
+.b-danmaku-liked-icon>svg {
+    width: 100%;
+    height: 100%
+}
+
+.b-danmaku-like {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    z-index: 2;
+    line-height: 1;
+    padding: .6em
+}
+
+.b-danmaku-like-icon {
+    display: inline-block;
+    font-size: 0
+}
+
+.b-danmaku-like-icon>svg {
+    width: 100%;
+    height: 100%
+}
+
+.b-danmaku-like-num {
+    display: inline-block;
+    margin: -2px 8px 0 0;
+    font-size: 14px;
+    vertical-align: top;
+    -webkit-transform-origin: left top;
+    transform-origin: left top
+}
+
+.b-danmaku-like:before {
+    content: "";
+    position: absolute;
+    top: .2em;
+    left: 0;
+    bottom: .2em;
+    right: 0;
+    background-color: hsla(0, 0%, 100%, .5);
+    border: 1px solid #fff;
+    z-index: 1
+}
+
+.b-danmaku-high {
+    line-height: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .6em 2.5em .6em .6em;
+    z-index: 2;
+    opacity: 1 !important
+}
+
+.b-danmaku-high.b-danmaku-high-top {
+    padding: .6em 2em
+}
+
+.b-danmaku-high.b-danmaku-high-top .b-danmaku-high-top-bg {
+    position: absolute;
+    top: .1em;
+    left: 0;
+    width: 100%;
+    height: 2em
+}
+
+.b-danmaku-high.b-danmaku-high-reverse {
+    padding: .6em .9em .6em 2.5em
+}
+
+.b-danmaku-high.b-danmaku-high-reverse .b-danmaku-high-text {
+    background: -webkit-gradient(linear, right top, left top, color-stop(0, #fbd572), to(#fff));
+    background: -o-linear-gradient(right, #fbd572 0, #fff 100%);
+    background: linear-gradient(270deg, #fbd572 0, #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin: 0 .2em 0 0
+}
+
+.b-danmaku-high.b-danmaku-high-reverse .b-danmaku-high-icon {
+    margin-left: 2px
+}
+
+.b-danmaku-high.b-danmaku-high-reverse .b-danmaku-high-bg,
+.b-danmaku-high.b-danmaku-high-reverse .b-danmaku-high-bg2 {
+    position: absolute;
+    left: auto;
+    right: 0;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg)
+}
+
+.b-danmaku-high.b-danmaku-high-reverse .b-danmaku-high-bg2 {
+    right: 1.74em;
+    padding-right: 1.6em;
+    margin-right: -1.74em
+}
+
+.b-danmaku-high-plus {
+    position: absolute;
+    right: -.7em;
+    top: 0;
+    opacity: 0;
+    font-size: 12px;
+    color: #ffe658;
+    text-shadow: none
+}
+
+.b-danmaku-high-text {
+    color: #fbd572;
+    margin-left: .4em;
+}
+
+.b-danmaku-high-icon {
+    position: relative;
+    font-size: 0
+}
+
+.b-danmaku-high-bg,
+.b-danmaku-high-bg2 {
+    position: absolute;
+    top: .2em;
+    left: 0;
+    z-index: -1;
+    display: inline-block;
+    height: 1.8em
+}
+
+.b-danmaku-high-bg {
+    width: 1.74em
+}
+
+.b-danmaku-high-bg2 {
+    width: 100%;
+    left: 1.74em;
+    padding-left: 1.6em;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-left: -1.74em;
+    border-radius: 1em 0 0 1em;
+    background: -webkit-gradient(linear, left top, right top, from(hsla(0, 0%, 100%, .3)), to(hsla(0, 0%, 100%, 0)));
+    background: -o-linear-gradient(left, hsla(0, 0%, 100%, .3), hsla(0, 0%, 100%, 0));
+    background: linear-gradient(90deg, hsla(0, 0%, 100%, .3), hsla(0, 0%, 100%, 0))
+}
+
+.b-danmaku .bp-svgicon {
+    -webkit-transition: fill .3s;
+    -o-transition: fill .3s;
+    transition: fill .3s;
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 0
+}
+
+.b-danmaku .bp-svgicon,
+.b-danmaku .bp-svgicon svg {
+    width: 100%;
+    height: 100%
+}
+
+@-webkit-keyframes tipsPlus {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: translateY(-100%);
+        transform: translateY(-100%)
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(-32%);
+        transform: translateY(-32%)
+    }
+}
+
+@keyframes tipsPlus {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: translateY(-100%);
+        transform: translateY(-100%)
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(-32%);
+        transform: translateY(-32%)
+    }
+}

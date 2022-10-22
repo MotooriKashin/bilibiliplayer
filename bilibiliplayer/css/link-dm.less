@@ -1,0 +1,90 @@
+.bilibili-player-video-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: PingFangSC-Semibold;
+    color: #fff;
+    z-index: 17;
+    pointer-events: none
+}
+
+.bilibili-player-link {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    bottom: 68px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: 1.7em;
+    padding: 2px .5em 2px 2px;
+    line-height: 1.7em;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, .6);
+    border-radius: .85em;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: auto;
+    cursor: pointer;
+    max-width: 70%
+}
+
+.bilibili-player-link.bilibili-player-show {
+    opacity: 1;
+    visibility: visible
+}
+
+.bilibili-player-link-img {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    width: 1.7em;
+    height: 1.7em;
+    border-radius: 50%;
+    overflow: hidden
+}
+
+.bilibili-player-link-img>img {
+    width: 100%;
+    height: 100%;
+    border: none
+}
+
+.bilibili-player-link-tip {
+    position: absolute;
+    top: 2px;
+    left: .9em;
+    width: 2em;
+    height: 1em;
+    text-align: center;
+    line-height: 1;
+    -webkit-transform: scale(.5);
+    transform: scale(.5);
+    background-color: #00a1d6;
+    color: #fff;
+    border-radius: .5em;
+    text-shadow: none;
+    -webkit-writing-mode: horizontal-tb;
+    -ms-writing-mode: lr-tb;
+    writing-mode: horizontal-tb;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0
+}
+
+.bilibili-player-link-msg {
+    margin: 0 1em;
+    text-overflow: ellipsis;
+    overflow: hidden
+}
+
+.bilibili-player-link-icon {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    width: 22px;
+    height: 100%;
+    font-size: 0
+}

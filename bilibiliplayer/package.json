@@ -1,0 +1,22 @@
+{
+  "name": "@jsc/bilibiliplayer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bilibiliPlayer.ts",
+  "author": "bilibili",
+  "license": "MIT",
+  "dependencies": {
+    "hammerjs": "^2.0.8",
+    "jszip": "^3.10.1",
+    "konva": "^8.3.12",
+    "pako": "^2.0.4",
+    "popmotion": "^11.0.5",
+    "stylefire": "^7.0.3",
+    "three": "^0.144.0"
+  },
+  "devDependencies": {
+    "@types/hammerjs": "^2.0.41",
+    "@types/pako": "^2.0.0",
+    "@types/three": "^0.144.0"
+  }
+}

@@ -1,0 +1,159 @@
+@-webkit-keyframes num {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    28% {
+        -webkit-transform: scale(.86);
+        transform: scale(.86)
+    }
+
+    56% {
+        -webkit-transform: scale(1.26);
+        transform: scale(1.26)
+    }
+
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+@keyframes num {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    28% {
+        -webkit-transform: scale(.86);
+        transform: scale(.86)
+    }
+
+    56% {
+        -webkit-transform: scale(1.26);
+        transform: scale(1.26)
+    }
+
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+.cb-container {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    -webkit-transform-origin: left top;
+    transform-origin: left top
+}
+
+.cb-container.cb-show {
+    display: block
+}
+
+.cb-container.cb-show-text .cb-up-wrap {
+    opacity: 1
+}
+
+.cb-container.cb-first {
+    -webkit-transform: scale(.6);
+    transform: scale(.6)
+}
+
+.cb-container.cb-sec {
+    -webkit-transform: scale(.8);
+    transform: scale(.8)
+}
+
+.cb-container.cb-four {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2)
+}
+
+.cb-container.cb-million {
+    top: 30%
+}
+
+.cb-container.cb-million .cb-up-wrap {
+    width: 222px;
+    margin-top: 33px
+}
+
+.cb-up-bg {
+    position: absolute
+}
+
+.cb-up-bg-img {
+    width: 240px
+}
+
+.cb-up-wrap {
+    position: absolute;
+    opacity: 0;
+    -webkit-transition: opacity .25s;
+    transition: opacity .25s;
+    margin-top: 27px;
+    width: 208px;
+    text-align: right;
+    font-weight: bolder;
+    font-style: italic;
+    color: #fed1a9;
+    font-size: 19px;
+    line-height: 32px;
+    -webkit-transform-origin: right center;
+    transform-origin: right center
+}
+
+.cb-up-wrap.cb-animate {
+    -webkit-animation: num .46s forwards;
+    animation: num .46s forwards
+}
+
+.cb-up-text {
+    height: 32px
+}
+
+.cb-up-num {
+    position: relative;
+    font-size: 0;
+    margin-right: 4px;
+    white-space: nowrap
+}
+
+.cb-up-num-text {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    right: 20px;
+    bottom: 0;
+    font-size: 19px;
+    line-height: 30px;
+    font-weight: bolder;
+    font-style: italic
+}
+
+.cb-up-num-text.cb-show {
+    display: block
+}
+
+.cb-up-num>img {
+    width: 25px
+}
+
+.cb-up-num>img.cb-hide {
+    display: none
+}
+
+.cb-up-fire {
+    position: absolute;
+    top: 0;
+    left: 0
+}

@@ -1,0 +1,187 @@
+.bilibili-player-reserve-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+.bilibili-player-reserve-wrap.bilibili-player-editor .bilibili-player-reserve {
+    cursor: pointer
+}
+
+.bilibili-player-reserve-wrap.bilibili-player-editor .bilibili-player-reserve-btn:hover {
+    background: #00a1d6
+}
+
+.bilibili-player-reserve {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    font-size: 14px;
+    background-color: rgba(33, 33, 33, .8);
+    border-radius: 8px;
+    padding: 6px 8px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: auto;
+    width: 290px;
+    height: 50px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: default
+}
+
+.bilibili-player-reserve.bilibili-player-show {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, transform .18s;
+    transition: opacity .35s, transform .18s, -webkit-transform .18s
+}
+
+.bilibili-player-reserve.bilibili-player-hide {
+    opacity: 1;
+    visibility: visible;
+    -webkit-animation: popup-hide .35s forwards;
+    animation: popup-hide .35s forwards
+}
+
+.bilibili-player-reserve-msg {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-right: 4.5em;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    line-height: 1
+}
+
+.bilibili-player-reserve-title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 14px;
+    height: 14px;
+    padding: 3px 0
+}
+
+.bilibili-player-reserve-num {
+    font-size: 12px;
+    line-height: 17px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: hsla(0, 0%, 100%, .7)
+}
+
+.bilibili-player-reserve-num-left {
+    margin-right: 10px;
+    display: none;
+    position: relative
+}
+
+.bilibili-player-reserve-num-left .bp-svgicon {
+    width: 14px;
+    height: 14px;
+    vertical-align: bottom
+}
+
+.bilibili-player-reserve-num-left .bilibili-player-img {
+    width: 14px;
+    vertical-align: text-top;
+    margin-right: 4px
+}
+
+.bilibili-player-reserve-num-left.bilibili-player-show {
+    display: inline-block
+}
+
+.bilibili-player-reserve-num-left.bilibili-player-show:after {
+    content: ".";
+    position: absolute;
+    top: 0;
+    line-height: 1em;
+    right: -9px
+}
+
+.bilibili-player-reserve-num-right {
+    position: relative
+}
+
+.bilibili-player-reserve-btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    right: .76em;
+    min-width: 60px;
+    padding: 0 5px;
+    height: 24px;
+    font-size: 12px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #00a1d6;
+    border-radius: 4px;
+    line-height: 2;
+    cursor: pointer
+}
+
+.bilibili-player-reserve-btn:hover {
+    background: #00b5e5
+}
+
+.bilibili-player-reserve-btn .bilibili-player-reserve-icon {
+    width: 16px;
+    height: 12px
+}
+
+.bilibili-player-reserve-btn .bilibili-player-reserve-icon .bp-svgicon {
+    vertical-align: top
+}
+
+.bilibili-player-reserve-btn.bilibili-player-noIcon .bilibili-player-reserve-icon,
+.bilibili-player-reserve-btn.bilibili-player-noIcon .bilibili-player-reserve-icon-tick,
+.bilibili-player-reserve-btn .bilibili-player-reserve-icon-tick {
+    display: none
+}
+
+.bilibili-player-reserve-btn.bilibili-player-reserved {
+    background: hsla(0, 0%, 100%, .2)
+}
+
+.bilibili-player-reserve-btn.bilibili-player-reserved:hover {
+    background: hsla(0, 0%, 100%, .3)
+}
+
+.bilibili-player-reserve-btn.bilibili-player-reserved .bilibili-player-reserve-icon {
+    display: none
+}
+
+.bilibili-player-reserve-btn.bilibili-player-reserved .bilibili-player-reserve-icon-tick {
+    display: block;
+    margin-right: 4px;
+    width: 10px;
+    height: 30px
+}

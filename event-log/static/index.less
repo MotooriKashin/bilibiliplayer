@@ -1,0 +1,86 @@
+.bilibili-player-event-log-container {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 9999;
+    background: rgba(28, 28, 28, .8);
+    border-radius: 4px;
+    font-family: Noto Sans CJK SC DemiLight, Roboto, Segoe UI, Tahoma, Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 15px 0 15px 15px;
+    width: 240px;
+    height: 310px
+}
+
+.bilibili-player-event-log-container.active {
+    display: block
+}
+
+.bilibili-player-event-log-container .bilibili-player-event-log-bscroll {
+    height: 100%;
+    overflow: hidden;
+    position: relative
+}
+
+.bilibili-player-event-log-container .bilibili-player-event-log-bscroll .bscroll-vertical-scrollbar {
+    width: 6px !important
+}
+
+.bilibili-player-event-log-container .bilibili-player-event-log-bscroll .bscroll-indicator {
+    border: none !important;
+    background: #edf2f9 !important;
+    cursor: pointer
+}
+
+.bilibili-player-event-log-container .bilibili-player-event-log-bscroll .bscroll-vertical-scrollbar.mousedown,
+.bilibili-player-event-log-container .bilibili-player-event-log-bscroll:hover .bscroll-vertical-scrollbar {
+    opacity: 1 !important;
+    background: #6d757a !important
+}
+
+.bilibili-player-event-log-container p {
+    color: #fff;
+    white-space: nowrap;
+    font-size: 12px;
+    line-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0
+}
+
+.bilibili-player-event-log-container p.bilibili-player-event-log-info {
+    color: #fff
+}
+
+.bilibili-player-event-log-container p.bilibili-player-event-log-warning {
+    color: #f5b23d
+}
+
+.bilibili-player-event-log-container p.bilibili-player-event-log-error {
+    color: #f25d8e
+}
+
+.bilibili-player-event-log-container .bilibili-player-event-log-duration {
+    color: #00b498;
+    margin-left: 4px
+}
+
+.bilibili-player-event-log-container .bilibili-player-event-log-panel {
+    width: 230px
+}
+
+.bilibili-player-event-log-container .bilibili-player-event-log-content {
+    word-wrap: break-word;
+    white-space: normal
+}
+
+.bilibili-player-event-log-container .bilibili-player-event-log-close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    z-index: 49;
+    color: #ddd;
+    font-size: 13px;
+    cursor: pointer
+}

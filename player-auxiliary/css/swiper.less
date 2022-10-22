@@ -1,0 +1,193 @@
+.bpui-swiper-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%
+}
+
+.bpui-swiper-wrap.bpui-swiper-has-pre .bpui-swiper-pre {
+    display: block
+}
+
+.bpui-swiper-wrap.bpui-swiper-has-pre:before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 0;
+    bottom: 4px;
+    width: 57px;
+    background: -webkit-gradient(linear, left top, right top, from(#000), to(transparent));
+    background: -o-linear-gradient(left, #000, transparent);
+    background: linear-gradient(90deg, #000, transparent);
+    z-index: 2
+}
+
+.bpui-swiper-wrap.bpui-swiper-has-next .bpui-swiper-next {
+    display: block
+}
+
+.bpui-swiper-wrap.bpui-swiper-has-next:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 14px;
+    bottom: 4px;
+    width: 57px;
+    background: -webkit-gradient(linear, right top, left top, from(#000), to(transparent));
+    background: -o-linear-gradient(right, #000, transparent);
+    background: linear-gradient(270deg, #000, transparent);
+    z-index: 2
+}
+
+.bpui-swiper-wrap .bpui-swiper-next,
+.bpui-swiper-wrap .bpui-swiper-pre {
+    display: none;
+    position: absolute;
+    top: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 7px;
+    width: 28px;
+    height: 28px;
+    margin-top: -14px;
+    border-radius: 50%;
+    background: #fff;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    z-index: 3
+}
+
+.bpui-swiper-wrap .bpui-swiper-next svg,
+.bpui-swiper-wrap .bpui-swiper-pre svg {
+    vertical-align: top;
+    fill: #00a1d6
+}
+
+.bpui-swiper-wrap .bpui-swiper-next:hover,
+.bpui-swiper-wrap .bpui-swiper-pre:hover {
+    background: #00a1d6
+}
+
+.bpui-swiper-wrap .bpui-swiper-next:hover svg,
+.bpui-swiper-wrap .bpui-swiper-pre:hover svg {
+    fill: #fff
+}
+
+.bpui-swiper-wrap .bpui-swiper-pre {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    left: 0
+}
+
+.bpui-swiper-wrap .bpui-swiper-next {
+    right: 0
+}
+
+.bpui-swiper-wrap .bpui-swiper-overhide {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+    margin: 0 14px
+}
+
+.bpui-swiper-wrap .bpui-swiper-list {
+    position: absolute;
+    height: 100%;
+    white-space: nowrap;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    -webkit-transition: -webkit-transform 1s ease-in-out;
+    transition: -webkit-transform 1s ease-in-out;
+    -o-transition: transform 1s ease-in-out;
+    transition: transform 1s ease-in-out;
+    transition: transform 1s ease-in-out, -webkit-transform 1s ease-in-out;
+    font-size: 0
+}
+
+.bpui-swiper-wrap .bpui-swiper-list.bpui-swiper-border:before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    right: 0;
+    top: 36px;
+    height: 1px;
+    background: hsla(0, 0%, 100%, .8)
+}
+
+.bpui-swiper-wrap .bpui-swiper-list.bpui-swiper-border .bpui-swiper-img {
+    background: #000;
+    border: 1px solid hsla(0, 0%, 100%, .8);
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2)
+}
+
+.bpui-swiper-wrap .bpui-swiper-item {
+    position: relative;
+    display: inline-block;
+    font-size: 0;
+    cursor: pointer
+}
+
+.bpui-swiper-wrap .bpui-swiper-item.bpui-swiper-item-active .bpui-swiper-img {
+    border-color: #00a1d6
+}
+
+.bpui-swiper-wrap .bpui-swiper-item.bpui-swiper-item-active:hover .bpui-swiper-text {
+    color: #fff
+}
+
+.bpui-swiper-wrap .bpui-swiper-item.bpui-swiper-item-active .bpui-swiper-text {
+    padding-left: 22px;
+    background: #00a1d6 url(../images/position.png) no-repeat 0;
+    background-size: 22px;
+    color: #fff
+}
+
+.bpui-swiper-wrap .bpui-swiper-item.bpui-swiper-item-active .bpui-swiper-text svg {
+    width: 24px;
+    height: 16px;
+    vertical-align: middle
+}
+
+.bpui-swiper-wrap .bpui-swiper-item .bpui-swiper-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 16px;
+    left: 0
+}
+
+.bpui-swiper-wrap .bpui-swiper-item .bpui-swiper-img img {
+    width: 100%;
+    height: 100%
+}
+
+.bpui-swiper-wrap .bpui-swiper-item:first-child {
+    margin-left: 4px !important
+}
+
+.bpui-swiper-wrap .bpui-swiper-item:hover .bpui-swiper-text {
+    color: #00a1d6
+}
+
+.bpui-swiper-wrap .bpui-swiper-item .bpui-swiper-text {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    left: -4px;
+    bottom: 4px;
+    width: 100%;
+    height: 20px;
+    padding-left: 4px;
+    line-height: 20px;
+    font-size: 14px;
+    background: #fff;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .5);
+    box-shadow: 0 0 4px rgba(0, 0, 0, .5);
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis
+}

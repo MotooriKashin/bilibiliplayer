@@ -1,0 +1,240 @@
+@-webkit-keyframes containerShow {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes containerShow {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes containerHide {
+    0% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+@keyframes containerHide {
+    0% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+.bp-no-flash-tips {
+    position: absolute;
+    background: #141414;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    z-index: 99;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: Microsoft YaHei, Microsoft Sans Serif, Microsoft SanSerf, \\\\5fae\\8f6f\\96c5\\9ed1;
+    opacity: 1;
+    -webkit-animation: containerShow .3s ease-in-out 1 forwards;
+    animation: containerShow .3s ease-in-out 1 forwards
+}
+
+.bp-no-flash-tips-content {
+    width: 440px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -220px;
+    text-align: center
+}
+
+.bp-no-flash-tips-missing-image {
+    width: 345px;
+    height: 204px;
+    margin: 0 auto
+}
+
+.bp-no-flash-tips-missing-image img {
+    display: block;
+    width: 100%;
+    height: 100%
+}
+
+.bp-no-flash-tips-info {
+    font-size: 18px;
+    color: #999;
+    cursor: default
+}
+
+.bp-no-flash-tips-btn-content {
+    margin-top: 24px
+}
+
+.bp-no-flash-tips-or {
+    font-size: 14px;
+    color: #999;
+    margin: 0 10px;
+    cursor: default
+}
+
+.bp-no-flash-tips-btn {
+    display: inline-block;
+    height: 32px;
+    line-height: 32px;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Microsoft YaHei, Microsoft Sans Serif, Microsoft SanSerf, \\\\5fae\\8f6f\\96c5\\9ed1;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-decoration: none;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    width: 148px;
+    background: #dc2028;
+    margin: 0 10px;
+    border: 1px solid #dc2028;
+    outline: none
+}
+
+.bp-no-flash-tips-btn:hover {
+    background: #f6373f;
+    color: #fff;
+    outline: none
+}
+
+.bp-no-flash-tips-btn-red {
+    background: #dc2028;
+    border-color: #dc2028
+}
+
+.bp-no-flash-tips-btn-red:hover {
+    background: #f6373f;
+    color: #fff
+}
+
+.bp-no-flash-tips-btn-orange {
+    background: #f06525;
+    border-color: #f06525
+}
+
+.bp-no-flash-tips-btn-orange:hover {
+    background: #ff793b;
+    color: #fff
+}
+
+.bp-no-flash-tips-btn-white {
+    background: #fff;
+    border-color: #00a1d6;
+    color: #00a1d6
+}
+
+.bp-no-flash-tips-btn-white:hover {
+    background: #fff;
+    border-color: #00b5e5;
+    color: #00b5e5
+}
+
+.bp-no-flash-tips-btn-blue {
+    background: #00a1d6;
+    border-color: #00a1d6;
+    color: #fff
+}
+
+.bp-no-flash-tips-btn-blue:hover {
+    background: #00b5e5;
+    border-color: #00b5e5
+}
+
+.bp-no-flash-tips-destroying {
+    -webkit-animation: containerHide .3s ease-in-out 1 forwards;
+    animation: containerHide .3s ease-in-out 1 forwards
+}
+
+.bp-no-flash-tips-mini-info {
+    display: none;
+    font-size: 14px;
+    width: 80%;
+    height: auto;
+    min-height: 24px;
+    line-height: 24px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    margin: 0 10%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    letter-spacing: 1px;
+    cursor: default
+}
+
+.bp-no-flash-tips-mini .bp-no-flash-tips-content {
+    width: 80%;
+    height: 200px;
+    margin: -90px 0 0 -40%
+}
+
+.bp-no-flash-tips-mini .bp-no-flash-tips-missing-image {
+    width: 200px;
+    height: 118px
+}
+
+.bp-no-flash-tips-mini .bp-no-flash-tips-info {
+    font-size: 12px !important;
+    line-height: 18px
+}
+
+.bp-no-flash-tips-mini .bp-no-flash-tips-btn-content {
+    margin-top: 10px;
+    white-space: nowrap
+}
+
+.bp-no-flash-tips-mini .bp-no-flash-tips-or {
+    font-size: 12px !important;
+    margin: 0 4px
+}
+
+.bp-no-flash-tips-mini .bp-no-flash-tips-btn {
+    width: 120px !important;
+    height: 24px !important;
+    line-height: 24px !important;
+    font-size: 12px !important;
+    margin: 0 5px
+}
+
+.bp-no-flash-tips-mini .bp-no-flash-tips-btn.bp-no-flash-tips-flash-btn {
+    width: 90px !important
+}
+
+.bp-no-flash-tips-mini-info-only .bp-no-flash-tips-content {
+    display: none
+}
+
+.bp-no-flash-tips-mini-info-only .bp-no-flash-tips-mini-info {
+    display: block
+}

@@ -1,0 +1,829 @@
+.bilibili-player-video-popup {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 18;
+    pointer-events: none;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center
+}
+
+.bilibili-player-video-popup .bilibili-player-popup-padding {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 9.5952024%;
+    width: 100%;
+    height: 100%;
+    position: relative
+}
+
+.bilibili-player-video-popup .bilibili-player-popup-area {
+    width: 100%;
+    height: 100%
+}
+
+.bilibili-player-video-popup-guide-attention {
+    position: absolute;
+    pointer-events: auto;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: translateX(-50%) translateY(-50%) scale(0);
+    transform: translateX(-50%) translateY(-50%) scale(0);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    opacity: 0;
+    cursor: pointer
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-animate {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, transform .18s;
+    transition: opacity .35s, transform .18s, -webkit-transform .18s
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 66px;
+    height: 24px;
+    border-radius: 4px;
+    font-size: 12px;
+    background: #00a1d6;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #fff
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow:before {
+    content: "";
+    position: absolute;
+    width: 78px;
+    height: 36px;
+    background: rgba(51, 51, 51, .7);
+    z-index: -1;
+    border-radius: 8px;
+    left: -6px
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow>span {
+    pointer-events: none
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow-img {
+    width: 16px;
+    height: 16px;
+    margin: 2px;
+    overflow: hidden;
+    border-radius: 50%
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow-img>img {
+    width: 100%;
+    height: 100%
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow .bp-svgicon {
+    fill: #fff;
+    height: 13px;
+    width: 13px;
+    margin-right: 3px;
+    vertical-align: baseline
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow .bp-svgicon>svg {
+    width: 10px;
+    height: 8px;
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow:hover {
+    background: #00b5e5
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow .bilibili-player-video-popup-follow-0 span {
+    vertical-align: bottom
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow .bilibili-player-video-popup-follow-1 {
+    display: none
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow .bilibili-player-video-popup-follow-1 .bp-svgicon {
+    fill: #fff;
+    height: 11px;
+    width: 11px
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow.bilibili-player-video-popup-followed {
+    background: hsla(0, 0%, 100%, .2);
+    color: hsla(0, 0%, 100%, .6)
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow.bilibili-player-video-popup-followed .bilibili-player-video-popup-follow-0 {
+    display: none
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow.bilibili-player-video-popup-followed .bilibili-player-video-popup-follow-1 {
+    display: block
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow.bilibili-player-video-popup-followed.bilibili-player-video-popup-canCancel {
+    background: hsla(0, 0%, 100%, .2);
+    color: #fefefe
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow.bilibili-player-video-popup-has-img {
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    border: 1px solid transparent
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow.bilibili-player-video-popup-has-img .bilibili-player-video-popup-follow-0 {
+    width: 43px
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow.bilibili-player-video-popup-has-img .bilibili-player-video-popup-follow-1 {
+    width: 40px;
+    height: 10px
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-follow.bilibili-player-video-popup-follow-ogv {
+    background-color: #f69
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-all {
+    border-radius: 8px;
+    background: rgba(33, 33, 33, .6);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-follow {
+    width: 66px;
+    height: 24px;
+    margin: 0 6px;
+    font-size: 12px
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-follow:before {
+    content: none
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-follow-img {
+    width: 16px;
+    height: 16px
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-follow.bilibili-player-video-popup-followed {
+    background: hsla(0, 0%, 100%, .2) !important;
+    color: #fefefe
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-three,
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-three-animate {
+    background-color: transparent
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-three {
+    border: none
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-three-cyc>span {
+    width: 80px;
+    height: 80px;
+    top: -22px
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-three-cyc>span.bilibili-player-video-popup-cyc-like {
+    left: -15px
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-three-cyc>span.bilibili-player-video-popup-cyc-coin {
+    left: 31px
+}
+
+.bilibili-player-video-popup-guide-attention .bilibili-player-video-popup-three-cyc>span.bilibili-player-video-popup-cyc-collect {
+    left: 76px
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-no-three.bilibili-player-video-popup-guide-all {
+    background: transparent
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-no-three .bilibili-player-video-popup-follow {
+    margin: 0;
+    width: 66px;
+    height: 24px
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-no-three .bilibili-player-video-popup-follow-img {
+    width: 16px;
+    height: 16px
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-no-three .bilibili-player-video-popup-three {
+    display: none
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-hide .bilibili-player-video-popup-three {
+    opacity: 0
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-hide .bilibili-player-video-popup-three-animate,
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-hide .bilibili-player-video-popup-three-cyc {
+    opacity: 1
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-dragable .bilibili-player-video-popup-follow,
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-dragable .bilibili-player-video-popup-three,
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-guide-dragable .bilibili-player-video-popup-vote {
+    pointer-events: none
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-gray.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-follow {
+    background: #00a1d6;
+    border: none
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-gray.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-three {
+    background: transparent;
+    border: none
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-gray.bilibili-player-video-popup-guide-all .bilibili-player-video-popup-three-animate {
+    background: transparent;
+    border-color: transparent
+}
+
+.bilibili-player-video-popup-guide-attention.bilibili-player-video-popup-gray .bilibili-player-video-popup-follow .bilibili-player-video-popup-follow-1 .bp-svgicon {
+    opacity: .58
+}
+
+.bilibili-player-video-popup-three,
+.bilibili-player-video-popup-three-animate,
+.bilibili-player-video-popup-three-cyc {
+    width: 142px;
+    padding: 0 4px;
+    font-size: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 8px
+}
+
+.bilibili-player-video-popup-three {
+    background: rgba(33, 33, 33, .6);
+    opacity: 1
+}
+
+.bilibili-player-video-popup-three>span {
+    display: inline-block;
+    padding: 8px 12.5px;
+    width: 20px;
+    height: 20px
+}
+
+.bilibili-player-video-popup-three>span svg {
+    fill: #fff
+}
+
+.bilibili-player-video-popup-three>span.bilibili-player-video-popup-active svg {
+    fill: #00a1d6
+}
+
+.bilibili-player-video-popup-three .bp-svgicon {
+    pointer-events: none
+}
+
+.bilibili-player-video-popup-three-animate {
+    width: 100%;
+    height: 100%;
+    border: 1px solid transparent;
+    background: rgba(33, 33, 33, .6)
+}
+
+.bilibili-player-video-popup-three-animate,
+.bilibili-player-video-popup-three-cyc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: 0
+}
+
+.bilibili-player-video-popup-three-animate>span,
+.bilibili-player-video-popup-three-cyc>span {
+    position: absolute;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    padding: 0;
+    top: -33px
+}
+
+.bilibili-player-video-popup-three-animate>span.bilibili-player-video-popup-animate-like {
+    left: -24px
+}
+
+.bilibili-player-video-popup-three-animate>span.bilibili-player-video-popup-animate-coin {
+    left: 20px
+}
+
+.bilibili-player-video-popup-three-animate>span.bilibili-player-video-popup-animate-collect {
+    left: 66px
+}
+
+.bilibili-player-video-popup-three-animate>span.bilibili-player-video-popup-animate-bg {
+    position: absolute;
+    top: -10px;
+    left: -14px;
+    width: 172px;
+    height: 62px;
+    padding: 0;
+    pointer-events: none
+}
+
+.bilibili-player-video-popup-init-three>span {
+    opacity: .7
+}
+
+.bilibili-player-video-popup.video-mirror .bilibili-player-popup-inner {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg)
+}
+
+.bilibili-player-video-popup-vote {
+    width: 192px;
+    height: 110px;
+    background: rgba(33, 33, 33, .8);
+    padding: 12px 10px;
+    border-radius: 8px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 12px;
+    cursor: default
+}
+
+.bilibili-player-video-popup-vote-question {
+    line-height: 14px;
+    height: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap
+}
+
+.bilibili-player-video-popup-vote-an {
+    position: relative;
+    color: #000;
+    cursor: pointer
+}
+
+.bilibili-player-video-popup-vote-an>div {
+    pointer-events: none
+}
+
+.bilibili-player-video-popup-vote-an-bg {
+    position: absolute;
+    width: 100%;
+    height: 26px;
+    border-radius: 4px;
+    left: 0;
+    bottom: 0;
+    background: #fff
+}
+
+.bilibili-player-video-popup-vote-an-bg-buffer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 26px;
+    width: 26px;
+    border-radius: 4px 0 0 4px;
+    background: rgba(0, 0, 0, .08);
+    -webkit-transition: width 1s;
+    transition: width 1s
+}
+
+.bilibili-player-video-popup-vote-an-text {
+    position: relative;
+    width: 100%;
+    height: 26px;
+    line-height: 26px;
+    margin: 9px 0;
+    padding-right: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex
+}
+
+.bilibili-player-video-popup-vote-an-text-index {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    width: 26px;
+    margin-right: 6px;
+    text-align: center;
+    border-radius: 4px
+}
+
+.bilibili-player-video-popup-vote-an-text-doc {
+    width: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap
+}
+
+.bilibili-player-video-popup-vote-an-num {
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 26px;
+    margin-right: 6px;
+    font-size: 12px;
+    color: hsla(0, 0%, 100%, .7)
+}
+
+.bilibili-player-video-popup-vote-an-num-1,
+.bilibili-player-video-popup-vote-an-num-2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 40px;
+    opacity: 0
+}
+
+.bilibili-player-video-popup-vote-an-num-1 {
+    position: absolute;
+    top: 0;
+    right: 0
+}
+
+.bilibili-player-video-popup-vote-an-num-2 {
+    position: absolute;
+    top: 15px;
+    right: 0;
+    opacity: 0
+}
+
+.bilibili-player-video-popup-vote-an.bilibili-player-video-popup-select .bilibili-player-video-popup-vote-lottie {
+    display: block
+}
+
+.bilibili-player-video-popup-vote-an.bilibili-player-video-popup-select .bilibili-player-video-popup-vote-an-bg-buffer {
+    background: rgba(0, 161, 214, .6) !important
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-show-num .bilibili-player-video-popup-vote-an-num-1 {
+    opacity: 1
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-selected .bilibili-player-video-popup-vote-an {
+    -webkit-animation: voteFont .35s forwards;
+    animation: voteFont .35s forwards
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-selected .bilibili-player-video-popup-vote-an-bg {
+    -webkit-animation: voteBg .35s forwards;
+    animation: voteBg .35s forwards
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-selected .bilibili-player-video-popup-vote-an-bg-buffer {
+    background: hsla(0, 0%, 100%, .2)
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-selected .bilibili-player-video-popup-vote-an-text-doc {
+    -webkit-transform: translateX(-6px);
+    transform: translateX(-6px);
+    -webkit-transition: -webkit-transform .35s;
+    transition: -webkit-transform .35s;
+    transition: transform .35s;
+    transition: transform .35s, -webkit-transform .35s
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-vote-end .bilibili-player-video-popup-vote-an-num-1 {
+    -webkit-animation: num1 .17s forwards;
+    animation: num1 .17s forwards
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-vote-end .bilibili-player-video-popup-vote-an-num-2 {
+    -webkit-animation: num2 .17s forwards;
+    animation: num2 .17s forwards
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-init-selected .bilibili-player-video-popup-vote-an {
+    color: #fff
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-init-selected .bilibili-player-video-popup-vote-an-bg {
+    width: 100%;
+    height: 4px;
+    left: 8px;
+    border-radius: 2px;
+    background: hsla(0, 0%, 100%, .2)
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-init-selected .bilibili-player-video-popup-vote-an-num-1 {
+    opacity: 0
+}
+
+.bilibili-player-video-popup-vote.bilibili-player-video-popup-init-selected .bilibili-player-video-popup-vote-an-num-2 {
+    top: 0;
+    opacity: 1
+}
+
+.bilibili-player-video-popup-vote-lottie {
+    position: absolute;
+    top: -6px;
+    left: -5px;
+    width: 37px;
+    height: 37px;
+    display: none;
+    z-index: 2
+}
+
+@-webkit-keyframes voteFont {
+    0% {
+        color: #000
+    }
+
+    65% {
+        color: #000
+    }
+
+    to {
+        color: #fff
+    }
+}
+
+@keyframes voteFont {
+    0% {
+        color: #000
+    }
+
+    65% {
+        color: #000
+    }
+
+    to {
+        color: #fff
+    }
+}
+
+@-webkit-keyframes voteBg {
+    to {
+        background: rgba(0, 0, 0, .4)
+    }
+}
+
+@keyframes voteBg {
+    to {
+        background: rgba(0, 0, 0, .4)
+    }
+}
+
+@-webkit-keyframes num1 {
+    41% {
+        top: -15px;
+        opacity: 0
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+@keyframes num1 {
+    41% {
+        top: -15px;
+        opacity: 0
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+@-webkit-keyframes num2 {
+    41% {
+        top: 0;
+        opacity: 1
+    }
+
+    61.5% {
+        top: -5px;
+        opacity: 1
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes num2 {
+    41% {
+        top: 0;
+        opacity: 1
+    }
+
+    61.5% {
+        top: -5px;
+        opacity: 1
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+.bilibili-player-popup-dm-close {
+    position: absolute;
+    top: -13px;
+    right: -13px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer
+}
+
+.bilibili-player-popup-dm-close:before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: -12px;
+    top: -12px
+}
+
+.bilibili-player-popup-dm-close-left,
+.bilibili-player-popup-dm-close-right {
+    position: absolute;
+    width: 7px;
+    height: 14px;
+    top: 1px;
+    overflow: hidden;
+    z-index: 1
+}
+
+.bilibili-player-popup-dm-close-left-bar,
+.bilibili-player-popup-dm-close-right-bar {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    z-index: 2
+}
+
+.bilibili-player-popup-dm-close-left {
+    left: 1px
+}
+
+.bilibili-player-popup-dm-close-right {
+    right: 1px
+}
+
+.bilibili-player-popup-dm-close-left-bar {
+    left: 0;
+    border-top-color: hsla(0, 0%, 100%, .7019607843137254);
+    border-left-color: hsla(0, 0%, 100%, .7019607843137254)
+}
+
+.bilibili-player-popup-dm-close-right-bar {
+    border-right-color: hsla(0, 0%, 100%, .7019607843137254);
+    border-bottom-color: hsla(0, 0%, 100%, .7019607843137254);
+    right: 0
+}
+
+.bilibili-player-popup-dm-close .bp-svgicon {
+    position: absolute;
+    line-height: 100%
+}
+
+.bilibili-player-popup-dm-shrink {
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom;
+    position: absolute;
+    cursor: pointer;
+    pointer-events: all;
+    left: 23px;
+    bottom: 63px;
+    height: 30px;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 20px
+}
+
+.bilibili-player-popup-dm-shrink-show {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, transform .18s;
+    transition: opacity .35s, transform .18s, -webkit-transform .18s
+}
+
+.bilibili-player-popup-dm-shrink-hide {
+    opacity: 1;
+    visibility: visible;
+    -webkit-animation: popup-hide .35s forwards;
+    animation: popup-hide .35s forwards
+}
+
+.bilibili-player-popup-dm-shrink-type {
+    position: absolute;
+    left: 0;
+    line-height: 30px;
+    min-width: 26px;
+    height: 30px;
+    background-color: rgba(24, 25, 28, .8);
+    border-radius: 20px;
+    padding: 0 10px 0 36px
+}
+
+.bilibili-player-popup-dm-shrink-left,
+.bilibili-player-popup-dm-shrink-right {
+    position: absolute;
+    width: 13px;
+    height: 26px;
+    overflow: hidden;
+    z-index: 1;
+    top: 2px
+}
+
+.bilibili-player-popup-dm-shrink-left-bar,
+.bilibili-player-popup-dm-shrink-right-bar {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    z-index: 2
+}
+
+.bilibili-player-popup-dm-shrink-left {
+    left: 2px
+}
+
+.bilibili-player-popup-dm-shrink-right {
+    left: 15px
+}
+
+.bilibili-player-popup-dm-shrink-left-bar {
+    left: 0;
+    border-top-color: hsla(0, 0%, 100%, .7019607843137254);
+    border-left-color: hsla(0, 0%, 100%, .7019607843137254)
+}
+
+.bilibili-player-popup-dm-shrink-right-bar {
+    border-right-color: hsla(0, 0%, 100%, .7019607843137254);
+    border-bottom-color: hsla(0, 0%, 100%, .7019607843137254);
+    right: 0
+}
+
+.bilibili-player-popup-dm-shrink-icon {
+    position: absolute
+}
+
+.bilibili-player-popup-dm-shrink-icon-img {
+    width: 16px;
+    height: 16px;
+    padding: 7px;
+    border-radius: 50%
+}

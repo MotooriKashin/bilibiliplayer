@@ -1,0 +1,174 @@
+.bilibili-player-fools-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+.bilibili-player-fools-wrap.bilibili-player-hide {
+    display: none
+}
+
+.bilibili-player-fools-dm {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    padding: 4px 6px;
+    border: 1px solid #fff;
+    -webkit-transform: translate(-50%, 50%);
+    transform: translate(-50%, 50%);
+    font-size: 25px;
+    text-shadow: #000 1px 1px 2px, #000 0 0 1px;
+    color: #fff;
+    cursor: default
+}
+
+.bilibili-player-fools-dm-animate {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+.bilibili-player-fools-dm.bilibili-player-hide {
+    opacity: 0;
+    visibility: hidden
+}
+
+.bilibili-player-fools-dm.bilibili-player-paused {
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused
+}
+
+.bilibili-player-fools-dm .bp-svgicon {
+    width: 1em;
+    height: 1em;
+    font-size: inherit;
+    vertical-align: top
+}
+
+.bilibili-player-fools,
+.bilibili-player-fools-scale {
+    position: absolute;
+    bottom: 25%;
+    left: 50%
+}
+
+.bilibili-player-fools {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 16px;
+    -webkit-transform: translateX(-50%) scale(0);
+    transform: translateX(-50%) scale(0);
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    border-radius: 25px;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 10px 0 20px;
+    background: rgba(0, 0, 0, .5);
+    color: #fff;
+    pointer-events: auto;
+    cursor: default
+}
+
+.bilibili-player-fools .bp-svgicon,
+.bilibili-player-fools .bp-svgicon svg {
+    vertical-align: top
+}
+
+.bilibili-player-fools.bilibili-player-animate {
+    -webkit-animation: showAnimate .32s ease-in-out forwards;
+    animation: showAnimate .32s ease-in-out forwards
+}
+
+.bilibili-player-fools-icon {
+    width: 1.3em;
+    height: 1.3em
+}
+
+.bilibili-player-fools-text {
+    margin-left: 6px
+}
+
+.bilibili-player-fools-like {
+    margin-left: 22px;
+    cursor: pointer
+}
+
+.bilibili-player-fools-bar {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 2px
+}
+
+.bilibili-player-fools-bar-bg {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    border-radius: 1px;
+    background: #fff
+}
+
+@-webkit-keyframes showAnimate {
+    0% {
+        -webkit-transform: translateX(-50%) scale(0);
+        transform: translateX(-50%) scale(0)
+    }
+
+    50% {
+        -webkit-transform: translateX(-50%) scale(.85);
+        transform: translateX(-50%) scale(.85)
+    }
+
+    75% {
+        -webkit-transform: translateX(-50%) scale(.8);
+        transform: translateX(-50%) scale(.8)
+    }
+
+    to {
+        -webkit-transform: translateX(-50%) scale(1);
+        transform: translateX(-50%) scale(1)
+    }
+}
+
+@keyframes showAnimate {
+    0% {
+        -webkit-transform: translateX(-50%) scale(0);
+        transform: translateX(-50%) scale(0)
+    }
+
+    50% {
+        -webkit-transform: translateX(-50%) scale(.85);
+        transform: translateX(-50%) scale(.85)
+    }
+
+    75% {
+        -webkit-transform: translateX(-50%) scale(.8);
+        transform: translateX(-50%) scale(.8)
+    }
+
+    to {
+        -webkit-transform: translateX(-50%) scale(1);
+        transform: translateX(-50%) scale(1)
+    }
+}

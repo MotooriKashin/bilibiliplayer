@@ -1,0 +1,104 @@
+.bpui-input {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    position: relative;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    font-size: 0;
+    height: 22px
+}
+
+.bpui-input .bpui-input-wrap {
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative
+}
+
+.bpui-input .bpui-input-wrap-disabled .bpui-input-input {
+    cursor: not-allowed;
+    background: #f5f7fa;
+    color: silver;
+    border-color: #e7e7e7
+}
+
+.bpui-input .bpui-input-input {
+    border: 1px solid silver;
+    border-radius: 2px;
+    outline: none;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    padding: 4px 7px;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 12px;
+    -moz-appearance: textfield
+}
+
+.bpui-input .bpui-input-input::-webkit-inner-spin-button,
+.bpui-input .bpui-input-input::-webkit-outer-spin-button {
+    -webkit-appearance: none
+}
+
+.bpui-input .bpui-input-stepper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 14px;
+    border: 1px solid silver;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    border-radius: 0 2px 2px 0;
+    cursor: pointer
+}
+
+.bpui-input .bpui-input-stepper-half {
+    height: 50%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    vertical-align: middle;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center
+}
+
+.bpui-input .bpui-input-stepper-up {
+    border-bottom: 1px solid silver
+}
+
+.bpui-input .bpui-input-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid
+}
+
+.bpui-input .bpui-input-arrow-up {
+    border-width: 0 3px 4px;
+    border-color: transparent transparent #999
+}
+
+.bpui-input .bpui-input-arrow-down {
+    border-width: 4px 3px 0;
+    border-color: #999 transparent transparent
+}

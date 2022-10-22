@@ -1,0 +1,9 @@
+{
+  "name": "@jsc/playurl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "p.js",
+  "author": "bilibili",
+  "license": "MIT",
+  "types": "./p.d.ts"
+}

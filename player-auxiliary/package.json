@@ -1,0 +1,15 @@
+{
+  "name": "@jsc/player-auxiliary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "author": "bilibili",
+  "license": "MIT",
+  "dependencies": {
+    "clipboard": "^2.0.11",
+    "underscore": "^1.13.4"
+  },
+  "devDependencies": {
+    "@types/underscore": "^1.11.4"
+  }
+}

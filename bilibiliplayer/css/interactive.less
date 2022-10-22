@@ -1,0 +1,1078 @@
+.bilibili-player-video-wrap canvas {
+    position: absolute;
+    z-index: 30
+}
+
+.bilibili-player-video-hiddenVars,
+.bilibili-player-video-interactive {
+    opacity: 0;
+    display: none;
+    position: absolute
+}
+
+#interactiveCanvas {
+    position: absolute;
+    z-index: 17;
+    pointer-events: none
+}
+
+#interactiveCanvas .konvajs-content canvas {
+    pointer-events: auto
+}
+
+.interactive-css-block {
+    position: absolute;
+    z-index: 17
+}
+
+.bilibili-player-interactive-video .bilibili-player-video-btn-setting-panel-player-choose {
+    display: none
+}
+
+.bilibili-player-video-interactive-oval {
+    pointer-events: auto
+}
+
+.bilibili-player-interactive-video .bilibili-player-video-btn-setting-left-repeat {
+    opacity: .4;
+    pointer-events: none;
+    cursor: default
+}
+
+.bilibili-player-interactive.bilibili-player-interactive-hide .bilibili-player-video-state {
+    opacity: 0
+}
+
+.bilibili-player-interactive.bilibili-player-interactive-hide .bilibili-player-video-control-wrap {
+    opacity: 0;
+    visibility: hidden
+}
+
+.bilibili-player-interactive.bilibili-player-interactive-hide .bilibili-player-video-hiddenVars {
+    display: none
+}
+
+.bilibili-player-hover-items {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0
+}
+
+.bilibili-player-hover-items .hover-item {
+    position: absolute;
+    margin-top: -27px;
+    margin-left: -35px;
+    width: 119px;
+    height: 20px;
+    background: #fff;
+    display: none;
+    -webkit-box-shadow: 0 0 4px 0 rgba(0, 0, 0, .5);
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .5)
+}
+
+.bilibili-player-hover-items .hover-item .bg {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    background: #fff;
+    z-index: 20
+}
+
+.bilibili-player-hover-items .hover-item .text {
+    max-width: 119px;
+    position: relative;
+    padding: 0 10px;
+    color: #222;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    z-index: 20
+}
+
+.bilibili-player-hover-items .hover-item .arrow {
+    position: absolute
+}
+
+.bilibili-player-hover-items .hover-item .arrow .arrow-1 {
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: -1px;
+    left: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #fff;
+    z-index: 13
+}
+
+.bilibili-player-hover-items .hover-item .arrow .arrow-2 {
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 0;
+    left: -1px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #fff
+}
+
+.bilibili-player-hover-items .hover-item .cover {
+    position: absolute;
+    width: 117px;
+    height: 73px;
+    border: 1px solid #fff;
+    top: -65px;
+    left: 3px;
+    z-index: 10
+}
+
+.bilibili-player-hover-items .hover-item .cover img {
+    width: 100%
+}
+
+.bilibili-player-video-button {
+    position: absolute
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list {
+    display: none;
+    opacity: 1;
+    position: absolute;
+    width: 647px;
+    left: 50%;
+    bottom: 3%;
+    height: auto;
+    padding: 0 10px;
+    z-index: 13;
+    -webkit-transform-origin: bottom center;
+    transform-origin: bottom center;
+    white-space: normal;
+    text-align: center;
+    -webkit-animation: show-button-list .3s;
+    animation: show-button-list .3s
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list.pos {
+    bottom: auto;
+    top: 0
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+    width: 303px;
+    height: 44px;
+    border: 1px solid hsla(0, 0%, 100%, .8);
+    background: rgba(34, 34, 34, .8);
+    margin: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: .3s;
+    transition: .3s
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos {
+    position: absolute;
+    opacity: 0;
+    width: auto;
+    overflow: inherit;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-transition: .3s;
+    transition: .3s
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.top {
+    left: 15px;
+    top: -49px;
+    -webkit-transform: translateX(-50%) scale(0);
+    transform: translateX(-50%) scale(0);
+    -webkit-transform-origin: bottom center;
+    transform-origin: bottom center
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.top.animate {
+    opacity: 1;
+    -webkit-transform: translateX(-50%) scale(1);
+    transform: translateX(-50%) scale(1)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.top.animate.active,
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.top.animate:active {
+    -webkit-transform: translateX(-50%) scale(.94);
+    transform: translateX(-50%) scale(.94)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.left {
+    right: -13px;
+    top: -7px;
+    -webkit-transform-origin: right center;
+    transform-origin: right center
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.left.animate {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.left.animate.active,
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.left.animate:active {
+    -webkit-transform: scale(.94);
+    transform: scale(.94)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.right {
+    left: 34px;
+    top: -6px;
+    -webkit-transform-origin: left center;
+    transform-origin: left center
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.right.animate {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.right.animate.active,
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.right.animate:active {
+    -webkit-transform: scale(.94);
+    transform: scale(.94)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.bottom {
+    left: 15px;
+    top: 36px;
+    -webkit-transform: translateX(-50%) scale(0);
+    transform: translateX(-50%) scale(0);
+    -webkit-transform-origin: top center;
+    transform-origin: top center
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.bottom.animate {
+    opacity: 1;
+    -webkit-transform: translateX(-50%) scale(1);
+    transform: translateX(-50%) scale(1)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.bottom.animate.active,
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos.bottom.animate:active {
+    -webkit-transform: translateX(-50%) scale(.94);
+    transform: translateX(-50%) scale(.94)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos .text {
+    width: auto;
+    position: relative;
+    margin: 12px;
+    white-space: nowrap
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos .arrow {
+    position: absolute;
+    top: 16px;
+    left: 0
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos .arrow .arrow-1 {
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid rgba(0, 0, 0, .8);
+    z-index: 13;
+    -webkit-transition: .3s;
+    transition: .3s
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos .arrow .arrow-2 {
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 1px;
+    left: -1px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid hsla(0, 0%, 100%, .7);
+    -webkit-transition: .3s;
+    transition: .3s
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos .arrow.right {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos .arrow.left {
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    top: 25px;
+    right: 0
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos .arrow.top {
+    -webkit-transform: translateX(-14px) rotate(0deg);
+    transform: translateX(-14px) rotate(0deg);
+    top: 42px
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item.pos .arrow.bottom {
+    -webkit-transform: translateX(-6px) rotate(180deg);
+    transform: translateX(-6px) rotate(180deg);
+    top: 0
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item:hover .bg {
+    opacity: .28
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item:hover .arrow .arrow-1 {
+    border-top: 4px solid rgba(0, 0, 0, .6)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item:hover .arrow .arrow-2 {
+    border-top: 5px solid hsla(0, 0%, 100%, .75)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item:hover .arrow.top .arrow-1 {
+    border-top: 4px solid rgba(0, 0, 0, .8)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item:hover .arrow.top .arrow-2 {
+    border-top: 5px solid hsla(0, 0%, 100%, .7)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item:hover .arrow.bottom .arrow-1 {
+    border-top: 4px solid rgba(0, 0, 0, .4)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item:hover .arrow.bottom .arrow-2 {
+    border-top: 5px solid hsla(0, 0%, 100%, .7)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item .bg {
+    position: absolute;
+    width: 100%;
+    height: 44px;
+    top: 0;
+    left: 0;
+    background: -webkit-gradient(linear, center bottom, center top, from(rgba(0, 0, 0, .897)), to(#fff));
+    opacity: .08;
+    -webkit-transition: .3s;
+    transition: .3s
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item .text {
+    width: 96%;
+    margin: 0 2%;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    white-space: normal;
+    word-break: break-all;
+    line-height: 1.35;
+    max-height: 35px;
+    overflow: hidden
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-item:active {
+    -webkit-transform: scale(.94);
+    transform: scale(.94)
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .oval-list {
+    position: relative;
+    width: auto;
+    height: 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-oval {
+    position: absolute;
+    left: 0;
+    top: 0;
+    -webkit-transform: translateX(-25px) translateY(-25px);
+    transform: translateX(-25px) translateY(-25px);
+    cursor: pointer
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-oval:hover .bg {
+    opacity: .28
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-oval .mask {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    left: 3px;
+    top: 3px;
+    background: hsla(0, 0%, 100%, .6);
+    border-radius: 40px;
+    -webkit-animation: round-mask 1.5s infinite;
+    animation: round-mask 1.5s infinite;
+    opacity: 0;
+    display: block
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-oval .big-round {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    left: 14px;
+    top: 14px;
+    background: rgba(0, 0, 0, .8);
+    z-index: 13;
+    -webkit-animation: round 1.5s infinite;
+    animation: round 1.5s infinite;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-oval .big-round .small-round {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 3px;
+    top: 3px;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .bilibili-player-video-interactive-oval .big-round .small {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 4px;
+    top: 4px
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .check {
+    cursor: default;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    float: left;
+    fill: #fff;
+    cursor: pointer
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list .check .big-round {
+    -webkit-animation: none;
+    animation: none
+}
+
+.bilibili-player-video-button .bilibili-player-video-interactive-button-list.left-align {
+    text-align: left
+}
+
+.countdown {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    left: 0;
+    bottom: 4px
+}
+
+.countdown .bar {
+    position: relative;
+    width: 0;
+    height: 4px;
+    margin: 0 auto;
+    background: #00a1d6;
+    z-index: 100
+}
+
+.rookie-guide {
+    display: none;
+    position: absolute;
+    width: 294px;
+    height: 155px;
+    background: rgba(0, 0, 0, .9);
+    z-index: 17;
+    border-radius: 5px;
+    bottom: 115px;
+    left: 50%;
+    -webkit-transform: translateX(-147px);
+    transform: translateX(-147px)
+}
+
+.rookie-guide .text {
+    position: relative;
+    width: 258px;
+    margin: 20px auto;
+    color: #fff;
+    font-size: 14px
+}
+
+.rookie-guide .text p {
+    margin-bottom: 12px
+}
+
+.rookie-guide .text .icon {
+    position: relative;
+    float: left;
+    fill: #fff;
+    width: 20px;
+    height: 20px;
+    bottom: 3px;
+    margin-right: 7px
+}
+
+.rookie-guide .close-button {
+    position: relative;
+    width: 78px;
+    height: 32px;
+    background: #00a1d6;
+    border-radius: 5px;
+    line-height: 32px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    margin: 0 auto;
+    cursor: pointer
+}
+
+.rookie-guide .close-button:hover {
+    background: #00b5e5
+}
+
+.rookie-guide .arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 50%;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid rgba(0, 0, 0, .76);
+    z-index: 13;
+    -webkit-transform: translateX(-3px);
+    transform: translateX(-3px);
+    bottom: -5px
+}
+
+.video-control-show .bilibili-player-video-interactive {
+    display: inline-block;
+    opacity: 1;
+    position: absolute;
+    left: 0;
+    bottom: 54px;
+    z-index: 17;
+    pointer-events: none;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 20px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    zoom: 1
+}
+
+.video-control-show .bilibili-player-video-interactive-list {
+    display: inline-block;
+    opacity: 1;
+    width: auto;
+    max-width: 400px;
+    height: auto;
+    margin: 0 auto;
+    overflow: hidden;
+    -webkit-animation: show-list .2s;
+    animation: show-list .2s;
+    vertical-align: middle
+}
+
+.video-control-show .bilibili-player-video-interactive-list .bilibili-player-video-interactive-item {
+    position: relative;
+    width: 47%;
+    height: 44px;
+    border: 1px solid hsla(0, 0%, 100%, .8);
+    background: rgba(34, 34, 34, .8);
+    margin: 1%;
+    overflow: hidden;
+    cursor: pointer;
+    float: left
+}
+
+.video-control-show .bilibili-player-video-interactive-list .bilibili-player-video-interactive-item:hover .bg {
+    opacity: .28
+}
+
+.video-control-show .bilibili-player-video-interactive-list .bilibili-player-video-interactive-item .bg {
+    position: absolute;
+    width: 100%;
+    height: 44px;
+    background: -webkit-gradient(linear, center bottom, center top, from(rgba(0, 0, 0, .897)), to(#fff));
+    opacity: .08
+}
+
+.video-control-show .bilibili-player-video-interactive-list .bilibili-player-video-interactive-item .text {
+    width: 100%;
+    position: absolute;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    white-space: normal;
+    word-break: break-all
+}
+
+.video-control-show .bilibili-player-video-interactive-list .oval-list {
+    width: auto;
+    height: 40px;
+    -webkit-transition: .6s ease-out;
+    transition: .6s ease-out;
+    margin-left: 0
+}
+
+.video-control-show .bilibili-player-video-interactive-list .bilibili-player-video-interactive-oval .big-round {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    border-radius: 20px;
+    left: 2px;
+    top: 2px;
+    z-index: 13;
+    -webkit-animation: round 1.5s infinite;
+    animation: round 1.5s infinite
+}
+
+.video-control-show .bilibili-player-video-interactive-list .bilibili-player-video-interactive-oval .big-round .small-round {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 5px;
+    top: 5px;
+    border: 2px solid #fff;
+    border-radius: 20px
+}
+
+.video-control-show .bilibili-player-video-interactive-list .bilibili-player-video-interactive-oval .big-round .small {
+    position: absolute;
+    width: 36px;
+    height: 36px
+}
+
+.video-control-show .bilibili-player-video-interactive-list .bilibili-player-video-interactive-oval .big-round .small.hover {
+    display: none
+}
+
+.video-control-show .bilibili-player-video-interactive-list .check {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    float: left;
+    fill: #fff;
+    cursor: pointer;
+    margin: 0 5px
+}
+
+.video-control-show .bilibili-player-video-interactive-list .check .big-round {
+    -webkit-animation: none;
+    animation: none
+}
+
+.video-control-show .bilibili-player-video-interactive-list .check .replay-svg,
+.video-control-show .bilibili-player-video-interactive-list .check .replay-svg svg {
+    pointer-events: none
+}
+
+.video-control-show .bilibili-player-video-interactive .left-page {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    fill: #fff;
+    cursor: pointer;
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    z-index: 50;
+    display: none;
+    pointer-events: auto;
+    vertical-align: middle;
+    left: 6px
+}
+
+.video-control-show .bilibili-player-video-interactive .right-page {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    fill: #fff;
+    cursor: pointer;
+    z-index: 50;
+    display: none;
+    pointer-events: auto;
+    vertical-align: middle;
+    left: -6px
+}
+
+.video-control-show .bilibili-player-video-interactive:after {
+    content: "";
+    display: block;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+    font-size: 0
+}
+
+.video-control-show .bilibili-player-video-hiddenVars {
+    display: inline-block;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    opacity: 1;
+    position: absolute;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    bottom: 67px;
+    z-index: 17;
+    pointer-events: none;
+    background: rgba(0, 0, 0, .3);
+    height: 30px;
+    border-radius: 20px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%)
+}
+
+.video-control-show .bilibili-player-video-hiddenVars .hiddenVars {
+    position: relative;
+    color: #fff;
+    font-size: 12px;
+    padding: 0 12px;
+    border-right: 1px solid hsla(0, 0%, 100%, .2);
+    margin-top: 9px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .4);
+    display: inline-block
+}
+
+.video-control-show .bilibili-player-video-hiddenVars .hiddenVars .name {
+    display: inline-block;
+    margin-right: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.video-control-show .bilibili-player-video-hiddenVars .hiddenVars .vars {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 700
+}
+
+.video-control-show .bilibili-player-video-hiddenVars .hide-star {
+    position: relative;
+    width: 15px;
+    height: 15px;
+    margin-left: 13px;
+    top: -3px;
+    display: inline-block
+}
+
+.mode-miniscreen .bilibili-player-video-hiddenVars,
+.mode-miniscreen .bilibili-player-video-interactive {
+    display: none !important
+}
+
+@media screen and (max-width:840px) {
+
+    .mode-fullscreen .bilibili-player-video-interactive-list,
+    .mode-webfullscreen .bilibili-player-video-interactive-list {
+        bottom: 54px;
+        -webkit-animation: show-list .2s;
+        animation: show-list .2s
+    }
+
+    .mode-fullscreen .rookie-guide,
+    .mode-webfullscreen .rookie-guide {
+        bottom: 140px
+    }
+}
+
+.mode-fullscreen .bilibili-player-video-interactive-list,
+.mode-webfullscreen .bilibili-player-video-interactive-list {
+    bottom: 7%;
+    -webkit-animation: show-list-full .2s;
+    animation: show-list-full .2s
+}
+
+.mode-fullscreen .bilibili-player-video-interactive-list .rookie-guide,
+.mode-webfullscreen .bilibili-player-video-interactive-list .rookie-guide {
+    bottom: 140px
+}
+
+@media screen and (max-width:500px) {
+
+    .mode-fullscreen .bilibili-player-video-interactive,
+    .mode-webfullscreen .bilibili-player-video-interactive {
+        display: none
+    }
+
+    .mode-fullscreen .rookie-guide,
+    .mode-webfullscreen .rookie-guide {
+        bottom: 140px
+    }
+}
+
+@media screen and (max-width:840px) {
+
+    .mode-fullscreen .bilibili-player-video-interactive,
+    .mode-webfullscreen .bilibili-player-video-interactive {
+        bottom: 54px
+    }
+
+    .mode-fullscreen .rookie-guide,
+    .mode-webfullscreen .rookie-guide {
+        bottom: 140px
+    }
+}
+
+.mode-fullscreen .bilibili-player-video-interactive,
+.mode-webfullscreen .bilibili-player-video-interactive {
+    bottom: 74px
+}
+
+.mode-fullscreen .rookie-guide,
+.mode-webfullscreen .rookie-guide {
+    bottom: 140px
+}
+
+.replay {
+    position: absolute;
+    opacity: .7;
+    display: none;
+    width: 56px;
+    height: 26px;
+    fill: #fff;
+    top: 5%;
+    right: 7%;
+    font-size: 16px;
+    z-index: 50;
+    color: #fff;
+    line-height: 0;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px #222
+}
+
+.replay .replay-text {
+    line-height: 26px;
+    margin-left: 4px
+}
+
+.replay .replay-svg,
+.replay .replay-text {
+    position: relative;
+    float: left;
+    width: 26px;
+    height: 26px
+}
+
+.replay .replay-svg {
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, .4));
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, .4))
+}
+
+.replay:hover {
+    opacity: 1;
+    text-shadow: 2px 2px 3px #000
+}
+
+@-webkit-keyframes show-list {
+    0% {
+        opacity: 0;
+        bottom: -30px
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0
+    }
+}
+
+@keyframes show-list {
+    0% {
+        opacity: 0;
+        bottom: -30px
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0
+    }
+}
+
+@-webkit-keyframes show-list-full {
+    0% {
+        opacity: 0;
+        bottom: -5%
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0
+    }
+}
+
+@keyframes show-list-full {
+    0% {
+        opacity: 0;
+        bottom: -5%
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0
+    }
+}
+
+@-webkit-keyframes show-button-list {
+    0% {
+        opacity: 0;
+        bottom: -5%
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0
+    }
+}
+
+@keyframes show-button-list {
+    0% {
+        opacity: 0;
+        bottom: -5%
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0
+    }
+}
+
+@-webkit-keyframes round {
+    0% {
+        -webkit-transform: scale(.85);
+        transform: scale(.85)
+    }
+
+    60% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    65% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    to {
+        -webkit-transform: scale(.85);
+        transform: scale(.85)
+    }
+}
+
+@keyframes round {
+    0% {
+        -webkit-transform: scale(.85);
+        transform: scale(.85)
+    }
+
+    60% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    65% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    to {
+        -webkit-transform: scale(.85);
+        transform: scale(.85)
+    }
+}
+
+@-webkit-keyframes round-mask {
+    0% {
+        -webkit-transform: scale(.4);
+        transform: scale(.4);
+        opacity: 0
+    }
+
+    80% {
+        -webkit-transform: scale(.7);
+        transform: scale(.7);
+        opacity: .6
+    }
+
+    to {
+        -webkit-transform: scale(.8);
+        transform: scale(.8);
+        opacity: 0
+    }
+}
+
+@keyframes round-mask {
+    0% {
+        -webkit-transform: scale(.4);
+        transform: scale(.4);
+        opacity: 0
+    }
+
+    80% {
+        -webkit-transform: scale(.7);
+        transform: scale(.7);
+        opacity: .6
+    }
+
+    to {
+        -webkit-transform: scale(.8);
+        transform: scale(.8);
+        opacity: 0
+    }
+}
+
+@-webkit-keyframes count-down {
+    0% {
+        width: 100%
+    }
+
+    to {
+        width: 0
+    }
+}
+
+@keyframes count-down {
+    0% {
+        width: 100%
+    }
+
+    to {
+        width: 0
+    }
+}
+
+.bilibili-player.bilibili-player-game-player .bilibili-player-video-interactive {
+    margin-bottom: 40px
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@jsc/pbploader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "bilibili",
+  "license": "MIT",
+  "types": "./index.d.ts"
+}

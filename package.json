@@ -1,0 +1,43 @@
+{
+  "scripts": {
+    "tsc": "tsc -p ./tsconfig.json  --noEmit",
+    "build": "node .vscode/esbuild.js"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.14",
+    "@types/mcustomscrollbar": "^2.8.33",
+    "esbuild": "^0.15.7",
+    "reverse-sourcemap": "^1.0.4",
+    "typescript": "^4.8.2"
+  },
+  "dependencies": {
+    "@jsc/ace": "file:ace",
+    "@jsc/adv-danmaku": "file:adv-danmaku",
+    "@jsc/audio-effect": "file:audio-effect",
+    "@jsc/b-back": "file:b-back",
+    "@jsc/b-io": "file:b-io",
+    "@jsc/bas-danmaku": "file:bas-danmaku",
+    "@jsc/bilibiliplayer": "file:bilibiliplayer",
+    "@jsc/combo": "file:combo",
+    "@jsc/danmaku": "file:danmaku",
+    "@jsc/dash-player": "file:dash-player",
+    "@jsc/event-log": "file:event-log",
+    "@jsc/flv.js": "file:flv.js",
+    "@jsc/must-h5": "file:must-h5",
+    "@jsc/namespace": "file:namespace",
+    "@jsc/no-flash-tips": "file:no-flash-tips",
+    "@jsc/pbploader": "file:pbploader",
+    "@jsc/player-auxiliary": "file:player-auxiliary",
+    "@jsc/playurl": "file:playurl",
+    "@jsc/qrcode": "file:qrcode",
+    "@jsc/screenshot": "file:screenshot",
+    "@jsc/speed-tester": "file:speed-tester",
+    "@jsc/websocket-broadcast": "file:websocket-broadcast",
+    "@shared/utils": "file:shared",
+    "axios": "^0.27.2",
+    "jquery": "^3.6.1",
+    "lottie-web": "^5.9.6",
+    "malihu-custom-scrollbar-plugin": "^3.1.5",
+    "protobufjs": "^7.1.0"
+  }
+}

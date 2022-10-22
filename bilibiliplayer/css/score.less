@@ -1,0 +1,434 @@
+.bilibili-player-score-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+.bilibili-player-score {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    font-size: 12px;
+    width: 206px;
+    height: 62px;
+    background-color: rgba(33, 33, 33, .8);
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer
+}
+
+.bilibili-player-score div {
+    float: left
+}
+
+.bilibili-player-score-show {
+    -webkit-transition: .32s;
+    transition: .32s;
+    opacity: 1;
+    visibility: visible
+}
+
+.bilibili-player-score-show-animate {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, transform .18s;
+    transition: opacity .35s, transform .18s, -webkit-transform .18s
+}
+
+.bilibili-player-score-hide {
+    opacity: 1;
+    visibility: visible;
+    -webkit-animation: popup-hide .35s forwards;
+    animation: popup-hide .35s forwards
+}
+
+.bilibili-player-score-title {
+    margin: 12px 0 0 10px;
+    height: 12px
+}
+
+.bilibili-player-score-area {
+    pointer-events: none
+}
+
+.bilibili-player-score-area-item span {
+    position: absolute;
+    width: 33px;
+    height: 33px;
+    line-height: 33px;
+    text-align: center;
+    font-size: 20px;
+    background: rgba(0, 0, 0, .6);
+    margin-left: 5px;
+    bottom: 68px;
+    border-radius: 2px;
+    display: none;
+    -webkit-transition: .1s;
+    transition: .1s;
+    pointer-events: none
+}
+
+.bilibili-player-score-area-item span:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 14px;
+    border: 3px solid transparent;
+    border-top-color: rgba(0, 0, 0, .6)
+}
+
+.bilibili-player-score-area-item img {
+    width: 18px;
+    height: 18px;
+    margin: 7px 11.5px;
+    -webkit-transition: .2s;
+    transition: .2s;
+    pointer-events: none
+}
+
+.bilibili-player-score-area-item:hover img {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3)
+}
+
+.bilibili-player-score-area-item:hover span {
+    display: block
+}
+
+.bilibili-player-score-result {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    top: 34px;
+    right: 10px;
+    line-height: 20px;
+    color: hsla(0, 0%, 100%, .7);
+    -webkit-transition-property: margin, opacity;
+    transition-property: margin, opacity
+}
+
+.bilibili-player-score-result,
+.bilibili-player-score-result span {
+    -webkit-transition-duration: .17s;
+    transition-duration: .17s;
+    -webkit-transition-delay: .6s;
+    transition-delay: .6s
+}
+
+.bilibili-player-score-result span {
+    line-height: 15px;
+    font-size: 20px;
+    margin-left: 5px;
+    -webkit-transition-property: margin, opactiy, -webkit-animation;
+    transition-property: margin, opactiy, -webkit-animation;
+    transition-property: margin, opactiy, animation;
+    transition-property: margin, opactiy, animation, -webkit-animation
+}
+
+.bilibili-player-score-count {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    opacity: .7
+}
+
+.bilibili-player-score-result-animate img {
+    -webkit-transform: scale(.7);
+    transform: scale(.7);
+    -webkit-transition: .1s;
+    transition: .1s;
+    -webkit-transition-delay: .2s;
+    transition-delay: .2s;
+    -webkit-transform-origin: left bottom;
+    transform-origin: left bottom
+}
+
+.bilibili-player-score-result-animate .off {
+    opacity: .5
+}
+
+.bilibili-player-score-result-animate img+span {
+    display: block;
+    opacity: 0;
+    margin-top: -8px;
+    -webkit-transition: .1s;
+    transition: .1s
+}
+
+.bilibili-player-score-result-animate .bilibili-player-score-area-item {
+    -webkit-transition: -webkit-transform .1s;
+    transition: -webkit-transform .1s;
+    transition: transform .1s;
+    transition: transform .1s, -webkit-transform .1s
+}
+
+.bilibili-player-score-result-animate .bilibili-player-score-area-item:first-child {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    -webkit-transition-delay: .2s;
+    transition-delay: .2s
+}
+
+.bilibili-player-score-result-animate .bilibili-player-score-area-item:nth-child(2) {
+    -webkit-transform: translateX(-20px);
+    transform: translateX(-20px);
+    -webkit-transition-delay: .3s;
+    transition-delay: .3s
+}
+
+.bilibili-player-score-result-animate .bilibili-player-score-area-item:nth-child(3) {
+    -webkit-transform: translateX(-40px);
+    transform: translateX(-40px);
+    -webkit-transition-delay: .4s;
+    transition-delay: .4s
+}
+
+.bilibili-player-score-result-animate .bilibili-player-score-area-item:nth-child(4) {
+    -webkit-transform: translateX(-60px);
+    transform: translateX(-60px);
+    -webkit-transition-delay: .5s;
+    transition-delay: .5s
+}
+
+.bilibili-player-score-result-animate .bilibili-player-score-area-item:nth-child(5) {
+    -webkit-transform: translateX(-80px);
+    transform: translateX(-80px);
+    -webkit-transition-delay: .6s;
+    transition-delay: .6s
+}
+
+.bilibili-player-score-result-animate .bilibili-player-score-result {
+    opacity: 1
+}
+
+.bilibili-player-score-result-animate .bilibili-player-score-result span {
+    -webkit-animation: jump-score .17s forwards;
+    animation: jump-score .17s forwards;
+    -webkit-animation-delay: .6s;
+    animation-delay: .6s
+}
+
+@-webkit-keyframes jump-score {
+    0% {
+        margin-top: 13px
+    }
+
+    41% {
+        margin-top: 0
+    }
+
+    61.5% {
+        margin-top: -3px
+    }
+
+    to {
+        margin-top: 0
+    }
+}
+
+@keyframes jump-score {
+    0% {
+        margin-top: 13px
+    }
+
+    41% {
+        margin-top: 0
+    }
+
+    61.5% {
+        margin-top: -3px
+    }
+
+    to {
+        margin-top: 0
+    }
+}
+
+.bilibili-player-score-summary-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+.bilibili-player-score-summary {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    font-size: 12px;
+    width: 203px;
+    height: 62px;
+    background-color: rgba(33, 33, 33, .8);
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer
+}
+
+.bilibili-player-score-summary div {
+    float: left
+}
+
+.bilibili-player-score-summary-show {
+    -webkit-transition: .32s;
+    transition: .32s;
+    opacity: 1;
+    visibility: visible
+}
+
+.bilibili-player-score-summary-show-animate {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, transform .18s;
+    transition: opacity .35s, transform .18s, -webkit-transform .18s
+}
+
+.bilibili-player-score-summary-hide {
+    opacity: 1;
+    visibility: visible;
+    -webkit-animation: popup-hide .35s forwards;
+    animation: popup-hide .35s forwards
+}
+
+.bilibili-player-score-summary-title {
+    margin: 14px 0 0 14px;
+    height: 14px
+}
+
+.bilibili-player-score-summary-count {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    opacity: .7
+}
+
+.bilibili-player-score-summary-area {
+    pointer-events: none;
+    position: absolute;
+    left: 14px;
+    top: 40px;
+    font-size: 14px;
+    width: 100%
+}
+
+.bilibili-player-score-summary-area-item {
+    margin-bottom: 3px;
+    height: 24px;
+    -webkit-transition: opacity .13s;
+    transition: opacity .13s
+}
+
+.bilibili-player-score-summary-area-item-name {
+    width: 150px;
+    -webkit-transition: opacity .13s, -webkit-transform .13s;
+    transition: opacity .13s, -webkit-transform .13s;
+    transition: opacity .13s, transform .13s;
+    transition: opacity .13s, transform .13s, -webkit-transform .13s
+}
+
+.bilibili-player-score-summary-area-item-count {
+    opacity: 0;
+    position: absolute;
+    right: 30px;
+    color: #ffb027;
+    -webkit-transition: opacity .13s;
+    transition: opacity .13s
+}
+
+.bilibili-player-score-summary-area-item-show {
+    display: block !important;
+    opacity: 1 !important
+}
+
+.bilibili-player-score-summary-area-item-show .bilibili-player-score-summary-area-item-name {
+    opacity: 1 !important;
+    -webkit-transform: translateY(0) !important;
+    transform: translateY(0) !important
+}
+
+.bilibili-player-score-summary-area-item-show .bilibili-player-score-summary-area-item-count {
+    opacity: 1
+}
+
+.bilibili-player-score-summary-area-item-hide .bilibili-player-score-summary-area-item-name {
+    opacity: 0;
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px)
+}
+
+.bilibili-player-score-summary-area-item-hide .bilibili-player-score-summary-area-item-count {
+    opacity: 0
+}
+
+.bilibili-player-score-summary-area-item-none {
+    display: none
+}
+
+.bilibili-player-score-summary-area-item1 {
+    opacity: 0
+}
+
+.bilibili-player-score-summary-area-item1 .bilibili-player-score-summary-area-item-name {
+    opacity: 0;
+    -webkit-transform: translateY(10px);
+    transform: translateY(10px)
+}
+
+.bilibili-player-score-summary-area-item1 .bilibili-player-score-summary-area-item-count {
+    opacity: 0
+}
+
+.bilibili-player-score-summary-area-item1 .bilibili-player-score-summary-area-item-count-show {
+    opacity: 1
+}
+
+.bilibili-player-score-summary-sliders {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%)
+}
+
+.bilibili-player-score-summary-sliders-item {
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 2px;
+    margin: 2px;
+    -webkit-transition: opacity .13s;
+    transition: opacity .13s;
+    opacity: .3
+}
+
+.bilibili-player-score-summary-sliders-item-on {
+    opacity: 1
+}
+
+.bilibili-player-score-summary-sliders-show {
+    display: block
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@jsc/qrcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "author": "bilibili",
+  "license": "MIT",
+  "types": "./app.d.ts"
+}

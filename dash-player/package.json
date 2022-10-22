@@ -1,0 +1,9 @@
+{
+  "name": "@jsc/dash-player",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dash-player.js",
+  "author": "bilibili",
+  "license": "MIT",
+  "types": "./dash-player.d.ts"
+}

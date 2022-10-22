@@ -1,0 +1,133 @@
+.bilibili-player-clock-in-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+.bilibili-player-clock-in {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    font-size: 12px;
+    width: 290px;
+    height: 50px;
+    background-color: rgba(33, 33, 33, .8);
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer
+}
+
+.bilibili-player-clock-in div {
+    float: left
+}
+
+.bilibili-player-clock-in-complete {
+    position: absolute;
+    left: 5px;
+    bottom: 0
+}
+
+.bilibili-player-clock-in-complete .bilibili-player-clock-in-desc,
+.bilibili-player-clock-in-complete .bilibili-player-clock-in-title {
+    left: 48px
+}
+
+.bilibili-player-clock-in-complete .bilibili-player-clock-in-complete-img {
+    display: block
+}
+
+.bilibili-player-clock-in-complete-img {
+    display: none;
+    position: absolute;
+    left: 2px;
+    bottom: 0;
+    width: 40px;
+    height: 60px
+}
+
+.bilibili-player-clock-in-show {
+    -webkit-transition: .32s;
+    transition: .32s;
+    opacity: 1;
+    visibility: visible
+}
+
+.bilibili-player-clock-in-show-animate {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, -webkit-transform .18s;
+    transition: opacity .35s, transform .18s;
+    transition: opacity .35s, transform .18s, -webkit-transform .18s
+}
+
+.bilibili-player-clock-in-hide {
+    opacity: 1;
+    visibility: visible;
+    -webkit-animation: popup-hide .35s forwards;
+    animation: popup-hide .35s forwards
+}
+
+.bilibili-player-clock-in-desc,
+.bilibili-player-clock-in-title {
+    position: absolute;
+    font-size: 14px;
+    top: 10px;
+    left: 8px;
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.bilibili-player-clock-in-desc {
+    opacity: .7;
+    top: 30px;
+    font-size: 12px
+}
+
+.bilibili-player-clock-in-btn {
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    width: 60px;
+    height: 24px;
+    border-radius: 4px;
+    background: #00a1d6;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center
+}
+
+.bilibili-player-clock-in-btn-icon-tick,
+.bilibili-player-clock-in-btn-icon-tick-done {
+    display: none;
+    padding: 0 2px 2px 0
+}
+
+.bilibili-player-clock-in-btn-state-tick .bilibili-player-clock-in-btn-icon-tick {
+    display: block
+}
+
+.bilibili-player-clock-in-btn-state-tick-done {
+    background: hsla(0, 0%, 100%, .2);
+    pointer-events: none
+}
+
+.bilibili-player-clock-in-btn-state-tick-done .bilibili-player-clock-in-btn-icon-tick-done {
+    display: block
+}
