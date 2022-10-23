@@ -21,6 +21,7 @@
     "@jsc/combo": "file:combo",
     "@jsc/danmaku": "file:danmaku",
     "@jsc/dash-player": "file:dash-player",
+    "@jsc/drm": "file:drm",
     "@jsc/event-log": "file:event-log",
     "@jsc/flv.js": "file:flv.js",
     "@jsc/must-h5": "file:must-h5",

@@ -1,0 +1,9 @@
+{
+  "name": "@jsc/drm",
+  "version": "1.0.0",
+  "description": "@jsc/drm",
+  "main": "drm.js",
+  "author": "bilibili",
+  "license": "MIT",
+  "types": "./drm.d.ts"
+}
