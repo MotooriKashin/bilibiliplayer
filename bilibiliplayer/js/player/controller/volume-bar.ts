@@ -100,26 +100,16 @@ class VolumeBar {
         const player = this.player;
         this.container.hover(
             () => {
-                this.clearPanelTimer(true);
                 this.player.trigger(STATE.EVENT.VIDEO_PANEL_HOVER);
-                this.panelShowTimer = window.setTimeout(
-                    () => {
-                        this.volumeWrp.show();
-                    },
-                    this.player.config.touchMode ? 0 : 300,
-                );
+                this.volumeWrp.show();
+
             },
             () => {
-                this.panelHideTimer = window.setTimeout(
-                    () => {
-                        this.clearPanelTimer();
-                    },
-                    this.player.config.touchMode ? 0 : 200,
-                );
+                this.volumeWrp.css('display', '');
             },
         );
         this.player.bind(STATE.EVENT.VIDEO_PANEL_HOVER, () => {
-            this.clearPanelTimer();
+            this.volumeWrp.css('display', '');
         });
         this.volumeWrp.click((event) => {
             if (this.player.config.type === ContentType.PugvCenter) {

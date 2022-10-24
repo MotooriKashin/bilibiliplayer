@@ -1995,7 +1995,7 @@ class Player {
                 type: 'tip',
                 // arrow: true,
                 margin: 1,
-                top: -18,
+                // top: -18,
                 game: this.config.gamePlayer,
             });
         });
