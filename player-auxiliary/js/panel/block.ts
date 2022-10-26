@@ -34,7 +34,8 @@ class Block {
     private blockListType = 'custom';
     private contextMenu!: ContextMenu;
     private blockListIndex = 0;
-    private BLOCK_LIST_MIN = 99999999;
+    // private BLOCK_LIST_MIN = 99999999;
+    private readonly BLOCK_LIST_MIN_LEN = 8;
     private proxyListUpdate!: Function; // Function & _.Cancelable
     private proxySubListUpdate!: Function; // Function & _.Cancelable
     private inited = false;
@@ -64,7 +65,7 @@ class Block {
         type_color: 7,
     };
     player: Player;
-    blockMax: boolean = false;
+    hideBtnVisibility: boolean = false;
     listType = "custom";
 
     constructor(auxiliary: Auxiliary) {
@@ -160,7 +161,7 @@ class Block {
             </div>
             <div class="${prefix}-block-tabpanel" role="list">
                 <div class="${prefix}-block-tabpanel-row">
-                    <input type="text" class="${prefix}-block-string-short" placeholder="请输入关键词" value="" />
+                    <input type="text" class="${prefix}-block-string-short" placeholder="请输入关键词，或/Regex/" value="" />
                     <div class="${prefix}-block-string-short-btn" name="danmaku_ban_textfield">
                         <span name="danmaku_ban_textfield">添加</span>
                     </div>
@@ -495,13 +496,18 @@ class Block {
                     }
                 });
             block.spread_btn.click(function () {
-                block.list_wrap.hasClass("block-max") ? (block.list_state.html("展开更多"), block.list_wrap.removeClass("block-spread"), block.list_wrap.removeClass("block-max"), that.blockMax = false, that.freshBlockList(that.listType, true)) : (that.freshBlockList(), that.wrapResize());
+                block.list_wrap.hasClass("block-max") ? (block.list_state.html("展开更多"),
+                    block.list_wrap.removeClass("block-spread"),
+                    block.list_wrap.removeClass("block-max"),
+                    that.hideBtnVisibility = false,
+                    that.freshBlockList(that.listType, true)) :
+                    (that.freshBlockList(), that.updateHideBtnVisibility());
             });
             block.list_hide_btn.click(function () {
                 block.list_state.html("展开更多");
                 block.list_wrap.removeClass("block-spread");
                 block.list_wrap.removeClass("block-max");
-                that.blockMax = false;
+                that.hideBtnVisibility = false;
                 block.list_hide_btn.hide();
                 that.freshBlockList(that.listType, true);
             });
@@ -534,11 +540,14 @@ class Block {
 
                 callbacks: {
                     whileScrolling: function () {
-                        that.wrapResize((<any>this).mcs.top);
+                        that.updateHideBtnVisibility((<any>this).mcs.top);
                     },
                 },
             });
-
+            this.container.on({
+                mouseenter: () => this.hideBtnVisibility && block.list_hide_btn.show().stop().animate({ opacity: 1 }, 200),
+                mouseleave: () => block.list_hide_btn.stop().animate({ opacity: 0 }, 200, () => block.list_hide_btn.hide())
+            });
             this.contextMenu = new ContextMenu(this.auxiliary, block.list_wrap, {
                 menu: [],
                 appendTo: this.auxiliary.template.auxiliaryArea,
@@ -796,19 +805,19 @@ class Block {
         }
     }
 
-    private wrapResize(top?: number) {
+    private updateHideBtnVisibility(top?: number) {
         if (typeof top === undefined) {
             top = (<any>this).blockWrap.mcs.top;
         }
         const container = this.container;
         const block = this.block;
         if (((block.list_wrap.position().top + block.list_wrap.height() + 60 + top - container.height()!) > 0) && block.list_wrap.hasClass("block-spread")) {
-            this.blockMax = true;
+            this.hideBtnVisibility = true;
             block.list_hide_btn.show().stop().animate({
                 opacity: 1,
             }, 200);
         } else {
-            this.blockMax = false;
+            this.hideBtnVisibility = false;
             block.list_hide_btn.stop().animate({
                 opacity: 0,
             }, 200, function () {
@@ -832,10 +841,11 @@ class Block {
         }
         list = this.blockTabFilter(list);
         const len = list.length;
+        block.number_spread.html(len || '-');
         const start = this.blockListIndex;
         const tip =
             this.blockListIndex === 0
-                ? this.BLOCK_LIST_MIN
+                ? this.BLOCK_LIST_MIN_LEN
                 : Math.ceil(this.auxiliary.template.container.height()! / 24);
         const end = this.blockListIndex + tip > len ? len : this.blockListIndex + tip;
         this.blockListIndex = end;
@@ -850,11 +860,14 @@ class Block {
         return list.filter(function (item) {
             if (that.activeTabType === STATE.BLOCK_TAB_USER) {
                 return item['t'] === 'user';
-            } else if (that.activeTabType === STATE.BLOCK_TAB_REGEXP) {
-                return item['t'] === 'regexp';
-            } else {
-                return item['t'] !== 'regexp' && item['t'] !== 'user';
+            } else { // 旧播放器将正则屏蔽词和普通屏蔽词放在同一页
+                return item['t'] !== 'user';
             }
+            // } else if (that.activeTabType === STATE.BLOCK_TAB_REGEXP) {
+            //     return item['t'] === 'regexp';
+            // } else { // STATE.BLOCK_TAB_TEXT
+            //     return item['t'] !== 'regexp' && item['t'] !== 'user';
+            // }
         });
     }
 
@@ -873,6 +886,25 @@ class Block {
         } else {
             block.list_wrap.removeClass('block-empty');
         }
+        if (len > this.BLOCK_LIST_MIN_LEN) {
+            block.number_spread.html(len - this.blockListIndex > 0 ? "（" + (len - this.blockListIndex) + "）" : "");
+            block.spread_btn.show();
+            if (this.blockListIndex > this.BLOCK_LIST_MIN_LEN) {
+                block.list_wrap.addClass("block-spread");
+                block.list_state.html("展开更多");
+                this.hideBtnVisibility = true;
+            }
+            if (len == this.blockListIndex) {
+                block.list_wrap.addClass("block-max");
+                block.list_state.html("收起");
+            } else {
+                block.list_wrap.removeClass("block-max");
+            }
+        } else {
+            block.spread_btn.hide();
+            this.hideBtnVisibility = false;
+        }
+        this.updateHideBtnVisibility();
     }
     judgeUser(danmaku: IDanmakuData) {
         const block = this.block.setting;

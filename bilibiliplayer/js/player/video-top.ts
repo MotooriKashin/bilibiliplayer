@@ -34,7 +34,7 @@ class VideoTop {
     protected setting!: JQuery<HTMLElement>;
     protected ul!: JQuery<HTMLElement>;
     protected time = 60000;
-    protected aimating = false;
+    protected animating = false;
     protected current = 0;
     protected defMsg: VideoTopMessage[] = [
         {
@@ -69,7 +69,7 @@ class VideoTop {
         this.ul = this.element.find(`.${prefix}-video-message-ul`);
 
         this.setting.append(this.settingList.reduce((s, d) => {
-            s += this.TPL_SET(d.title, d.type, player.videoSettings.message[<"news">d.type]);
+            s += this.TPL_SET(d.title, d.type, d.checked = player.videoSettings.message[<"news">d.type]);
             return s;
         }, ''));
 
@@ -91,7 +91,7 @@ class VideoTop {
             player.set('message', that.dataset.type, that.checked);
         });
 
-        this.appendMessage(this.defMsg);
+        (this.settingList.filter(v => v.checked).length > 0) && this.appendMessage(this.defMsg);
     }
 
     appendMessage(msg: VideoTopMessage[], clear = true) {
@@ -156,10 +156,10 @@ class VideoTop {
     }
 
     private aimate(prev?: boolean) {
-        if (!this.panel.hasClass("active") && !this.aimating) {
+        if (!this.panel.hasClass("active") && !this.animating) {
             const ul = this.ul;
             const li = ul.find("li");
-            this.aimating = true;
+            this.animating = true;
 
             if (prev) {
                 ul.find(".slide.next").removeClass("next");
@@ -175,7 +175,7 @@ class VideoTop {
                 (li.length - 1) === this.current ? li.eq(0).addClass("next") : current.next().addClass("next");
             }
 
-            setTimeout(() => this.aimating = false, 600);
+            setTimeout(() => this.animating = false, 600);
         }
     }
 }
