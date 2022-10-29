@@ -33,7 +33,7 @@ class Block {
     private container!: JQuery;
     private blockListType = 'custom';
     private contextMenu!: ContextMenu;
-    private blockListIndex = 0;
+    private numOfShowedBlock = 0;
     // private BLOCK_LIST_MIN = 99999999;
     private readonly BLOCK_LIST_MIN_LEN = 8;
     private proxyListUpdate!: Function; // Function & _.Cancelable
@@ -103,7 +103,7 @@ class Block {
             if (this.inited) {
                 this.inited = false;
                 this.activeTabType = STATE.BLOCK_TAB_TEXT;
-                this.blockListIndex = 0;
+                this.numOfShowedBlock = 0;
                 this.guid = 1;
                 this.guidMap = {};
                 this.distinct = {};
@@ -496,12 +496,13 @@ class Block {
                     }
                 });
             block.spread_btn.click(function () {
-                block.list_wrap.hasClass("block-max") ? (block.list_state.html("展开更多"),
-                    block.list_wrap.removeClass("block-spread"),
-                    block.list_wrap.removeClass("block-max"),
-                    that.hideBtnVisibility = false,
-                    that.freshBlockList(that.listType, true)) :
-                    (that.freshBlockList(), that.updateHideBtnVisibility());
+                if (block.list_wrap.hasClass("block-max")) {
+                    // 列表为完全展示状态，执行“收起列表”
+                    block.list_hide_btn.click();
+                } else {
+                    that.freshBlockList();
+                    that.updateHideBtnVisibility();
+                }
             });
             block.list_hide_btn.click(function () {
                 block.list_state.html("展开更多");
@@ -837,19 +838,19 @@ class Block {
         if (listType !== this.blockListType || fresh) {
             block.list.empty();
             this.blockListType = listType;
-            this.blockListIndex = 0;
+            this.numOfShowedBlock = 0;
         }
         list = this.blockTabFilter(list);
         const len = list.length;
         block.number_spread.html(len || '-');
-        const start = this.blockListIndex;
+        const start = this.numOfShowedBlock;
         const tip =
-            this.blockListIndex === 0
+            this.numOfShowedBlock === 0
                 ? this.BLOCK_LIST_MIN_LEN
                 : Math.ceil(this.auxiliary.template.container.height()! / 24);
-        const end = this.blockListIndex + tip > len ? len : this.blockListIndex + tip;
-        this.blockListIndex = end;
-        this.blockListAdd(listType, list.slice(start, end));
+        const end = this.numOfShowedBlock + tip > len ? len : this.numOfShowedBlock + tip;
+        this.numOfShowedBlock = end;
+        this.blockListAdd(listType, list.slice(len - end, len - start), false);
         this.blockNumberUpdate();
 
         // this.clearBlockListMark();
@@ -887,14 +888,14 @@ class Block {
             block.list_wrap.removeClass('block-empty');
         }
         if (len > this.BLOCK_LIST_MIN_LEN) {
-            block.number_spread.html(len - this.blockListIndex > 0 ? "（" + (len - this.blockListIndex) + "）" : "");
+            block.number_spread.html(len - this.numOfShowedBlock > 0 ? "（" + (len - this.numOfShowedBlock) + "）" : "");
             block.spread_btn.show();
-            if (this.blockListIndex > this.BLOCK_LIST_MIN_LEN) {
+            if (this.numOfShowedBlock > this.BLOCK_LIST_MIN_LEN) {
                 block.list_wrap.addClass("block-spread");
                 block.list_state.html("展开更多");
                 this.hideBtnVisibility = true;
             }
-            if (len == this.blockListIndex) {
+            if (len == this.numOfShowedBlock) {
                 block.list_wrap.addClass("block-max");
                 block.list_state.html("收起");
             } else {
@@ -1092,17 +1093,16 @@ class Block {
                 if (data.length === 1) {
                     if (
                         that.blockTabFilter(hold).length &&
-                        that.blockListIndex + 1 === that.blockTabFilter(list).length &&
-                        that.activeTabType === 0
+                        that.numOfShowedBlock + 1 === that.blockTabFilter(list).length
                     ) {
                         that.blockListAdd('custom', that.blockTabFilter(hold));
-                        that.blockListIndex++;
+                        that.numOfShowedBlock++;
                     } else if (!isFaultRegex) {
                         that.blockListAdd('custom', that.blockTabFilter(hold));
                     }
                 } else {
                     that.blockListAdd('custom', that.blockTabFilter(hold));
-                    that.blockListIndex = that.blockTabFilter(list).length;
+                    that.numOfShowedBlock = that.blockTabFilter(list).length;
                 }
             }
             that.blockNumberUpdate();
@@ -1202,7 +1202,7 @@ class Block {
     </div>`;
     }
 
-    private blockListAdd(listType?: string, data?: any) {
+    private blockListAdd(listType?: string, data?: any, prepend = true) {
         const that = this;
         const block = this.block;
         let list = [];
@@ -1212,7 +1212,7 @@ class Block {
             list = block.setting.list;
         }
 
-        (Array.isArray(data) ? data : [data]).forEach(function (l) {
+        (Array.isArray(data) ? data : [data]).reverse().forEach(function (l) {
             if (!l) {
                 return;
             }
@@ -1362,7 +1362,7 @@ class Block {
             multiple = multiple.add(blockLine);
         });
 
-        multiple.appendTo(block.list);
+        multiple[prepend ? "prependTo" : "appendTo"](block.list);
     }
     private handler(l?: IBlockListItem) {
         const guid = this.verifyDistinct(l!, 'custom').guid;
@@ -1403,10 +1403,10 @@ class Block {
                     this.block.list.find('[data-block-guid="' + guid + '"]').remove();
                     this.removeDistinct(l);
                     if (this.activeTabType === activeTabMap[type!]) {
-                        if (this.blockListIndex - 1 < currentList.length) {
-                            this.blockListAdd(this.blockListType, currentList[this.blockListIndex - 1]);
+                        if (this.numOfShowedBlock - 1 < currentList.length) {
+                            this.blockListAdd(this.blockListType, currentList[currentList.length - this.numOfShowedBlock], false);
                         } else {
-                            this.blockListIndex--;
+                            this.numOfShowedBlock--;
                         }
                     }
                 }
