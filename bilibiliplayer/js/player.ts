@@ -651,6 +651,9 @@ class Player {
                 isDynamic: false,
                 abrStrategy: window['DashPlayer']['STRING']['ABR_DYNAMIC'],
                 stableBufferTime: this.getDynamicBuffer()[0],
+                // DRM fields
+                protectionDataSet: data.mediaDataSource.protection?.protectionData,
+                ignoreEmeEncryptedEvent: data.mediaDataSource.protection?.ignoreEmeEncryptedEvent
             }));
             $(video).appendTo(this.template.videoWrp.empty());
             this._videoEventListener(video);

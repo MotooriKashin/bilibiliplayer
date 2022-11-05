@@ -8,8 +8,9 @@ import ApiView, { ApiViewInData, ApiViewOutData } from '../io/api-view';
 import { DolbyEffectType } from './controller/dolby-button';
 import Player from '../player';
 import { browser, qualityMap } from '@shared/utils';
+import { Drm } from './drm';
 
-interface IDashSegmentInterface {
+export interface IDashSegmentInterface {
     id?: number;
     codecid?: number;
     codecs?: string;
@@ -40,6 +41,7 @@ export interface IMediaDataSourceInterface {
     segments?: ISegmentInterface[];
     filesize?: number;
     backupURL?: string[];
+    protection?: any
 }
 export interface ISegmentInterface {
     duration?: number;
@@ -570,10 +572,24 @@ async function parse(body: any, enableSSLStream?: any, reject?: any, playurl?: a
     drmTechType = data['drm_tech_type'];
 
     if (!acceptFormat || acceptFormat.length === 0) {
-        acceptFormat = [data['format']];
+        try {
+            acceptFormat = [];
+            data.support_formats.forEach((d: any) => {
+                acceptFormat.push(d.format);
+            });
+        } catch (e) {
+            acceptFormat = [data['format']];
+        }
     }
     if (!acceptQuality || acceptQuality.length === 0) {
-        acceptQuality = [2];
+        try {
+            acceptQuality = [];
+            data.support_formats.forEach((d: any) => {
+                acceptQuality.push(d.quality);
+            });
+        } catch (e) {
+            acceptQuality = [2];
+        }
     }
     let type = 'flv';
     if (data['format'] && data['format'].indexOf('mp4') > -1) {
@@ -629,13 +645,13 @@ async function parse(body: any, enableSSLStream?: any, reject?: any, playurl?: a
                  * @question 为什么不对杜比全景声和HiRes进行处理？留待后续跟进？
                  */
                 switch (drmTechType) {
-                    case 2:
-                        mediaDataSource['url']['video'] = setContentProtection(mediaDataSource['url']['video']);
-                        mediaDataSource['url']['audio'] = setContentProtection(mediaDataSource['url']['audio']);
-                        break;
                     case 3:
-                        mediaDataSource['url']['video'] = setContentProtectionPSSH(mediaDataSource['url']['video']);
-                        mediaDataSource['url']['audio'] = setContentProtectionPSSH(mediaDataSource['url']['audio']);
+                        mediaDataSource['url']['video'] = Drm.setContentProtection(mediaDataSource['url']['video']);
+                        mediaDataSource['url']['audio'] = Drm.setContentProtection(mediaDataSource['url']['audio']);
+                        break;
+                    case 2:
+                        mediaDataSource['url']['video'] = Drm.setContentProtectionPSSH(mediaDataSource['url']['video']);
+                        mediaDataSource['url']['audio'] = Drm.setContentProtectionPSSH(mediaDataSource['url']['audio']);
                         break;
                     default:
                 }
@@ -764,6 +780,15 @@ async function parse(body: any, enableSSLStream?: any, reject?: any, playurl?: a
 
     const isDrm = data['is_drm'];
 
+
+    if (isDrm && drmTechType) {
+        try {
+            mediaDataSource.protection = await new Drm(drmTechType, mediaDataSource).getData();
+        } catch (e) {
+            return reject && reject(errorTypes.resolve, e, playurl);
+        }
+    }
+
     return {
         streamType: streamType,
         mediaDataSource: mediaDataSource,
@@ -834,26 +859,3 @@ export default {
     domains,
     errorTypes,
 };
-
-// TODO: DRM支持，等待2.0移植
-function setContentProtection(arr: IDashSegmentInterface[]) {
-    return Array.isArray(arr) ? arr.map(d => {
-        d && (d.ContentProtection = {
-            schemeIdUri: "urn:uuid:e2719d58-a985-b3c9-781a-b030af78d30e",
-            value: "ClearKey1.0"
-        });
-        return d;
-    }) : arr;
-}
-function setContentProtectionPSSH(arr: IDashSegmentInterface[]) {
-    return Array.isArray(arr) ? arr.map(d => {
-        d && d.widevine_pssh && (d.ContentProtection = {
-            schemeIdUri: "urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed",
-            pssh: {
-                __prefix: "cenc",
-                __text: d.widevine_pssh
-            }
-        });
-        return d;
-    }) : arr;
-}

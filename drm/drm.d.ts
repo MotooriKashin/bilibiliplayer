@@ -2,10 +2,19 @@
  * TODO: 完善声明
  * @file drmsdk
  */
-class Drmsdk {
-    static biliDRMGenSPC(streamKid: string, uniqueId: string, cer: ArrayBuffer): { spc: string }
+class DRM {
+    biliDRMGenSPC(streamKid: string, uniqueId: string, cer: ArrayBuffer): {
+        spc: string;
+        osStatus: number;
+    }
+    biliDRMParseCKC(ckc: ArrayBuffer, uniqueId: string): {
+        iv: string;
+        key: string;
+        osStatus: number;
+    }
 }
 declare namespace Drmsdk {
-    type SDK = Drmsdk;
+    type SDK = SDK;
 }
-export default Drmsdk;
+function DrmSDK(): Promise<DRM>;
+export default DrmSDK;

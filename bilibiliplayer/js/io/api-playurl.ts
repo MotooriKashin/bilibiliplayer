@@ -31,6 +31,9 @@ interface IRequestData {
     fourk?: number;
 
     ep_id?: number;
+
+    from_client: 'BROWSER' | 'PC_APP';
+    drm_tech_type: 2 | 3;
 }
 
 // server-response -> api-out
@@ -121,6 +124,9 @@ class ApiPlayurl extends Api {
             qn: data.qn,
             type: data.type,
             otype: 'json',
+            // DRM fields
+            from_client: 'BROWSER',
+            drm_tech_type: 2
         };
         if (data.episodeId) {
             uploadData['ep_id'] = data.episodeId;
