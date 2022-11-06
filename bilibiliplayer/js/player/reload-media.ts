@@ -268,6 +268,9 @@ export class ReloadMedia {
                             isDynamic: false,
                             abrStrategy: window['DashPlayer']['STRING']['ABR_DYNAMIC'],
                             stableBufferTime: that.player.getDynamicBuffer()[0],
+                            // DRM fields
+                            protectionDataSet: result.mediaDataSource.protection?.protectionData,
+                            ignoreEmeEncryptedEvent: result.mediaDataSource.protection?.ignoreEmeEncryptedEvent
                         }));
                         dashPlayer['initialize'](result.mediaDataSource['url'])
                             .then(() => {
