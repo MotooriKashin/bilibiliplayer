@@ -2102,27 +2102,15 @@ class Player {
 
     // fnval取值判断
     getFnval() {
-        if (this.allowFlv) {
-            if (this.config.dashSymbol) {
-                if (this.config.inner) {
-                    return FNVAL_TYPE.DASH_H265;
-                } else {
-                    return (
-                        FNVAL_TYPE.DASH_AV1 +
-                        FNVAL_TYPE.DASH_8K +
-                        FNVAL_TYPE.DOLBYVIDEO +
-                        FNVAL_TYPE.DOLBYAUDIO +
-                        FNVAL_TYPE.DASH_4K +
-                        FNVAL_TYPE.HDR +
-                        FNVAL_TYPE.DASH_H265
-                    );
-                }
-            } else {
-                return FNVAL_TYPE.FLV;
-            }
-        } else {
-            return FNVAL_TYPE.MP4;
-        }
+        return (
+            FNVAL_TYPE.DASH_AV1 +
+            FNVAL_TYPE.DASH_8K +
+            FNVAL_TYPE.DOLBYVIDEO +
+            FNVAL_TYPE.DOLBYAUDIO +
+            FNVAL_TYPE.DASH_4K +
+            FNVAL_TYPE.HDR +
+            FNVAL_TYPE.DASH_H265
+        );
     }
 
     /**
