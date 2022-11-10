@@ -83,7 +83,7 @@ class Send {
         this.STATUS_TIPS[STATE.SEND_STATUS_NORMAL] = '发个友善的弹幕见证当下';
         this.STATUS_TIPS[
             STATE.SEND_STATUS_TYPING
-        ] = `<a href="${URLS.PAGE_HELP}#弹幕相关" target="_blank"><span>弹幕礼仪 </span>${svg.enter}</a>`;
+        ] = `<a href="${URLS.PAGE_HELP}#弹幕相关" target="_blank">弹幕礼仪 ></a>`;
         this.STATUS_TIPS[STATE.SEND_STATUS_BEYOND_WORDS] = '';
         this.STATUS_TIPS[STATE.SEND_STATUS_SENT] = '发个友善的弹幕见证当下';
         this.STATUS_TIPS[STATE.SEND_STATUS_CLOSED] = '本视频弹幕功能已关闭';

@@ -147,7 +147,7 @@ export class DanmakuSettingLite {
         this.container.on("click", e => {
             if (($(e.target).attr("name") === "ctlbar_danmuku_close") || ($(e.target).attr("name") === "ctlbar_danmuku_on")) {
                 this.player.state.danmaku = !this.player.state.danmaku;
-                this.change(!this.player.state.danmaku);
+                this.change(this.player.state.danmaku);
             }
         });
         this.container.on("mouseover", (e: any) => {

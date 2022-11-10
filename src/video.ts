@@ -1,4 +1,4 @@
-// import './polyfills';
+import './polyfills';
 
 import { Log } from '@shared/utils';
 import loadProgress from './component/progress';

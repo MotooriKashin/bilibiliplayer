@@ -39,11 +39,8 @@ class TimeLabel {
                         $(this).hide();
                         that.timeWrap.show();
                         const newTime = fmSecondsReverse(<string>$(this).val());
-                        if (oldTime !== fmSeconds(newTime)) {
-                            setTimeout(() => {
+                        if (oldTime !== fmSeconds(newTime)) 
                                 player.seek(newTime);
-                            }, 200);
-                        }
                     })
                     .bind(`keydown${player.config.namespace}`, function (e) {
                         e.stopPropagation();
