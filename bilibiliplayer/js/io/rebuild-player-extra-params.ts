@@ -21,6 +21,11 @@ interface IRecommendItem {
     cover: string;
     title: string;
     link: string;
+    stat: {
+        danmaku: number;
+        follow: number;
+        view: number;
+    }
 }
 
 export interface IPreRolls {
@@ -112,6 +117,7 @@ function rebuildPlayerExtraParams(player: Player): IPlayerExtraParams | null | a
                         cover: item['cover'],
                         title: item['title'],
                         link: item['link'],
+                        stat: item['stat']
                     });
                 });
 
