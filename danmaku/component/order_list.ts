@@ -35,6 +35,16 @@ class OrderList extends BinaryArray<any> {
         return this;
     }
 
+    public insertMulti(arr: Array<any>) : this {
+        arr = arr.concat(this as Array<any>);
+        arr.sort(this.fnCompare);
+        this.splice(0, this.length);
+        for(let i = 0; i < arr.length; i++) {
+            this[i] = arr[i];
+        }
+        return this;
+    }
+
     /**
      * 尝试移除一个元素：利用有序的条件优化搜索
      */

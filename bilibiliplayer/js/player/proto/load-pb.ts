@@ -154,6 +154,7 @@ export default class LoadPb {
     private pageSize!: number; // 分段弹幕时间长
     private duration: number;
     private allSegment: IDmLoad = {};
+    private allHistory: IDmLoad = {};
     private basSegment: { [key: string]: Promise<any> } = {};
     private dmPbView!: IDmView;
     private userChange!: boolean;
@@ -339,15 +340,15 @@ export default class LoadPb {
         // this.allDM = [];
         this.allDM = [...this.basList];
         const url = `${URLS.DM_PB_HISTORY}?type=1&oid=${this.player.config.cid}&date=${date}`;
-        this.allSegment[date] = this.allSegment[date] || {
+        this.allHistory[date] = this.allHistory[date] || {
             load: this.protoBuffer.loadDmPb(url),
             retry: 1,
         };
-        this.allSegment[date].load.then(({ data }) => {
+        this.allHistory[date].load.then(({ data }) => {
             this.appendDm(data?.elems);
             this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: this.allDM.length });
         });
-        return this.allSegment[date].load;
+        return this.allHistory[date].load;
     }
     // 获取弹幕
     private firstPb(index: number) {
@@ -418,6 +419,8 @@ export default class LoadPb {
                     this.dmTrack[times]++;
                 }
                 player.trigger(STATE.EVENT.VIDEO_DANMAKU_LOADED, true, url);
+
+                return data?.elems;
             })
             .catch((error: IDmReject) => {
                 this.dmTrack.fail += `${segment},`;
@@ -984,15 +987,27 @@ export default class LoadPb {
             return Promise.reject();
         }
         const promiseList: any = [];
+        let succeedSegment = 0;
         return new Promise((resolve, reject) => {
             for (let i = 1; i < segment; i++) {
-                promiseList.push(this.load(i));
+                promiseList.push(this.load(i).then(d => {
+                    this.player.template.danmakuMask.html(`载入弹幕数据(${++succeedSegment}/${Math.floor(segment)})`);
+                    return d;
+                }));
             }
             for (const bas in this.basSegment) {
                 promiseList.push(this.basSegment[bas]);
             }
             Promise.all(promiseList)
-                .then(() => {
+                .then((r) => {
+                    let allDM: any[] = [];
+                    r.forEach((function (e) {
+                        9 != e[0]?.mode && (allDM = allDM.concat(e));
+                    }));
+                    this.allHistory[0] = {
+                        load: Promise.resolve({ data: { elems: allDM } }),
+                        retry: 4
+                    };
                     resolve('');
                     this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: this.allDM.length });
                 })
@@ -1009,9 +1024,7 @@ export default class LoadPb {
             } else {
                 load = this.retryLoad(i);
             }
-            load.then(() => {
-                resolve('');
-            });
+            load.then(resolve);
         });
     }
     private retryLoad(i: number): any {
