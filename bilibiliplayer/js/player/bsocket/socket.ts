@@ -202,7 +202,7 @@ export default class Socket {
             }
             this.ws.binaryType = 'arraybuffer';
             this.ws.onopen = this.onopen.bind(this);
-            this.ws.onmessage = this.ommessage.bind(this);
+            this.ws.onmessage = this.onmessage.bind(this);
             this.ws.onclose = this.onclose.bind(this);
             this.ws.onerror = this.onerror.bind(this);
 
@@ -261,7 +261,7 @@ export default class Socket {
     /**
      * 收到消息
      */
-    private ommessage(response: MessageEvent) {
+    private onmessage(response: MessageEvent) {
         const msg = this.toMsg(response.data, this.msgType);
         this.beatCount = 0;
         this.retryTimer && clearTimeout(this.retryTimer);

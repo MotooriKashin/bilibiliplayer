@@ -20,6 +20,8 @@ export interface ISubtitleInterface {
 }
 
 export interface IViewPoint {
+    logoUrl: any;
+    imgUrl: any;
     type: number;
     from: number;
     to: number;
