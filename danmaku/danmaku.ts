@@ -415,9 +415,7 @@ class Danmaku {
     public multipleAdd(danmakuList: ITextDataInterface[]) {
         if (danmakuList && danmakuList.length) {
             this.danmakuArray = this.danmakuArray.concat(danmakuList);
-            for (let i = 0; i < danmakuList.length; i++) {
-                this.timeLine.insert(danmakuList[i]);
-            }
+            this.timeLine.insertMulti(danmakuList);
             if (typeof this.config.listUpdating === 'function') {
                 this.config.listUpdating(this.danmakuArray);
             }

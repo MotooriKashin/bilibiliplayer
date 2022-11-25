@@ -28,6 +28,8 @@ import { ProgressBar } from './controller/progress-bar';
 import { BILIBILI_PLAYER_SETTINGS } from './settings';
 import DolbyButton from './controller/dolby-button';
 import { HiResButton } from './controller/hires-button';
+import { IUserStatusInterface } from './user';
+import ViewPointList from './controller/viewpoint';
 
 interface IToastMsg {
     text: string;
@@ -103,6 +105,7 @@ class Controller {
     config: BILIBILI_PLAYER_SETTINGS;
     dolbyButton?: DolbyButton;
     hiresButton?: HiResButton;
+    viewPointList?: ViewPointList;
     constructor(player: Player) {
         this.player = player;
         this.prefix = this.player.prefix;
@@ -170,6 +173,14 @@ class Controller {
         this.screenButton = new ScreenButton(this);
         this.createNextBtn();
         // this.dragMask = new DragMask(this);
+
+        this.player.userLoadedCallback((userStatus: IUserStatusInterface) => {
+            if (userStatus.view_points && userStatus.view_points.length !== 0) {
+                if (!this.viewPointList) {
+                    this.viewPointList = new ViewPointList(this.player, userStatus.view_points);
+                }
+            }
+        });
     }
     // playurl有下发杜比音效字段（且设备能支持）时，创建杜比音效开关
     createDolbyButton() {

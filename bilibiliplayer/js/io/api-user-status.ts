@@ -20,6 +20,8 @@ interface ISubtitleItem {
 }
 
 interface IViewPoint {
+    logoUrl: any;
+    imgUrl: any;
     type: number;
     from: number;
     to: number;
