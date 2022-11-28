@@ -174,6 +174,8 @@ class Controller {
         this.createNextBtn();
         // this.dragMask = new DragMask(this);
 
+        this.setActionHandler();
+
         this.player.userLoadedCallback((userStatus: IUserStatusInterface) => {
             if (userStatus.view_points && userStatus.view_points.length !== 0) {
                 if (!this.viewPointList) {
@@ -181,6 +183,14 @@ class Controller {
                 }
             }
         });
+    }
+    setActionHandler() {
+        navigator.mediaSession.setActionHandler('play', () => this.player.play());
+        navigator.mediaSession.setActionHandler('pause', () => this.player.pause());
+        navigator.mediaSession.setActionHandler('seekbackward', () => this.player.seek(this.player.currentTime()! - 10));
+        navigator.mediaSession.setActionHandler('seekforward', () => this.player.seek(this.player.currentTime()! + 10));
+        navigator.mediaSession.setActionHandler('previoustrack', () => this.player.prev());
+        navigator.mediaSession.setActionHandler('nexttrack', () => this.player.next());
     }
     // playurl有下发杜比音效字段（且设备能支持）时，创建杜比音效开关
     createDolbyButton() {
@@ -1500,6 +1510,12 @@ class Controller {
         }
         this.notAllowAutoplayShowed = false;
         this.preloadAjax?.abort();
+        navigator.mediaSession.setActionHandler('play', null);
+        navigator.mediaSession.setActionHandler('pause', null);
+        navigator.mediaSession.setActionHandler('seekbackward', null);
+        navigator.mediaSession.setActionHandler('seekforward', null);
+        navigator.mediaSession.setActionHandler('previoustrack', null);
+        navigator.mediaSession.setActionHandler('nexttrack', null);
     }
 
     private _resize(mode = this.player.state.mode) {
