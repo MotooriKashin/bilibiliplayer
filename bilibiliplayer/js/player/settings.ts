@@ -21,6 +21,7 @@ export interface BILIBILI_PLAYER_SETTINGS {
         upDm: boolean;
         dolbyAtmos: boolean; // 是否开启杜比音效
         audioHiRes: boolean; // 是否开启无损音频
+        danmakunumber: number;
     };
     video_status: {
         autopart: number;
@@ -101,13 +102,14 @@ export default <BILIBILI_PLAYER_SETTINGS>{
         speedsync: false,
         fontsize: 1,
         fullscreensync: false,
-        danmakuArea: 100,
+        danmakuArea: 0,
         fullscreensend: false,
         defquality: 0,
         sameaspanel: false,
         upDm: false, // 是否带up主身份标识发送
         dolbyAtmos: false, // 是否开启杜比音效
         audioHiRes: false, // 是否开启无损音频
+        danmakunumber: -1
     },
     video_status: {
         autopart: 1,
