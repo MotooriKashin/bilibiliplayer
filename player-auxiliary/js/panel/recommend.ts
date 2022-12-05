@@ -5,6 +5,8 @@ import AddWatchlaterItem, { IOutData as DataFromWatchlaterAdd } from '@jsc/bilib
 import DeleteWatchlaterItem, { IOutData as DataFromWatchlaterDelete } from '@jsc/bilibiliplayer/js/io/api-watchlater-delete';
 import { formatNum, thumbnail } from "@shared/utils";
 
+import '@jsc/bilibiliplayer/css/recommend.less';
+
 interface IPanelOptions {
     prefix: string;
     panel: JQuery;
@@ -77,7 +79,7 @@ export class Recommend {
                 <div class="${this.prefix}-recommend-left">
                     ${d[8] ? d[8].is_ad_loc && d[8].is_ad ? `<i class="promote-icon"></i>` : "" : ""}
                     <img src="${thumbnail(d[0], 160, 100).replace("http:", "")}"/>
-                    ${(<any>d).cover ? "" : `<span><i class="${this.prefix}-iconfont icon-22wait-normal"></i></span>`}
+                    ${(<any>d).cover ? "" : `${d[7] ? `<div class="so-imgTag_rb">${d[7]}</div>` : ''}<span><i class="${this.prefix}-iconfont icon-22wait-normal"></i></span>`}
                 </div>
                 <div class="${this.prefix}-recommend-right">
                     <div class="${this.prefix}-recommend-title"></div>
