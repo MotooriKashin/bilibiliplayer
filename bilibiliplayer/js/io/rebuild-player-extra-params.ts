@@ -20,7 +20,7 @@ interface ISponsorData {
 interface IRecommendItem {
     cover: string;
     title: string;
-    link: string;
+    url: string;
     stat: {
         danmaku: number;
         follow: number;
@@ -116,7 +116,7 @@ function rebuildPlayerExtraParams(player: Player): IPlayerExtraParams | null | a
                     recommandList.push({
                         cover: item['cover'],
                         title: item['title'],
-                        link: item['link'],
+                        url: item['url'],
                         stat: item['stat']
                     });
                 });

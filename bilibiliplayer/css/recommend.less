@@ -1,0 +1,151 @@
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-recommend {
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 21;
+    background-color: #fff
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-recommend-nothing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    cursor: default;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar {
+    width: 100%;
+    height: 100%;
+    overflow: hidden
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video {
+    padding: 10px 0 0 20px;
+    margin-right: 10px;
+    display: block;
+    zoom: 1
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video:after {
+    content: "";
+    display: block;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+    font-size: 0
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video:last-child {
+    padding-bottom: 10px
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-left {
+    width: 100px;
+    height: 62px;
+    margin-right: 10px;
+    float: left;
+    position: relative
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-left:hover span {
+    opacity: 1;
+    visibility: visible
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-left img {
+    border-radius: 2px;
+    width: 100%;
+    height: 100%
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-left span {
+    position: absolute;
+    bottom: 4px;
+    right: 6px;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 4px;
+    background-color: #fff;
+    -webkit-transition: opacity .15s;
+    transition: opacity .15s
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-left span .icon-22wait-normal {
+    color: #a0a0a0;
+    cursor: pointer
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-left span .icon-22wait-choice {
+    color: #00a1d6
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-left .promote-icon {
+    display: inline-block;
+
+
+    width: 32px;
+    height: 20px;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: transparent url(../images/ad_3.png) no-repeat 50%
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right {
+    width: 155px;
+    height: 62px;
+    overflow: hidden;
+    float: left
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-title {
+    width: 100%;
+    font-size: 12px;
+    overflow: hidden;
+    color: #222;
+    white-space: normal;
+    margin-bottom: 5px;
+    line-height: 18px;
+    max-height: 36px
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-title:hover {
+    color: #00a1d6
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-click,
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-danmaku,
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-scores,
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-stow {
+    width: 50%;
+    font-size: 12px;
+    line-height: 20px;
+    float: left;
+    color: #99a2aa;
+    margin-bottom: 5px
+}
+
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-click .bilibili-player-iconfont,
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-danmaku .bilibili-player-iconfont,
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-scores .bilibili-player-iconfont,
+.bilibili-player .bilibili-player-auxiliary-area .bilibili-player-panel-scrollbar .bilibili-player-recommend-video .bilibili-player-recommend-right .bilibili-player-recommend-stow .bilibili-player-iconfont {
+    padding-right: 6px
+}
+
+.bilibili-player-recommend-left .so-imgTag_rb {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    line-height: 18px;
+    padding: 0 5px;
+    color: #fff;
+    background-color: #333;
+    background-color: rgba(0, 0, 0, .5);
+    border-top-left-radius: 4px;
+}
+
+.bilibili-player-recommend-left:hover .so-imgTag_rb {
+    display: none;
+}

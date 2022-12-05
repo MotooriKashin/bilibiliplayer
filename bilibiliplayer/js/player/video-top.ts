@@ -91,7 +91,7 @@ class VideoTop {
             player.set('message', that.dataset.type, that.checked);
         });
 
-        (this.settingList.filter(v => v.checked).length > 0) && this.appendMessage(this.defMsg);
+        // (this.settingList.filter(v => v.checked).length > 0) && this.appendMessage(this.defMsg);
     }
 
     appendMessage(msg: VideoTopMessage[], clear = true) {

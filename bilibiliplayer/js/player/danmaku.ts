@@ -766,6 +766,7 @@ class Danmaku {
                         }
 
                         const others = [
+                            copy,
                             {
                                 type: 'function',
                                 tag: 'block',

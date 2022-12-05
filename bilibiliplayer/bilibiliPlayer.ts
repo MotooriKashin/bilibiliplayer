@@ -251,7 +251,9 @@ export class BilibiliPlayer {
             },
             appendTopMessage: function (msg: VideoTopMessage[]) {
                 return player.videoTop.appendMessage(msg);
-            }
+            },
+            /** 保留以避免外部调用出错 */
+            track: function () { }
         });
     }
 

@@ -376,16 +376,15 @@
 }
 
 .bilibili-player-video-popup-vote {
-    width: 192px;
-    height: 110px;
+    width: 177px;
     background: rgba(33, 33, 33, .8);
-    padding: 12px 10px;
+    padding: 12px 10px 4px;
     border-radius: 8px;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     color: #fff;
     font-size: 12px;
-    cursor: default
+    cursor: default;
 }
 
 .bilibili-player-video-popup-vote-question {
@@ -826,4 +825,26 @@
     height: 16px;
     padding: 7px;
     border-radius: 50%
+}
+
+@-webkit-keyframes popup-hide {
+    0% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0;
+        visibility: hidden
+    }
+}
+
+@keyframes popup-hide {
+    0% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0;
+        visibility: hidden
+    }
 }
