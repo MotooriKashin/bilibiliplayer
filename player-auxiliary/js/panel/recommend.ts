@@ -73,7 +73,7 @@ export class Recommend {
                         d[6] = (<any>d).stat.follow;
                     }
                 }
-                const item = $(`<a class="${this.prefix}-recommend-video" href="${(<any>d).link || `//www.bilibili.com/video/av${d[1]}`}" target="_blank">
+                const item = $(`<a class="${this.prefix}-recommend-video" href="${(<any>d).url || `//www.bilibili.com/video/av${d[1]}`}" target="_blank">
                 <div class="${this.prefix}-recommend-left">
                     ${d[8] ? d[8].is_ad_loc && d[8].is_ad ? `<i class="promote-icon"></i>` : "" : ""}
                     <img src="${thumbnail(d[0], 160, 100).replace("http:", "")}"/>

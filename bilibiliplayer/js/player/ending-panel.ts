@@ -1430,7 +1430,7 @@ class EndingPanel {
             for (let i = 0; i < len; i++) {
                 const item = $(
                     '<a href="' +
-                    data[i].link +
+                    data[i].url +
                     '" class="' +
                     prefix +
                     '-ending-panel-box-recommend" >' +
