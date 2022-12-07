@@ -420,7 +420,7 @@ export default class LoadPb {
                 }
                 player.trigger(STATE.EVENT.VIDEO_DANMAKU_LOADED, true, url);
 
-                return data?.elems;
+                return data.elems || [];
             })
             .catch((error: IDmReject) => {
                 this.dmTrack.fail += `${segment},`;

@@ -154,7 +154,8 @@ class List {
             if (typeof dm === 'string') {
                 dm = this.parse(dm);
             }
-            Array.prototype.push.apply(this.danmakuArray, dm);
+            // Array.prototype.push.apply(this.danmakuArray, dm);
+            dm.forEach((v: any) => (this.danmakuArray[this.danmakuArray.length] = v));
         }
     }
     private failed(callback: Function) {
