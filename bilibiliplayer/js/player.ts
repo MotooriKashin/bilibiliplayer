@@ -657,6 +657,8 @@ class Player {
             }));
             $(video).appendTo(this.template.videoWrp.empty());
             this._videoEventListener(video);
+            // 提前初始化以避免DASH视频信息加载过快
+            this.getVideoInfo().update(VideoInfoData.generateVideoInfoItems('DashPlayer'));
             dashPlayer['initialize'](data.mediaDataSource['url'])
                 .then(() => {
                     that.trigger(STATE.EVENT.VIDEO_METADATA_LOAD);
