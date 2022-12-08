@@ -155,7 +155,7 @@ class List {
                 dm = this.parse(dm);
             }
             // Array.prototype.push.apply(this.danmakuArray, dm);
-            dm.forEach((v: any) => (this.danmakuArray[this.danmakuArray.length] = v));
+            this.danmakuArray = this.danmakuArray.concat(dm);
         }
     }
     private failed(callback: Function) {
