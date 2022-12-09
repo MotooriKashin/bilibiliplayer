@@ -863,7 +863,7 @@ class Player {
             }
         });
     }
-    // 这种写法注意destroy时，吧partmanager重置
+    // 这种写法注意destroy时，把partmanager重置
     initPartmanager() {
         if (!this.partmanager) {
             this.partmanager = new PartManager(this);

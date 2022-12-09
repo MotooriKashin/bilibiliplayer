@@ -105,7 +105,7 @@ export abstract class Render {
         this.width = width;
         this.height = height;
         if (this.textData!.vDanmaku) {
-            // 因为有预渲染，为了避免字体阴影突出，吧宽度加1
+            // 因为有预渲染，为了避免字体阴影突出，把宽度加1
             this.distance = this.config!.height + 1;
             this.vDistance = this.config!.width;
             this.dWidth = height;

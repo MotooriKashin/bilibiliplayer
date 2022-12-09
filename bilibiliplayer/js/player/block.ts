@@ -11,6 +11,7 @@ import * as WD from '../const/webpage-directive';
 import * as PD from '../const/player-directive';
 import { logger } from '../plugins/internal-logger';
 import { colorFromInt } from '@shared/utils';
+import { BILIBILI_PLAYER_SETTINGS } from './settings';
 
 export interface IBlockListItemInterface {
     id: number;
@@ -20,7 +21,7 @@ export interface IBlockListItemInterface {
 }
 class Block {
     private player: Player;
-    private config: any;
+    private config: BILIBILI_PLAYER_SETTINGS;
     private block: any = {};
     private typeEnum: { [key: string]: string };
     private blockType: { [key: string]: number };
@@ -104,7 +105,7 @@ class Block {
         const b = this.config['block'];
         const type: number[] = [];
         t.forEach((item: string) => {
-            if (!b[item]) {
+            if (!b[<'status'>item]) {
                 type.push(this.blockType[item]);
             }
         });
@@ -114,7 +115,7 @@ class Block {
         });
         this.player.directiveManager.responder(received, {
             list: list,
-            lastUid: b['last_uid'],
+            lastUid: b[<'status'>'last_uid'],
             blockType: type,
             enabled: b['status'],
         });

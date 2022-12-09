@@ -10,7 +10,7 @@ interface IPauseConfig {
     delay?: number;
     cb: (isClose?: boolean) => {};
 }
-// -------之后考虑吧这个方法提到全局----------
+// -------之后考虑把这个方法提到全局----------
 interface IimgData {
     img: HTMLImageElement;
     width: number;

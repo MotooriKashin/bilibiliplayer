@@ -69,7 +69,7 @@ class Popup {
         this.options = $.extend(_DEFAULT_OPTIONS, options);
         this.player = player;
         this.paused = this.player.video && this.player.video.paused;
-        this.init();
+        this.player.get('setting_config', 'danmakuplugins') && this.init();
     }
 
     updateMid(mid: number) {
