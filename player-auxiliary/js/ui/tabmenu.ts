@@ -93,7 +93,7 @@ export class Tabmenu extends Base {
         item.disabled && li.attr("data-disabled", "disabled").addClass(prefix + "state-disabled");
 
         if (this.options.type === "radios") {
-            const radios = $(`"<i class="${this.prefix}tab-list-row-radio bilibili-player-iconfont icon-radio-default"></i>`);
+            const radios = $(`<i class="${this.prefix}tab-list-row-radio bilibili-player-iconfont icon-radio-default"></i>`);
             li.prepend(radios);
         }
 
