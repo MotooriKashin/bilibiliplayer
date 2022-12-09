@@ -969,10 +969,13 @@ class AllPlugins {
             this.dmBoom?.clear();
         });
     }
-    private destroy() {
+    destroy() {
         this.audioTrack = defaultTrack;
+        this.linkDM?.delete();
         this.linkDM = <any>null;
+        this.reserve?.delete();
         this.reserve = <any>null;
+        this.answer?.delete();
         this.answer = <any>null;
         this.loadAdPromise = <any>null;
         this.skipCard?.dispose();

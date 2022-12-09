@@ -299,7 +299,7 @@ export default class LoadPb {
         const login = this.player.user.status().login;
         this.setLocal(data.dmSetting, login!);
 
-        this.appendDmImg(data.commandDms);
+        this.player.get('setting_config', 'danmakuplugins') && this.appendDmImg(data.commandDms);
         // 弹幕关闭 不去加载弹幕
         if (this.dmClosed || this.eventsOnce) {
             return;
@@ -449,7 +449,7 @@ export default class LoadPb {
             attr: dm.attr,
         };
     }
-    // 吧弹幕添加进弹幕模块
+    // 把弹幕添加进弹幕模块
     private appendDm(danmakuArray: IDmData[]) {
         if (!Array.isArray(danmakuArray)) return;
 
@@ -464,7 +464,7 @@ export default class LoadPb {
             item = danmakuArray[i];
 
             item.attr = (item.attr || 0) & 4 ? 2 : -1;
-            if (item.attr === 2 && browser.version.msie) {
+            if (item.attr === 2 && (browser.version.msie || !this.player.videoSettings.setting_config.danmakuplugins)) {
                 item.attr = -1;
             }
             // if (Math.random() > 0.7) {

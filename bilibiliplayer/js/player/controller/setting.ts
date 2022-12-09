@@ -49,6 +49,7 @@ type SettingItemKeysInterface =
 type SettingKey = keyof ISettingType;
 type FilterType = 'filterTypeTop' | 'filterTypeBottom' | 'filterTypeScroll' | 'filterTypeColor' | 'filterTypeSpecial';
 interface ISettingItemInterface {
+    danmakuplugins?: Checkbox;
     danmakunumber?: Slider;
     videospeed?: Selectmenu;
     autopart?: Checkbox;
@@ -481,6 +482,18 @@ class Setting {
             }
         }).value(getLocalSettings('pbpstate') !== '0', false);
 
+        this.settingItem.danmakuplugins = new Checkbox(setting.find(`${prefix}danmakuplugins`), {
+            label: "互动弹幕",
+
+            change: e => {
+                player.set('setting_config', 'danmakuplugins', e.value);
+                if (!e.value) {
+                    player.allPlugins?.destroy();
+                    player.popup?.destroy();
+                }
+            }
+        });
+
         player.userLoadedCallback(info => {
             if (info.role === STATE.USER_ADVANCED || info.role === STATE.USER_VIP) {
                 this.settingItem.widescreensave.enable();
@@ -699,6 +712,9 @@ class Setting {
 					</div>
                     <div class="${this.prefix}-fl ${this.prefix}-setting-wrap-panoramamode" style="display: none;">
 						<input type="checkbox" class="${this.prefix}-setting-panoramamode" />
+					</div>
+                    <div class="${this.prefix}-fl ${this.prefix}-setting-wrap-danmakuplugins" data-tooltip="1" data-text="含高赞弹幕，刷新页面才可以生效" data-position="bottom-center" data-change-mode="1">
+						<input type="checkbox" class="${this.prefix}-setting-danmakuplugins" />
 					</div>
 				</div>
 			</div>
