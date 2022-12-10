@@ -107,7 +107,7 @@ class Template {
                 <div class="${prefix}-video-message"></div>
                 <div class="${prefix}-video-wrap">
                     <div class="${prefix}-video-state">
-                        <span class="${prefix}-iconfont ${prefix}-video-state-play">${svg.playState}</span>
+                        ${svg.playState}
                         <img class="${prefix}-video-state-buff" src="//static.hdslb.com/images/loading.gif" />
                         <div class="${prefix}-video-state-buff-text">
                             <span class="${prefix}-video-state-buff-title">正在缓冲...</span>
@@ -193,9 +193,9 @@ class Template {
         if (corePlayerArea.length) {
             corePlayerArea.find(`.${prefix}-video-top-core`).remove();
             // corePlayerArea.find(`.${prefix}-video-wrap`).prepend(this.templateTop());
-            corePlayerArea
-                .find(`.${prefix}-video-state`)
-                .prepend(`<span class="${prefix}-video-state-play ${prefix}-iconfont">${svg.newPlayState}</span>`);
+            // corePlayerArea
+            //     .find(`.${prefix}-video-state`)
+            //     .prepend(`<span class="${prefix}-video-state-play ${prefix}-iconfont">${svg.newPlayState}</span>`);
         } else {
             container.html(this.TPL());
         }

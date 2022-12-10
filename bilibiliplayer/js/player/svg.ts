@@ -51,8 +51,6 @@ import widescreen from '../../svg/widescreen.svg';
 import fullscreen2 from '../../svg/fullscreen-2.svg';
 import check from '../../svg/check.svg';
 import nav from '../../svg/nav.svg';
-import newPauseState from '../../svg/new-pause-state.svg';
-import newPlayState from '../../svg/new-play-state.svg';
 import checkHover from '../../svg/check_hover.svg';
 import navHover from '../../svg/nav_hover.svg';
 import rCheck from '../../svg/rookie-check.svg';
@@ -143,8 +141,6 @@ const raw = {
     fullscreen2,
     check,
     nav,
-    newPauseState,
-    newPlayState,
     rCheck,
     rNav,
     checkHover,
