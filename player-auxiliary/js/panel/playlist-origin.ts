@@ -142,25 +142,26 @@ class PlaylistOrigin {
             text: "随机播放",
         });
 
-        if ((<any>this).playlist.name) {
-            this.elements.title.text((<any>this).playlist.name);
-            this.elements.title.attr("title", (<any>this).playlist.name);
-            this.elements.title.on("click", () => {
-                window.open("//www.bilibili.com/playlist/detail/pl" + (<any>that).playlist.pid);
-            });
-        } else {
-            this.elements.title.hide();
-        }
-        if ((<any>this).playlist.owner?.name) {
-            this.elements.ownername.html(`<div class="${this.prefixName}-info-icon ${this.prefix}-fl">
+        if ((<any>this).playlist.pid > 0) {
+            if ((<any>this).playlist.name) {
+                this.elements.title.text((<any>this).playlist.name);
+                this.elements.title.attr("title", (<any>this).playlist.name);
+                this.elements.title.on("click", () => {
+                    window.open("//www.bilibili.com/playlist/detail/pl" + (<any>that).playlist.pid);
+                });
+            }
+            if ((<any>this).playlist.owner?.name) {
+                this.elements.ownername.html(`<div class="${this.prefixName}-info-icon ${this.prefix}-fl">
             <i class="${this.prefix}-iconfont icon-12toview-up"></i>
         </div>
         ${(<any>this).playlist.owner.name}`);
-            this.elements.ownername.attr("title", (<any>this).playlist.owner.name);
-            this.elements.ownername.on("click", () => {
-                window.open("//space.bilibili.com/" + (<any>that).playlist.owner.mid);
-            });
+                this.elements.ownername.attr("title", (<any>this).playlist.owner.name);
+                this.elements.ownername.on("click", () => {
+                    window.open("//space.bilibili.com/" + (<any>that).playlist.owner.mid);
+                });
+            }
         } else {
+            this.elements.title.hide();
             this.elements.ownername.hide();
         }
 
