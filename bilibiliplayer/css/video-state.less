@@ -28,14 +28,14 @@
 
 .bilibili-player .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-state {
     display: none;
-    width: 64px;
-    height: 64px;
+    width: 100px;
+    height: 84px;
     position: absolute;
     cursor: pointer;
-    z-index: 67;
-    right: 34px;
-    bottom: 50px;
-    pointer-events: none
+    z-index: 12;
+    right: 10px;
+    bottom: 24px;
+    pointer-events: none;
 }
 
 .bilibili-player .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-state-buff,
@@ -50,7 +50,8 @@
 }
 
 .bilibili-player .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-state-play {
-    margin-top: 10px
+    margin-top: 10px;
+    opacity: .6
 }
 
 .bilibili-player .bilibili-player-area.video-state-pause .bilibili-player-video-wrap .bilibili-player-video-panel,
@@ -176,4 +177,10 @@
 
 .bilibili-player.bilibili-player-pugv-center .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-state-play {
     display: none !important
+}
+
+.bilibili-player .bilibili-player-area.video-state-buff .bilibili-player-video-wrap .bilibili-player-video-state-buff {
+    display: inline-block;
+    margin-top: 8px;
+    vertical-align: top;
 }

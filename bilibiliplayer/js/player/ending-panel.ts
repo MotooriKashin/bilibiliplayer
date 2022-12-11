@@ -10,12 +10,12 @@ import GlobalFunction, { IActionStateInterface } from './global-function';
 import AddWatchlaterItem, { IOutData as DataFromWatchlaterAdd } from '../io/api-watchlater-add';
 import DeleteWatchlaterItem, { IOutData as DataFromWatchlaterDelete } from '../io/api-watchlater-delete';
 import { ApiViewOutData } from '../io/api-view';
-import ApiRecommend, { ApiRecommendInData, ApiRecommendOutData } from '../io/api-recommend';
 import EndingPanelReview from './ending-panel-review';
 import { ContentType } from '@jsc/namespace';
 import { Button } from '@jsc/player-auxiliary/js/ui/button';
 import Tooltip from '@jsc/player-auxiliary/js/plugins/tooltip';
 import { browser, getCookie } from '@shared/utils';
+import { apiRecommendOrigin, ApiRecommendOriginOutData } from '../io/api-recommend-orgion';
 
 interface IConfigInterface {
     url?: string;
@@ -1195,87 +1195,113 @@ class EndingPanel {
         if (this.pgcType) {
             this.appendBangumiInfo();
         } else {
-            const data: Partial<ApiRecommendInData> = {};
-            if (this.player.config.bvid) {
-                data.bvid = this.player.config.bvid;
-            } else {
-                data.aid = this.player.config.aid;
-            }
-            new ApiRecommend(<ApiRecommendInData>data).getData({
-                success: (data: ApiRecommendOutData[]) => {
-                    that.appendRecommendInfo(data);
-                },
-            });
+            // const data: Partial<ApiRecommendInData> = {};
+            // if (this.player.config.bvid) {
+            //     data.bvid = this.player.config.bvid;
+            // } else {
+            //     data.aid = this.player.config.aid;
+            // }
+            // new ApiRecommend(<ApiRecommendInData>data).getData({
+            //     success: (data: ApiRecommendOutData[]) => {
+            //         that.appendRecommendInfo(data);
+            //     },
+            // });
+            apiRecommendOrigin(this.player.config.aid).then(d => this.appendRecommendOriginInfo(d));
         }
     }
-
-    private appendRecommendInfo(data: ApiRecommendOutData[]) {
-        const that = this;
+    private appendRecommendOriginInfo(data: ApiRecommendOriginOutData[]) {
         const prefix = this.prefix;
-        const player = this.player;
-        let len = 8;
-        let cover = $([]);
 
         if (data && data.length) {
-            this.template.videos.show();
-            len = data.length <= len ? data.length : len;
-            this.firstID = this.player.config.bvid ? data[0].bvid : `av${data[0].aid}`;
-            for (let i = 0; i < len; i++) {
-                const ele = data[i];
-                const aid = ele.aid;
-                const cid = ele.cid;
-                const bvid = this.player.config.bvid ? ele.bvid : undefined;
-                const ugcPay = ele.rights['ugc_pay'];
-                const pic = ele.pic ? ele.pic.replace('http://', '//') : '';
-                const first = i === 0 && this.autoPlay ? 'first-child' : '';
-                // const autoPlay =
-                //     i === 0
-                //         ? `<div class="auto-play">
-                //                 <div class="text">接下来自动播放</div>
-                //                 <div class="cancel">取消</div>
-                //             </div>
-                //             <div class="auto-play-progress">
-                //                 <span class="progress"></span>
-                //             </div>`
-                //         : '';
-                // const payOrWatchLater = ugcPay
-                //     ? `<div class="${prefix}-ending-panel-box-recommend-pay">付费</div>`
-                //     : `<div class="${prefix}-ending-panel-box-recommend-add-watchlater">
-                //             <i class="${prefix}-iconfont icon-22wait-normal"></i>
-                //         </div>`;
-                const item = $(`<a name="recommend_video" class="${prefix}-ending-panel-box-recommend" target="_blank" >
-                <div class="${prefix}-ending-panel-box-recommend-img" name="recommend_video" style="background-image:url(${pic})"></div>
+            data.forEach(d => {
+                const a = document.createElement('a');
+                a.href = `//www.bilibili.com/video/av${d.aid}`;
+                a.setAttribute('name', 'recommend_video');
+                a.setAttribute('class', `${prefix}-ending-panel-box-recommend`);
+                a.setAttribute('target', '_blank');
+                a.innerHTML = `<div class="${prefix}-ending-panel-box-recommend-img" name="recommend_video" style="background-image:url(${d.cover.replace('http://', '//')})"></div>
                 <div class="${prefix}-ending-panel-box-recommend-cover" name="recommend_video">
-                    <div class="${prefix}-ending-panel-box-recommend-cover-title" name="recommend_video"></div>
+                    <div class="${prefix}-ending-panel-box-recommend-cover-title" name="recommend_video">${d.title}</div>
                     <div class="${prefix}-ending-panel-box-recommend-add-watchlater">
                         <i class="${prefix}-iconfont icon-22wait-normal"></i>
                     </div>
-                </div>
-            </a>`).click((e) => {
-                    if (!$(e.target).hasClass(`${prefix}-iconfont`)) {
-                        e.preventDefault();
-                        if (window['PlayerAgent'] && typeof window['PlayerAgent']['triggerReload'] === 'function') {
-                            window['PlayerAgent']['triggerReload'](aid, cid, bvid);
-                        } else {
-                            player.window.location.href = `//www.bilibili.com/video/av${aid}`;
-                        }
-                    }
-                });
-
-                const title = item.find(`.${prefix}-ending-panel-box-recommend-cover-title`);
-                title.text(data[i].title);
-                !ugcPay && this.addToWatchLater(item, aid, bvid!);
-                cover = cover.add(item);
-            }
-
-            that.template.videos.append(cover);
+                </div>`;
+                this.addToWatchLater($(a), d.aid);
+                this.template.videos.append(a);
+            });
             this.autoPlay && this.setTime();
         } else {
             this.template.videos.hide();
         }
     }
+
+    // private appendRecommendInfo(data: ApiRecommendOutData[]) {
+    //     const that = this;
+    //     const prefix = this.prefix;
+    //     const player = this.player;
+    //     let len = 8;
+    //     let cover = $([]);
+
+    //     if (data && data.length) {
+    //         this.template.videos.show();
+    //         len = data.length <= len ? data.length : len;
+    //         this.firstID = this.player.config.bvid ? data[0].bvid : `av${data[0].aid}`;
+    //         for (let i = 0; i < len; i++) {
+    //             const ele = data[i];
+    //             const aid = ele.aid;
+    //             const cid = ele.cid;
+    //             const bvid = this.player.config.bvid ? ele.bvid : undefined;
+    //             const ugcPay = ele.rights['ugc_pay'];
+    //             const pic = ele.pic ? ele.pic.replace('http://', '//') : '';
+    //             const first = i === 0 && this.autoPlay ? 'first-child' : '';
+    //             // const autoPlay =
+    //             //     i === 0
+    //             //         ? `<div class="auto-play">
+    //             //                 <div class="text">接下来自动播放</div>
+    //             //                 <div class="cancel">取消</div>
+    //             //             </div>
+    //             //             <div class="auto-play-progress">
+    //             //                 <span class="progress"></span>
+    //             //             </div>`
+    //             //         : '';
+    //             // const payOrWatchLater = ugcPay
+    //             //     ? `<div class="${prefix}-ending-panel-box-recommend-pay">付费</div>`
+    //             //     : `<div class="${prefix}-ending-panel-box-recommend-add-watchlater">
+    //             //             <i class="${prefix}-iconfont icon-22wait-normal"></i>
+    //             //         </div>`;
+    //             const item = $(`<a name="recommend_video" class="${prefix}-ending-panel-box-recommend" target="_blank" >
+    //             <div class="${prefix}-ending-panel-box-recommend-img" name="recommend_video" style="background-image:url(${pic})"></div>
+    //             <div class="${prefix}-ending-panel-box-recommend-cover" name="recommend_video">
+    //                 <div class="${prefix}-ending-panel-box-recommend-cover-title" name="recommend_video"></div>
+    //                 <div class="${prefix}-ending-panel-box-recommend-add-watchlater">
+    //                     <i class="${prefix}-iconfont icon-22wait-normal"></i>
+    //                 </div>
+    //             </div>
+    //         </a>`).click((e) => {
+    //                 if (!$(e.target).hasClass(`${prefix}-iconfont`)) {
+    //                     e.preventDefault();
+    //                     if (window['PlayerAgent'] && typeof window['PlayerAgent']['triggerReload'] === 'function') {
+    //                         window['PlayerAgent']['triggerReload'](aid, cid, bvid);
+    //                     } else {
+    //                         player.window.location.href = `//www.bilibili.com/video/av${aid}`;
+    //                     }
+    //                 }
+    //             });
+
+    //             const title = item.find(`.${prefix}-ending-panel-box-recommend-cover-title`);
+    //             title.text(data[i].title);
+    //             !ugcPay && this.addToWatchLater(item, aid, bvid!);
+    //             cover = cover.add(item);
+    //         }
+
+    //         that.template.videos.append(cover);
+    //         this.autoPlay && this.setTime();
+    //     } else {
+    //         this.template.videos.hide();
+    //     }
+    // }
     // 添加到稍后再看
-    private addToWatchLater(item: JQuery, aid: number, bvid: string) {
+    private addToWatchLater(item: JQuery, aid: number, bvid?: string) {
         const prefix = this.prefix;
         const player = this.player;
         const addBtn = item.find(`.${prefix}-ending-panel-box-recommend-add-watchlater`);

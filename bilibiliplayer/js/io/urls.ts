@@ -129,6 +129,8 @@ export default class URLS {
     // https://info.bilibili.co/pages/viewpage.action?pageId=2491046#web-interface%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3-%E8%A7%86%E9%A2%91%E8%AF%A6%E6%83%85%E9%A1%B5%E7%9B%B8%E5%85%B3%E7%A8%BF%E4%BB%B6
     static readonly RECOMMEND = URLS.P_AUTO + URLS.D_API + '/x/web-interface/archive/related';
     static readonly PLAYTAG = URLS.P_AUTO + URLS.D_COMMENT + '/playtag';
+    /** //comment.bilibili.com/recommend/${aid}.json?html5=1 */
+    static readonly RECOMMEND_ORIGIN = URLS.P_AUTO + URLS.D_COMMENT + '/recommend/';
 
     /**
      * @kind 稍后再看、播单

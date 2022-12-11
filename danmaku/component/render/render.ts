@@ -75,7 +75,7 @@ export abstract class Render {
     }
 
     init() {
-        // 普权弹幕提权。允许换行空白字符排版（含有换行符就不裁剪空白字符）
+        // 普权弹幕提权。注释掉以允许换行空白字符排版
         // if (
         //     this.textData!.mode === 1 ||
         //     this.textData!.mode === 4 ||
@@ -91,14 +91,6 @@ export abstract class Render {
         //         this.textData!.text = (<any>this).textData!.text.trim();
         //     }
         // }
-        // 正确处理弹幕分层（预处理）
-        if (this.textData?.text.includes("\n")) {
-            this.textData.zIndex = this.textData.stime * 1000;
-
-            if (!(this.textData.text.includes("█") || this.textData.text.includes("▂"))) {
-                this.textData.zIndex = this.textData.zIndex + 1;
-            }
-        }
     }
 
     space(width: number, height: number, time: number) {

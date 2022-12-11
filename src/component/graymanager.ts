@@ -501,24 +501,12 @@ class GrayManagerClass {
         const bofqi = document.querySelector('#bilibili-player') || document.querySelector('#bofqi');
         const wrap = bofqi && bofqi.parentNode;
         const hasClass = ` ${wrap} `.indexOf(' movie_play ') > -1;
+        const isBofqi = bofqi?.id === 'bofqi';
         const head = document.querySelector('head');
         if (head) {
             head.insertAdjacentHTML(
                 'beforeend',
-                `${'<style>.player-wrapper {position: relative;} .player-fullscreen-fix {position: fixed;top: 0;left: 0;margin: 0;padding: 0;width: 100%;height: 100%;}' +
-                '.player-fullscreen-fix #bilibili-player .player {position: fixed!important;border-radius: 0;z-index: 100000!important;left: 0;top: 0;width: 100%!important;height: 100%!important;}' +
-                '.player-fullscreen-fix #bofqi .player {position: fixed!important;border-radius: 0;z-index: 100000!important;left: 0;top: 0;width: 100%!important;height: 100%!important;}' +
-                '.bgray-btn-wrap {position: absolute; top: 10px; left: 50%; margin-left: 490px; width: 70px; height: 200px;} .widescreen .bgray-btn-wrap {margin-left: 580px;} .bgray-btn {transition: all 0.3s; cursor: pointer; margin: 10px 0; background-color: #fff; text-align: center; padding: 7px 5px; display: block; left: 100%; font-size: 12px; line-height: 12px; margin-left: 10px; width: 20px; border-radius: 4px; border: 1px solid #e5e9ef; color: #99a2aa;} .bgray-btn-feedback { height: 72px; margin-bottom: 5px;} .bgray-btn-help { height: 24px; margin-top: 5px;} .bgray-btn:hover {color: #6d757a; border-color: #6d757a;}.bgray-btn.player-feedback-disable{color:#ccd0d7}.bgray-btn.player-feedback-disable:hover{color:#ccd0d7;border-color:#ccd0d7;} .bgray-btn.player-feedback-disable{color:#ccd0d7}.bgray-btn.player-feedback-disable:hover{color:#ccd0d7;border-color:#ccd0d7;} .bgray-btn.active {cursor: default; color: #00a1d6; border-color: #00a1d6;}'
-                }${hasClass
-                    ? '.movie_play {overflow: visible;} .bgray-btn-wrap {top: -10px;} #bilibili-player {box-shadow: 0 0 0;} #bofqi {box-shadow: 0 0 0;}'
-                    : ''
-                }.bgray-line {display: none; width: 42px; margin: 0 auto; border-bottom: 1px solid #e5e9ef;}` +
-                '.bgray-btn {display: none;} .bgray-btn.show {display: none;}' +
-                '@media screen and (min-width: 1400px) {.bgray-btn-wrap {margin-left: 580px;}}' +
-                '.bgray-btn.happyfoolsday {line-height: 13px; background-color: #00a1d6; border-color: #00a1d6; color: #fff;} .bgray-btn.happyfoolsday:hover {background-color: #00b5e5; border-color: #00b5e5; color: #fff;}' +
-                '.webfullscreen .player{position: fixed;top: 0;left: 0;}' +
-                'object#player_placeholder{display: block;box-shadow: 0 0 8px #e5e9ef;}' +
-                '</style>',
+                `<style>${isBofqi ? '' : '.bgray-btn-wrap {display: none;}'}.player-wrapper {position: relative;}.player-fullscreen-fix {position: fixed;top: 0;left: 0;margin: 0;padding: 0;width: 100%;height: 100%;}.player-fullscreen-fix #bofqi .player {position: fixed!important;border-radius: 0;z-index: 100000!important;left: 0;top: 0;width: 100%!important;height: 100%!important;}.bgray-btn-wrap {position: absolute; top: 10px; left: 50%; margin-left: 490px; width: 70px; height: 200px;}.widescreen .bgray-btn-wrap {margin-left: 580px;}.bgray-btn {transition: all 0.3s; cursor: pointer; margin: 10px 0; background-color: #fff; text-align: center; padding: 7px 5px; display: block; left: 100%; font-size: 12px; line-height: 12px; margin-left: 10px; width: 20px; border-radius: 4px; border: 1px solid #e5e9ef; color: #99a2aa;}.bgray-btn-feedback { height: 72px; margin-bottom: 5px;}.bgray-btn-help { height: 24px; margin-top: 5px;}.bgray-btn:hover {color: #6d757a; border-color: #6d757a;}.bgray-btn.player-feedback-disable{color:#ccd0d7}.bgray-btn.player-feedback-disable:hover{color:#ccd0d7;border-color:#ccd0d7;} .bgray-btn.player-feedback-disable{color:#ccd0d7}.bgray-btn.player-feedback-disable:hover{color:#ccd0d7;border-color:#ccd0d7;}.bgray-btn.active {cursor: default; color: #00a1d6; border-color: #00a1d6;}${hasClass ? '.movie_play {overflow: visible;} .bgray-btn-wrap {top: -10px;} #bofqi {box-shadow: 0 0 0;}' : ''}.bgray-line {display: none; width: 42px; margin: 0 auto; border-bottom: 1px solid #e5e9ef;}.bgray-btn {display: none;} .bgray-btn.show {display: block;}@media screen and (min-width: 1400px) {.bgray-btn-wrap {margin-left: 580px;}}.bgray-btn.happyfoolsday {line-height: 13px; background-color: #00a1d6; border-color: #00a1d6; color: #fff;} .bgray-btn.happyfoolsday:hover {background-color: #00b5e5; border-color: #00b5e5; color: #fff;}</style>`,
             );
         }
         const bgray = document.createElement('div');

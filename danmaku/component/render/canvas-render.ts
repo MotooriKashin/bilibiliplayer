@@ -24,8 +24,6 @@ class CanvasRender extends Render {
         super.init();
         this.canvas = this.textRender(this.textData!, this.config!);
         this.element = this.canvas.bitmap;
-        // 正确处理弹幕分层
-        this.textData?.zIndex && (this.element.style.zIndex = <any>this.textData.zIndex);
     }
     space(time: number) {
         super.space(this.canvas.width, this.canvas.height, time);

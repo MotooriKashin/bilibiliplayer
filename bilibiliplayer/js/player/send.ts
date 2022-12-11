@@ -71,27 +71,27 @@ class Send {
         this.STATUS_TIPS = {};
         this.STATUS_TIPS[
             STATE.SEND_STATUS_UNLOGIN
-        ] = `请先<a href="javascript:void(0);" class="${this.prefix}-quick-login">登录</a>或<a href="${URLS.PAGE_REGISTER}" target="_blank">注册</a>`;
+        ] = `游客不能发送弹幕，请先<a href="javascript:void(0);" class="${this.prefix}-quick-login">登录</a>或<a href="${URLS.PAGE_REGISTER}" target="_blank">注册</a>`;
         this.STATUS_TIPS[
             STATE.SEND_STATUS_LEVEL_LOW
-        ] = `请先答题<a href="//www.bilibili.com/v/newbie/entry?re_src=16" class="${this.prefix}-start-answer" target="_blank">转正></a>`;
+        ] = `你的等级不足Lv1，答题转正后即可发送弹幕 <a href="//www.bilibili.com/v/newbie/entry?re_src=16" class="${this.prefix}-start-answer" target="_blank">立即去答题</a>`;
         this.STATUS_TIPS[
             STATE.SEND_STATUS_MORAL_LOW
-        ] = `<a href="${URLS.PAGE_HELP}#j" target="_blank">节操值</a><60，不能发弹幕`;
+        ] = `您的节操值低于60,不能发送弹幕 <a href="${URLS.PAGE_HELP}#j" target="_blank">了解什么是节操值 ></a>`;
         this.STATUS_TIPS[STATE.SEND_STATUS_DISABLED_WORDS] = '您不能在本视频中发送弹幕';
-        this.STATUS_TIPS[STATE.SEND_STATUS_LIMITED] = '已被禁言，无法发弹幕';
-        this.STATUS_TIPS[STATE.SEND_STATUS_NORMAL] = '发个友善的弹幕见证当下';
+        this.STATUS_TIPS[STATE.SEND_STATUS_LIMITED] = '您已经被禁言，不能发送弹幕。';
+        this.STATUS_TIPS[STATE.SEND_STATUS_NORMAL] = '您可以在这里输入弹幕吐槽哦~';
         this.STATUS_TIPS[
             STATE.SEND_STATUS_TYPING
         ] = `<a href="${URLS.PAGE_HELP}#弹幕相关" target="_blank">弹幕礼仪 ></a>`;
         this.STATUS_TIPS[STATE.SEND_STATUS_BEYOND_WORDS] = '';
-        this.STATUS_TIPS[STATE.SEND_STATUS_SENT] = '发个友善的弹幕见证当下';
-        this.STATUS_TIPS[STATE.SEND_STATUS_CLOSED] = '本视频弹幕功能已关闭';
-        this.STATUS_TIPS[STATE.SEND_STATUS_FREQUENTLY] = '发弹幕太频繁，稍后重试';
+        this.STATUS_TIPS[STATE.SEND_STATUS_SENT] = '您可以在这里输入弹幕吐槽哦~';
+        this.STATUS_TIPS[STATE.SEND_STATUS_CLOSED] = '本视频的弹幕功能已被关闭';
+        this.STATUS_TIPS[STATE.SEND_STATUS_FREQUENTLY] = '您发送弹幕过于频繁,请稍后重试';
         this.STATUS_TIPS[STATE.SEND_STATUS_CANNOT_BUY] = '课程调整中，暂不支持发送弹幕';
         this.STATUS_TIPS[STATE.SEND_STATUS_BLOCKING] = '该账号处于封禁中';
         this.STATUS_TIPS[STATE.SEND_STATUS_BLOCKED] =
-            '帐号封禁中，<a href="//www.bilibili.com/blackroom/releaseexame.html" target="_blank">答题解禁</a>';
+            '该账号处于封禁中，点击<a href="//www.bilibili.com/blackroom/releaseexame.html" target="_blank">申请答题</a>以解除封禁';
         this.STATUS_TIPS[STATE.SEND_STATUS_UPDATE] = '弹幕系统升级中';
         this.STATUS_TIPS[
             STATE.SEND_ANSWER_STATUS_IN

@@ -33,8 +33,6 @@ class CSS3Render extends Render {
     init() {
         super.init();
         this.element = this.textRender(this.textData!, this.config!);
-        // 正确处理弹幕分层
-        this.textData?.zIndex && (this.element.style.zIndex = <any>this.textData.zIndex);
     }
     space(time: number) {
         const { width, height } = this.element!.getBoundingClientRect();

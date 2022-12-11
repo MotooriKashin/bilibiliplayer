@@ -79,7 +79,7 @@ export class Slider extends Base {
         this.tracker = $("<div>").addClass(this.cssPrefix("tracker")).appendTo(this.trackerWrp);
         this.handle = $("<div>").addClass(this.cssPrefix("handle")).appendTo(this.tracker);
         if (this.options.videoProgress) {
-            this.bufferBar = $(`<div class="bilibili-player-video-progress-buffer">
+            this.bufferBar = $(`<div class="bilibili-player-video-progress-buffer" style="${this.options.aclinic ? 'width: 0;' : 'height: 0;'}">
         <div class="bilibili-player-video-progress-buffer-range" style="overflow: hidden;"></div>
     </div>`).appendTo(this.tracker);
         }
