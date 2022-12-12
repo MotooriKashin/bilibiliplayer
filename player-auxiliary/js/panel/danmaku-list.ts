@@ -11,6 +11,10 @@ import * as WD from '../const/webpage-directive';
 import * as PD from '../const/player-directive';
 import { Button } from '../ui/button';
 import { fmSeconds, formatDate } from '@shared/utils';
+import { UHash } from '@shared/utils/utils/uhash';
+import { ApiUserCard } from '@jsc/b-io/api-user-card';
+
+import '../../css/user-card.less';
 
 export interface IDanmakuData {
     stime: number;
@@ -542,6 +546,34 @@ class List {
                         });
                     }
                 }
+                output.unshift({
+                    type: 'function',
+                    text: `uhash: ${danmaku.uhash}`,
+                    afterAppend: (t: JQuery<HTMLElement>) => {
+                        const mid = new UHash().decode(danmaku.uhash);
+                        if (mid) {
+                            new ApiUserCard(mid).getData()
+                                .then(d => {
+                                    t.html(`<a class="b-danmaku-up-card${d.card.vip.status
+                                        ? ' vip' : ''}" data-usercard-mid="${d.card.mid
+                                        }" href="//space.bilibili.com/${d.card.mid
+                                        }" target="_blank"><span class="b-danmaku-up-img"><img src="${d.card.face.replace('http:', '')
+                                        }@52w_52h.webp"></span>${d.card.name
+                                        }<i class="gender${d.card.sex === '男' ? ' male' : d.card.sex === '女' ? ' female' : ''
+                                        }"></i><i class="level l${d.card.is_senior_member ? 7 : d.card.level_info.current_level
+                                        }"></i></a>`)
+                                })
+                                .catch(e => {
+                                    t.hide();
+                                    console.debug(e);
+                                })
+                        } else {
+                            t.hide();
+                        }
+                    }
+                }, {
+                    type: 'descipline'
+                });
                 return output.reverse();
             },
         });

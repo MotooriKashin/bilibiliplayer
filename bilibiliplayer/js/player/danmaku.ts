@@ -27,6 +27,8 @@ import { IBlockListItemInterface } from './block';
 import { browser, setLocalSettings } from '@shared/utils';
 
 import '../../css/danmaku.less';
+import { UHash } from '@shared/utils/utils/uhash';
+import { ApiUserCard } from '@jsc/b-io/api-user-card';
 
 interface IDanmakuMenuInterface {
     type: string;
@@ -37,6 +39,7 @@ interface IDanmakuMenuInterface {
     list: List;
     danmaku: any;
     menu: any[];
+    afterAppend?: (t: JQuery<HTMLElement>) => void
 }
 
 export interface IDanmakuRecallData {
@@ -679,6 +682,12 @@ class Danmaku {
                             list: that.list,
                             danmaku: danmaku,
                             menu: [],
+                            afterAppend: (t: JQuery<HTMLElement>) => {
+                                const mid = new UHash().decode(danmaku.textData.uhash);
+                                if (mid) {
+                                    t.attr('data-usercard-mid', mid);
+                                }
+                            }
                         };
                         let that2 = [];
                         const copy = {
