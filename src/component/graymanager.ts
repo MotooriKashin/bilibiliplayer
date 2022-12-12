@@ -501,7 +501,7 @@ class GrayManagerClass {
         const bofqi = document.querySelector('#bilibili-player') || document.querySelector('#bofqi');
         const wrap = bofqi && bofqi.parentNode;
         const hasClass = ` ${wrap} `.indexOf(' movie_play ') > -1;
-        const isBofqi = bofqi?.id === 'bofqi';
+        const isBofqi = window.top === window.self && bofqi?.id === 'bofqi' && !location.href.includes('player');
         const head = document.querySelector('head');
         if (head) {
             head.insertAdjacentHTML(
