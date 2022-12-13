@@ -29,6 +29,7 @@ import { browser, setLocalSettings } from '@shared/utils';
 import '../../css/danmaku.less';
 import { UHash } from '@shared/utils/utils/uhash';
 import { ApiUserCard } from '@jsc/b-io/api-user-card';
+import { IDmData } from './proto/proto-buffer';
 
 interface IDanmakuMenuInterface {
     type: string;
@@ -1399,6 +1400,27 @@ class Danmaku {
                 // document.querySelector('#playerWrap').appendChild(dm)
             };
         });
+    }
+    /**
+     * 刷新弹幕列表
+     * @param danmaku 新弹幕
+     * @param clear 清空已有弹幕
+     */
+    appendDm(danmaku: IDmData[], clear = true) {
+        if (clear) {
+            this.clear();
+            this.danmaku.danmakuArray.length = 0;
+            this.danmaku.timeLine.length = 0;
+            this.danmaku.visualArray.length = 0;
+            this.loadPb!.allDM = [];
+            this.loadPb!.allRawDM = [];
+        }
+        this.loadPb?.appendDm(danmaku);
+        this.player.directiveManager.sender(PD.DL_DANMAKU_UPDATE, {
+            danmaku: this.loadPb!.allDM,
+            clear
+        });
+        this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: this.loadPb!.allDM.length });
     }
 }
 

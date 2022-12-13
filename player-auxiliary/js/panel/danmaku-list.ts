@@ -256,6 +256,12 @@ class List {
                 });
             });
         });
+        // 121007
+        this.auxiliary.directiveManager.on(PD.DL_DANMAKU_UPDATE.toString(), (e, received: IReceived) => {
+            received.data.clear && (this.danmakuArray = []);
+            this.load(received);
+            this.update();
+        });
         this.auxiliary.bind(STATE.EVENT.AUXILIARY_PANEL_RESIZE, () => {
             this.update();
         });
