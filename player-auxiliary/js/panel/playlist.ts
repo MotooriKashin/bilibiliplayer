@@ -309,6 +309,9 @@ class Playlist {
                 } else if (!parents.hasClass(`${this.prefix}-playlist-item-disabled`)) {
                     let cid = $(e.target).data('cid');
                     if (!cid) {
+                        cid = $(e.target).parents(`.${this.prefixName}-part-item`).data('cid');
+                    }
+                    if (!cid) {
                         cid =
                             this.listInfo.originList[index[0]].pages && this.listInfo.originList[index[0]].pages![0]
                                 ? this.listInfo.originList[index[0]].pages![0].cid
