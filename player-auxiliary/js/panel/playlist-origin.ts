@@ -183,6 +183,9 @@ class PlaylistOrigin {
                 );
                 let cid = $(e.target).data('cid');
                 if (!cid) {
+                    cid = $(e.target).parents(`.${this.prefixName}-part-item`).data('cid');
+                }
+                if (!cid) {
                     cid =
                         this.list[index[0]].pages && this.list[index[0]].pages[0]
                             ? this.list[index[0]].pages![0].cid

@@ -751,6 +751,43 @@ class ContextMenu {
             });
         }
     }
+
+    private getUrl(): string {
+        const location = this.player.window.location;
+        const subpath = `av${this.player.config.aid}` || this.player.config.bvid;
+        let url = `${location.protocol}//www.bilibili.com/video/${subpath}`;
+        if (
+            (this.player.user.status().pid || this.player.config.p) &&
+            (this.player.user.status().pid! > 1 || this.player.config.p > 1)
+        ) {
+            const p = this.player.user.status().pid || this.player.config.p;
+            url = `${location.protocol}//www.bilibili.com/video/${subpath}?p=${p}`;
+        }
+        return url;
+    }
+
+    private createClipBoardTip(text: string) {
+        new Tooltip({
+            name: 'copyLink-tip',
+            text: text,
+            target: this.player.template.playerWrap,
+            hideTime: 1000,
+            position: 'center-center',
+        });
+    }
+
+    copyLink() {
+        let url = this.getUrl();
+        let t = this.player.currentTime()!.toFixed(1);
+        url = url.indexOf('?') !== -1 ? `${url}&t=${t}` : `${url}?t=${t}`;
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                this.createClipBoardTip('已复制到剪贴板');
+            })
+            .catch(() => {
+                this.createClipBoardTip('复制失败');
+            })
+    }
 }
 
 export default ContextMenu;

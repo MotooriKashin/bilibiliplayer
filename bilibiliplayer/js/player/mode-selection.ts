@@ -248,7 +248,7 @@ class ModeSelection {
                 { name: '极小', data: 12, hidden: true },
                 { name: '超小', data: 16, hidden: true },
                 { name: '小', data: 18, hidden: true },
-                { name: '标准', data: 25, hidden: true, selected: true },
+                { name: '中', data: 25, hidden: true, selected: true },
                 { name: '大', data: 36, hidden: true },
                 { name: '超大', data: 45, hidden: true },
                 { name: '极大', data: 64, hidden: true },

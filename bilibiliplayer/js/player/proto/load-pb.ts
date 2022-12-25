@@ -1,6 +1,7 @@
 import { IComboCard } from "@jsc/combo";
 import { ContentType } from "@jsc/namespace";
 import { browser, formatDate } from "@shared/utils";
+import { DL_DANMAKU_UPDATE } from "../../const/player-directive";
 import ApiDmLikeDetail, { ApiDmLikeDetailOutData } from "../../io/api-dm-like-detail";
 import { ApiViewOutData } from "../../io/api-view";
 import URLS from "../../io/urls";
@@ -168,7 +169,10 @@ export default class LoadPb {
     };
     loadPbview: any;
     viewUrl!: string;
+    /** 所有弹幕 */
     allDM: IDmData[] = [];
+    /** 所有弹幕（原始） */
+    allRawDM: IDmData[] = [];
 
     constructor(private danmaku: Danmaku, private player: Player) {
         this.protoBuffer = new ProtoBuffer();
@@ -299,7 +303,7 @@ export default class LoadPb {
         const login = this.player.user.status().login;
         this.setLocal(data.dmSetting, login!);
 
-        this.player.get('setting_config', 'danmakuplugins') && this.appendDmImg(data.commandDms);
+        this.appendDmImg(data.commandDms);
         // 弹幕关闭 不去加载弹幕
         if (this.dmClosed || this.eventsOnce) {
             return;
@@ -450,8 +454,10 @@ export default class LoadPb {
         };
     }
     // 把弹幕添加进弹幕模块
-    private appendDm(danmakuArray: IDmData[]) {
+    appendDm(danmakuArray: IDmData[]) {
         if (!Array.isArray(danmakuArray)) return;
+
+        this.allRawDM = this.allRawDM.concat(danmakuArray);
 
         let target: any;
         let action: any;
@@ -495,10 +501,10 @@ export default class LoadPb {
             //         'upEgg:1?animation=0&delay=60&resource=http%3A%2F%2Fuat-i0.hdslb.com%2Fbfs%2Fdm%2Fgif_frames%2Fgif_frames_1621924144.zip&resource_type=2&text_img=';
             // }
 
-            // const actions = this.player.send.dmActions(action);
-            // for (const key in actions) {
-            //     target[key] = actions[key];
-            // }
+            const actions = this.player.send.dmActions(action);
+            for (const key in actions) {
+                target[key] = actions[key];
+            }
             if (target.animation) {
                 const type = target.animation.type;
                 switch (type) {
@@ -520,7 +526,7 @@ export default class LoadPb {
             if (target.text?.replace(/\r/g, '')) {
                 switch (target.mode) {
                     case 7:
-                        target.weight = 10;
+                        target.weight = 11;
                         this.player.advDanmaku?.addDanmaku({
                             ...target,
                             stime: item.progress || 0,
@@ -528,7 +534,7 @@ export default class LoadPb {
                         this.dmTrack.dmadv++;
                         break;
                     case 9:
-                        target.weight = 10;
+                        target.weight = 11;
                         basList.push(target);
                         // 给选择历史弹幕的时候使用
                         this.basList.push(target);
@@ -580,6 +586,8 @@ export default class LoadPb {
             return;
         }
         if (!Array.isArray(danmakuArray)) return;
+
+        if (!this.player.get('setting_config', 'danmakuplugins')) return;
 
         let attentions: IPoputBodyInterface[] = [];
         let dm: ICommandDm;
@@ -761,7 +769,11 @@ export default class LoadPb {
         if (this.player.config.type === ContentType.Editor) {
             return;
         }
+
         if (!Array.isArray(danmakuArray)) return;
+
+        if (!this.player.get('setting_config', 'danmakuplugins')) return;
+
         this.dmTrack.dmnum += danmakuArray.length;
         this.dmTrack.dmcmd = danmakuArray.length;
         let i = 0;
@@ -1178,6 +1190,7 @@ export default class LoadPb {
         this.basSegment = {};
         this.allSegment = {};
         this.allDM = [];
+        this.allRawDM = [];
         this.protoBuffer?.destroy();
     }
 }

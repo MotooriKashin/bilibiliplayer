@@ -20,6 +20,7 @@ export const DL_PUT_DANMAKU = 121002;
 export const DL_SCROLL_TO_VIEW = 121003;
 export const DL_PUT_RECALL_DANMAKU = 121004;
 export const DL_DANMAKU_STATUS = 121006;
+export const DL_DANMAKU_UPDATE = 121007;
 
 export const DB_DATA_INIT = 124001;
 export const DB_PUT_BLOCK_TYPE = 124002;

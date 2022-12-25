@@ -256,6 +256,12 @@ class List {
                 });
             });
         });
+        // 121007
+        this.auxiliary.directiveManager.on(PD.DL_DANMAKU_UPDATE.toString(), (e, received: IReceived) => {
+            received.data.clear && (this.danmakuArray = []);
+            this.load(received);
+            this.update();
+        });
         this.auxiliary.bind(STATE.EVENT.AUXILIARY_PANEL_RESIZE, () => {
             this.update();
         });
@@ -321,7 +327,7 @@ class List {
         if (d) {
             const uid = +this.auxiliary.user.status().uid!;
             if (d.mid && +d.mid === uid) return true;
-            let uhash = this.auxiliary.user.status().uhash;
+            let uhash = this.auxiliary.user.status().hash_id;
             if (d.uhash.length !== uhash!.length && uid) {
                 return parseInt(d.uhash, 16) === parseInt(uhash!, 16);
             }
@@ -1436,7 +1442,7 @@ ${this.uname
         const user = this.auxiliary.user.status();
         return (
             d &&
-            ((d.mid && String(d.mid) === String(user.uid)) || d.uhash === user.uhash || d.uhash === user.uhash) &&
+            ((d.mid && String(d.mid) === String(user.uid)) || d.uhash === user.hash_id || d.uhash === user.hash_id) &&
             user.level! >= 4 &&
             this.auxiliary.config.playerType === 1
         );

@@ -233,6 +233,7 @@ class Quality {
                         this.controller.dolbyButton.createTooltip(true);
                     }
                     player.checkCurrentQuality(value);
+                    player.set('setting_config', 'defquality', value);
                     this.changing = true;
                     player.toast.addTopHinter(`正在为您切换到${qualityMap[value]},请稍候...`);
                     this.player.reloadMedia.quality(Number(value), (success: any) => {

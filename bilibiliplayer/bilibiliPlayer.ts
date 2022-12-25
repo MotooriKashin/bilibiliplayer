@@ -253,7 +253,15 @@ export class BilibiliPlayer {
                 return player.videoTop.appendMessage(msg);
             },
             /** 保留以避免外部调用出错 */
-            track: function () { }
+            track: function () { },
+            /** 添加弹幕 */
+            appendDm(danmaku: any[], clear = true) {
+                player.danmaku?.appendDm(danmaku, clear);
+            },
+            /** 获取弹幕 */
+            getDanmaku() {
+                return player.danmaku.loadPb?.allRawDM;
+            }
         });
     }
 
