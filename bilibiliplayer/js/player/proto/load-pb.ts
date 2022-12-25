@@ -303,7 +303,7 @@ export default class LoadPb {
         const login = this.player.user.status().login;
         this.setLocal(data.dmSetting, login!);
 
-        this.player.get('setting_config', 'danmakuplugins') && this.appendDmImg(data.commandDms);
+        this.appendDmImg(data.commandDms);
         // 弹幕关闭 不去加载弹幕
         if (this.dmClosed || this.eventsOnce) {
             return;
@@ -587,6 +587,8 @@ export default class LoadPb {
         }
         if (!Array.isArray(danmakuArray)) return;
 
+        if (!this.player.get('setting_config', 'danmakuplugins')) return;
+
         let attentions: IPoputBodyInterface[] = [];
         let dm: ICommandDm;
         let extra;
@@ -767,7 +769,11 @@ export default class LoadPb {
         if (this.player.config.type === ContentType.Editor) {
             return;
         }
+
         if (!Array.isArray(danmakuArray)) return;
+
+        if (!this.player.get('setting_config', 'danmakuplugins')) return;
+
         this.dmTrack.dmnum += danmakuArray.length;
         this.dmTrack.dmcmd = danmakuArray.length;
         let i = 0;
