@@ -32,17 +32,7 @@ export class DirectiveManager extends EventEmitter {
 
     private init() {
         this.player.userLoadedCallback(info => {
-            this.sender(AI_STATUS_CHANGE, {
-                login: info.login,
-                uid: info.uid,
-                uname: info.name,
-                uhash: info.hash_id,
-                level: info.level,
-                permission: info.permission,
-                isAdmin: info.isadmin,
-                pRole: info.p_role,
-                chatid: info.chat_id,
-            });
+            this.sender(AI_STATUS_CHANGE, info);
         });
         this.registerListener();
     }

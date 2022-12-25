@@ -158,17 +158,7 @@ class User {
         // 225001
         this.player.directiveManager.on(WD.AI_RETRIEVE_DATA.toString(), (e, received: IReceivedInterface) => {
             this.player.userLoadedCallback(status => {
-                this.player.directiveManager.responder(received, {
-                    uid: status.uid,
-                    uname: status.name,
-                    uhash: status.hash_id,
-                    level: status.level,
-                    login: status.login,
-                    permission: status.permission,
-                    isAdmin: status.isadmin,
-                    pRole: status.p_role,
-                    chatid: status.chat_id,
-                });
+                this.player.directiveManager.responder(received, status);
             });
         });
     }
