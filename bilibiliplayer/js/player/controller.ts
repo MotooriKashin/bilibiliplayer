@@ -428,6 +428,10 @@ class Controller {
             player.$window.off(`keydown${player.config.namespace}`).on(`keydown${player.config.namespace}`, (e) => {
                 if (focusInput() || this.noKeyDowm) return;
 
+                if (e.altKey || e.shiftKey || e.metaKey || e.ctrlKey) {
+                    return;
+                }
+
                 if (e && e.keyCode) {
                     const code = e.keyCode;
                     if (code === 27) {
