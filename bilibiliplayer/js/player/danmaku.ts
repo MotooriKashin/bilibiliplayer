@@ -993,6 +993,14 @@ class Danmaku {
                         ]
                     });
                     const arr: any[] = [];
+                    if (!player.user.status().no_share) {
+                        arr.push({
+                            text: '复制空降地址',
+                            click: () => {
+                                that.contextmenu.copyLink();
+                            },
+                        });
+                    }
                     if (
                         browser.supportAudioContext &&
                         (!player.flvPlayer || player.flvPlayer.type === 'FlvPlayer')

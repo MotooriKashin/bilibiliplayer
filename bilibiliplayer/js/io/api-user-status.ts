@@ -131,6 +131,8 @@ interface IUserInfo {
         ff_version?: number;
     };
     show_switch?: IShowSwitchConfig;
+
+    default_dm?: number;
 }
 
 interface IShowSwitchConfig {

@@ -84,6 +84,7 @@ interface IDanmakuConfInterface {
 export interface IUserStatusInterface {
     ad?: IPreRolls; // 是否存在广告
     allow_bp?: boolean; // 是否允许承包 <- allow_bp
+    no_share?: boolean; // 是否允许分享 <- no_share
     block_time?: number; // 封禁天数 <- block_time
     chat_id?: number; // 视频cid <- cid
     has_next?: boolean; // 是否有下一个视频 <- has_next
@@ -128,6 +129,11 @@ export interface IUserStatusInterface {
     guide_attentions?: IGuideAttention[]; // up主引导关注按钮配置参数
     operation_card?: ISkipCard[]; // 跳转卡片配置参数
     danmaku?: IDanmakuConfInterface; // 弹幕权限
+    fawkes?: {
+        config_version?: number;
+        ff_version?: number;
+    };
+    longProgress?: boolean;
 
     default_dm?: number; // 云推荐弹幕
 }
@@ -263,6 +269,7 @@ class User {
     private parse(data: IUserInfo | null): IUserStatusInterface {
         return {
             allow_bp: !!data?.allow_bp,
+            no_share: !!data?.no_share,
             block_time: data?.block_time ?? 0,
             chat_id: data?.cid ?? 0,
             has_next: !!data?.has_next,
@@ -292,6 +299,9 @@ class User {
             is_360: !!data?.options?.is_360,
             without_vip: !!data?.options?.without_vip,
             guide_attentions: data?.guide_attention,
+            default_dm: data?.default_dm,
+            fawkes: data?.fawkes,
+            longProgress: !!data?.show_switch?.long_progress,
         };
     }
 
