@@ -209,7 +209,7 @@ export default class LoadPb {
                             ...defaultDm,
                             ...res,
                         };
-                        data.attr = (res.attr || 0) & 4 ? 2 : -1;
+                        data.attr = (res.attr! > 0 ? res.attr! : 0) & 4 ? 2 : -1;
                         if (data.attr === 2 && browser.version.msie) {
                             data.attr = -1;
                         }
@@ -473,7 +473,7 @@ export default class LoadPb {
         for (let i = 0; i < danmakuArray.length; i++) {
             item = danmakuArray[i];
 
-            item.attr = (item.attr || 0) & 4 ? 2 : -1;
+            item.attr = (item.attr! > 0 ? item.attr! : 0) & 4 ? 2 : -1;
             if (item.attr === 2 && (browser.version.msie || !this.player.videoSettings.setting_config.danmakuplugins)) {
                 item.attr = -1;
             }
