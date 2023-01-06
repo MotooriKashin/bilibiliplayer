@@ -28,7 +28,6 @@ import { browser, setLocalSettings } from '@shared/utils';
 
 import '../../css/danmaku.less';
 import { UHash } from '@shared/utils/utils/uhash';
-import { ApiUserCard } from '@jsc/b-io/api-user-card';
 import { IDmData } from './proto/proto-buffer';
 
 interface IDanmakuMenuInterface {
@@ -144,7 +143,7 @@ class Danmaku {
                     speedSync: config['danmaku_config']['speedsync'],
                     fontSize: config['danmaku_config']['fontsize'],
                     fullScreenSync: config['danmaku_config']['fullscreensync'],
-                    danmakuNumber: config['danmaku_config']['fullscreensync'] || -1,
+                    danmakuNumber: config['danmaku_config']['danmakunumber'] || -1,
                     danmakuArea: config['danmaku_config']['danmakuArea'],
                     fullscreensend: config['danmaku_config']['fullscreensend'],
                     defquality: config['danmaku_config']['defquality'],
