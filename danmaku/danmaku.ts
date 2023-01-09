@@ -415,6 +415,7 @@ class Danmaku {
     public multipleAdd(danmakuList: ITextDataInterface[]) {
         if (danmakuList && danmakuList.length) {
             this.danmakuArray = this.danmakuArray.concat(danmakuList);
+            this.sortDmById(this.danmakuArray);
             this.timeLine.insertMulti(danmakuList);
             if (typeof this.config.listUpdating === 'function') {
                 this.config.listUpdating(this.danmakuArray);
@@ -422,6 +423,32 @@ class Danmaku {
             if (typeof this.config.countUpdating === 'function') {
                 this.config.countUpdating(this.danmakuArray.length);
             }
+        }
+    }
+
+    // 从小到大排序弹幕
+    sortDmById(dms: ITextDataInterface[]) {
+        dms.sort((a, b) => this.bigInt(a.dmid, b.dmid) ? 1 : -1);
+    }
+
+    // 比较两个弹幕字符串的大小
+    private bigInt(num1: string, num2: string) {
+        String(num1).replace(/\d+/, d => num1 = d.replace(/^0+/, ""));
+        String(num2).replace(/\d+/, d => num2 = d.replace(/^0+/, ""));
+        // 数位不同，前者大为真，否则为假
+        if (num1.length > num2.length) return true;
+        else if (num1.length < num2.length) return false;
+        else {
+            // 数位相同，逐位比较
+            for (let i = 0; i < num1.length; i++) {
+                // 任意一位前者大为真
+                if (num1[i] > num2[i]) return true;
+                // 任意一位前者小为假
+                if (num1[i] < num2[i]) return false;
+                // 仅当位相等时继续比较下一位
+            }
+            // 包括相等情况返回假
+            return false;
         }
     }
 

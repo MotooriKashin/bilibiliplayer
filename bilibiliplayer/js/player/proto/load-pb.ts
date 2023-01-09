@@ -441,7 +441,7 @@ export default class LoadPb {
             // mode: 6,
             mode: +dm.mode || 1,
             size: dm.fontsize || 25,
-            color: dm.color || 16777215,
+            color: dm.color || 0,
             date: dm.ctime || 0,
             class: dm.pool || 0,
             pool: dm.pool || 0,
@@ -466,9 +466,6 @@ export default class LoadPb {
         let dmPk: any[] = [];
         let dmBoom: any[] = [];
         let item: IDmData;
-
-        // 先后排序以正确显示弹幕排版
-        this.sortDmById(danmakuArray);
 
         for (let i = 0; i < danmakuArray.length; i++) {
             item = danmakuArray[i];
@@ -574,6 +571,8 @@ export default class LoadPb {
         //         upEgg: `upEgg:1?animation=${i}&delay=80&resource=http://uat-i0.hdslb.com/bfs/dm/gif_frames/gif_frames_1623408921.zip&resource_type=2&text_img=http://uat-i0.hdslb.com/bfs/dm/3a4f7b4841a871cde0801e27af7243814519a298.png&delays=[5,50,5,5,5,5,5,5,50,5,5,5,5,5,5,5,5]`
         //     }, i * 7);
         // }
+
+        this.danmaku.danmaku.sortDmById(<any>this.allDM);
     }
     private appendDmBas(danmakuArray: any[]) {
         this.player.basDanmaku?.add({
@@ -1157,32 +1156,6 @@ export default class LoadPb {
             bold: false,
             fontborder: '0',
         };
-    }
-
-    /** 从小到大排序弹幕 */
-    private sortDmById(dms: IDmData[]) {
-        dms.sort((a, b) => this.bigInt(a.idStr, b.idStr) ? 1 : -1);
-    }
-
-    /** 比较两个弹幕ID先后 */
-    private bigInt(num1: string, num2: string) {
-        String(num1).replace(/\d+/, d => num1 = d.replace(/^0+/, ""));
-        String(num2).replace(/\d+/, d => num2 = d.replace(/^0+/, ""));
-        // 数位不同，前者大为真，否则为假
-        if (num1.length > num2.length) return true;
-        else if (num1.length < num2.length) return false;
-        else {
-            // 数位相同，逐位比较
-            for (let i = 0; i < num1.length; i++) {
-                // 任意一位前者大为真
-                if (num1[i] > num2[i]) return true;
-                // 任意一位前者小为假
-                if (num1[i] < num2[i]) return false;
-                // 仅当位相等时继续比较下一位
-            }
-            // 包括相等情况返回假
-            return false;
-        }
     }
 
     destroy() {
