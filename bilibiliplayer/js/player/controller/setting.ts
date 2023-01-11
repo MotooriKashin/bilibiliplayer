@@ -188,7 +188,7 @@ class Setting {
 
             valueSetAnalyze: val => val * 20 / 18 - 2 / 18,
             valueGetAnalyze: val => val * 18 / 20 + 0.1,
-            formatTooltip: val => `${Math.round(val * 100)}%`,
+            formatTooltip: val => `${Math.round((val * 18 / 20 + 0.1) * 100)}%`,
             change: (e: IEvent) => {
                 player.set('setting_config', 'opacity', e.value.toFixed(2));
                 player.controller.danmakuLite.opacityBar.value(e.value, false);
