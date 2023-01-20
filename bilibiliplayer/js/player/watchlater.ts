@@ -302,6 +302,9 @@ class Playlist {
         }
         const ended: IPartInfoEndedInterface = { p: null, aid: null, cid: null, modal: false, ended: true, bvid: null };
         if (index === this.sortlist.length - 1) {
+            if (this.playOrder === Playlist.playOrderEnum.positive && this.player.config.playlist) {
+                return ended; // 稍后再看及播单不返回顶部
+            }
             if (!noResetToTop || this.player.config.watchlater) {
                 index = -1;
             } else {
