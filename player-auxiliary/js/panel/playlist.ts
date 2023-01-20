@@ -171,7 +171,7 @@ class Playlist {
                         this.listInfo.order = "reverse";
                         break;
                     case this.elements.loop[0]:
-                        this.listInfo.order = "loop";
+                        this.listInfo.order = "circle";
                         break;
                     case this.elements.random[0]:
                         this.listInfo.order = "shuffle";
@@ -193,7 +193,7 @@ class Playlist {
             case "reverse":
                 order.change(this.elements.reverse);
                 break;
-            case "loop":
+            case "circle":
                 order.change(this.elements.loop);
                 break;
             case "shuffle":

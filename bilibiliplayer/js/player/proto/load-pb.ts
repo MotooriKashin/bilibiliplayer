@@ -298,7 +298,8 @@ export default class LoadPb {
             this.dmClosed = true;
             data.count = 0;
         }
-        this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: data.count || 0 });
+        // 此处弹幕数是错误的
+        // this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: data.count || 0 });
         // 更新弹幕设置信息
         const login = this.player.user.status().login;
         this.setLocal(data.dmSetting, login!);
