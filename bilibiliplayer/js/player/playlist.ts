@@ -531,7 +531,7 @@ class Playlist {
             videoTitle: '',
         };
         if (index === this.listInfo.sortedList.length - 1) {
-            if (noResetToTop) {
+            if (this.listInfo.order === Playlist.playOrderEnum.positive || this.listInfo.order === Playlist.playOrderEnum.reverse || noResetToTop) {
                 return ended;
             }
             index = -1;
