@@ -5,6 +5,8 @@ import { loadZipBuffer, unzip } from '../unzip';
 import { sortFn } from './binary-array';
 const browserPrefix = ['', '-webkit-', '-moz-', '-ms-'];
 
+import '../../css/dm-boom.less';
+
 export interface IDmAnimation {
     tail: string;
     center: string;

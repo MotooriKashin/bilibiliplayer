@@ -5,6 +5,8 @@ import { IDmAd } from '../io/api-dm-ad';
 import { dmAdGet } from '../io/api-dm-ad-get';
 import { strLength } from '@shared/utils';
 
+import '../../css/answer.less';
+
 interface IConfig {
     container: HTMLElement;
     ppx: string;
