@@ -563,7 +563,7 @@ export default class LoadPb {
 
         // 当view接口取不到总弹幕数，还是根据分段弹幕显示
         if (typeof this.dmPbView?.count !== 'number') {
-            this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: this.allDM.length });
+            this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: this.allRawDM.length });
         }
         // test upEgg
         // for (let i = 0; i < 7; i++) {
