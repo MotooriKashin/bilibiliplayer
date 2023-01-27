@@ -80,15 +80,17 @@ class CSS3Render extends Render {
         }
 
         this.font = (config.bold ? 'bold' : 'normal') + ' ' + fontSize * 2 + 'px ' + config.fontFamily;
-        if (!textData.picture) {
-            fontSize = textData.size * this.fontSizeScale(config);
-            divCssText += `font-size: ${fontSize}px; `;
-            divCssText += `color: ${Utils.getHexColor(textData.color)} ;`;
-            divCssText += `font-family: ${config.fontFamily}, Arial, Helvetica, sans-serif; `;
-            divCssText += `font-weight: ${config.bold ? 'bold' : 'normal'}; `;
-            divCssText += `opacity: ${(config.opacity < 0.1 ? 0.1 : config.opacity) + ''}; `;
-            divCssText += `text-shadow: ${fontBorderArr[config.fontBorder]}; `;
-        }
+
+        // 图片弹幕一视同仁
+        // if (!textData.picture) {
+        fontSize = textData.size * this.fontSizeScale(config);
+        divCssText += `font-size: ${fontSize}px; `;
+        divCssText += `color: ${Utils.getHexColor(textData.color)} ;`;
+        divCssText += `font-family: ${config.fontFamily}, Arial, Helvetica, sans-serif; `;
+        divCssText += `font-weight: ${config.bold ? 'bold' : 'normal'}; `;
+        divCssText += `opacity: ${(config.opacity < 0.1 ? 0.1 : config.opacity) + ''}; `;
+        divCssText += `text-shadow: ${fontBorderArr[config.fontBorder]}; `;
+        // }
 
         if (textData.border) {
             divCssText += `border: 1px solid ${Utils.getHexColor(textData.borderColor!)}; `;
@@ -193,12 +195,12 @@ class CSS3Render extends Render {
         div.className = className;
         div.style.cssText = divCssText;
 
-        if (textData.picture && !textData.vDanmaku) {
+        if (textData.picture) {
             const data: any = imgObj[textData.picture];
             if (data) {
-                const scale = 0.3 * this.fontSizeScale(config);
-                const width = scale * data.width;
-                const height = scale * data.height;
+                // const scale = 0.3 * this.fontSizeScale(config);
+                const height = fontSize * 1.125;
+                const width = (data.width * height) / data.height;
 
                 div.innerHTML = `<img src="${textData.picture}" style="width:${width}px;height:${height}px;">`;
                 div.style.width = `${width}px`;

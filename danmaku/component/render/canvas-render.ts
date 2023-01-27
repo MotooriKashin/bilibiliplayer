@@ -101,14 +101,13 @@ class CanvasRender extends Render {
             // 设置opacity
             context.globalAlpha = config.opacity;
             // 彩蛋绘制
-            if (textData.picture && !textData.vDanmaku) {
+            if (textData.picture) {
                 const data: any = imgObj[textData.picture];
                 if (data) {
-                    const scale = scaleRate * 0.3 * this.fontSizeScale(config);
-                    width = data.width * scale;
-                    height = data.height * scale;
-                    canvas.setAttribute('width', width + 2 + '');
-                    canvas.setAttribute('height', height + 2 + '');
+                    height = size * 1.125;
+                    width = (data.width * height) / data.height;
+                    canvas.setAttribute('width', width + '');
+                    canvas.setAttribute('height', height + '');
 
                     context.drawImage(data.img, 0, 0, width, height);
 
