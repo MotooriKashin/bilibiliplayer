@@ -13,6 +13,7 @@
   "dependencies": {
     "@jsc/ace": "file:ace",
     "@jsc/adv-danmaku": "file:adv-danmaku",
+    "@jsc/as3-danmaku": "file:as3-danmaku",
     "@jsc/audio-effect": "file:audio-effect",
     "@jsc/b-back": "file:b-back",
     "@jsc/b-io": "file:b-io",
