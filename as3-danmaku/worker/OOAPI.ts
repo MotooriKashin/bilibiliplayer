@@ -1,47 +1,58 @@
-
+interface IChannel {
+    max: number;
+    auth?: number;
+    listeners: Function[];
+}
+interface Message {
+    channel: string;
+    payload: unknown;
+}
 class OOAPI {
-    channels = {};
+    /** 频道列表 */
+    channels: Record<string, IChannel> = {};
     constructor() {
         self.addEventListener('message', (event) => {
-            let msg;
             if (!event) {
                 return;
             }
             try {
-                msg = JSON.parse(event.data);
+                const msg = JSON.parse(event.data);
+                if (msg.hasOwnProperty('channel') && typeof msg.channel === 'string') {
+                    this.dispatchMessage(msg);
+                } else {
+                    __trace(msg, 'warn');
+                }
             } catch (e) {
                 __trace(e, 'err');
-                return;
-            }
-            if (msg !== null && msg.hasOwnProperty('channel') &&
-                typeof msg.channel === 'string') {
-                this.dispatchMessage(msg);
-            } else {
-                __trace(msg, 'warn');
             }
         });
     }
-    protected dispatchMessage(msg) {
-        if (this.channels.hasOwnProperty(msg.channel)) {
-            for (let i = 0; i < this.channels[msg.channel].listeners.length; i++) {
+    /**
+     * 消息分发
+     * @param msg 消息内容
+     */
+    protected dispatchMessage(msg: Message) {
+        if (msg.channel in this.channels) {
+            this.channels[msg.channel]?.listeners.forEach(d => {
                 try {
-                    this.channels[msg.channel].listeners[i](msg.payload);
+                    d(msg.payload);
                 } catch (e) {
-                    if (e.stack) {
-                        __trace(e.stack.toString(), 'err');
+                    if ((<Error>e).stack) {
+                        __trace((<Error>e).stack?.toString(), 'err');
                     } else {
-                        __trace(e.toString(), 'err');
+                        __trace((<Error>e).toString(), 'err');
                     }
                 }
-            }
+            });
         } else {
             __trace('Got message on channel "' + msg.channel +
                 '" but channel does not exist.', 'warn');
         }
     };
+    /** 读取所有频道 */
     listChannels = () => {
-        const chl = {};
-        for (let chan in this.channels) {
+        const chl = <Record<string, Record<'max' | 'listeners', number>>>{};
+        for (const chan in this.channels) {
             chl[chan] = {
                 'max': this.channels[chan].max,
                 'listeners': this.channels[chan].listeners.length
@@ -49,6 +60,12 @@ class OOAPI {
         }
         return chl;
     };
+    /**
+     * 删除频道
+     * @param channelId 频道名
+     * @param authToken 口令
+     * @returns 是否删除成功
+     */
     deleteChannel = (channelId: string, authToken: number) => {
         if (!(channelId in this.channels)) {
             return true;
@@ -64,6 +81,13 @@ class OOAPI {
             return true;
         }
     };
+    /**
+     * 创建频道
+     * @param channelId 频道名
+     * @param maximum 回调上限
+     * @param authToken 口令
+     * @returns 是否创建成功
+     */
     createChannel = (channelId: string, maximum: number, authToken: number) => {
         if (!(channelId in this.channels)) {
             this.channels[channelId] = {
@@ -75,6 +99,12 @@ class OOAPI {
         }
         return false;
     };
+    /**
+     * 监听频道
+     * @param channel 频道
+     * @param listener 监听回调
+     * @returns 是否监听成功
+     */
     addListenerChannel = (channel: string, listener: Function) => {
         if (!(channel in this.channels)) {
             this.channels[channel] = {
@@ -94,7 +124,11 @@ class OOAPI {
 }
 
 export const __OOAPI = new OOAPI();
-
+/**
+ * 日志
+ * @param obj 内容
+ * @param traceMode 级别
+ */
 export function __trace(obj: any, traceMode: string) {
     self.postMessage(JSON.stringify({
         'channel': '',
@@ -102,7 +136,12 @@ export function __trace(obj: any, traceMode: string) {
         'mode': (traceMode ? traceMode : 'log')
     }));
 };
-
+/**
+ * 发送消息（回调）
+ * @param id 频道名
+ * @param payload 内容
+ * @param callback 回调
+ */
 export function __channel(id: string, payload: object, callback: Function) {
     self.postMessage(JSON.stringify({
         'channel': id,
@@ -111,20 +150,33 @@ export function __channel(id: string, payload: object, callback: Function) {
     }));
     __OOAPI.addListenerChannel(id, callback);
 };
-
+/**
+ * 监听频道
+ * @param id 频道名
+ * @param callback 回调
+ */
 export function __schannel(id: string, callback: Function) {
     __OOAPI.addListenerChannel(id, callback);
 };
-
-export function __pchannel(id: string, payload: object) {
+/**
+ * 发送消息（不回调）
+ * @param id 频道名
+ * @param payload 
+ */
+export function __pchannel(id: string, payload: any) {
     self.postMessage(JSON.stringify({
         'channel': id,
         'payload': payload,
         'callback': false
     }));
 };
-
-export function __achannel(id: string, auth: string, payload: string) {
+/**
+ * 发送消息（带口令）
+ * @param id 频道名
+ * @param auth 口令
+ * @param payload 内容
+ */
+export function __achannel(id: string, auth: string, payload: any) {
     self.postMessage(JSON.stringify({
         'channel': id,
         'auth': auth,

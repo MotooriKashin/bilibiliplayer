@@ -1,33 +1,15 @@
 export class ColorTransform {
-    public alphaMultiplier: number;
-    public alphaOffset: number;
-    public blueMultiplier: number;
-    public blueOffset: number;
-    public greenMultiplier: number;
-    public greenOffset: number;
-    public redMultiplier: number;
-    public redOffset: number;
-
-    constructor(redMultiplier: number = 1,
-        greenMultiplier: number = 1,
-        blueMultiplier: number = 1,
-        alphaMultiplier: number = 1,
-        redOffset: number = 0,
-        greenOffset: number = 0,
-        blueOffset: number = 0,
-        alphaOffset: number = 0) {
-
-        this.redMultiplier = redMultiplier;
-        this.greenMultiplier = greenMultiplier;
-        this.blueMultiplier = blueMultiplier;
-        this.alphaMultiplier = alphaMultiplier;
-        this.redOffset = redOffset;
-        this.greenOffset = greenOffset;
-        this.blueOffset = blueOffset;
-        this.alphaOffset = alphaOffset;
+    constructor(public redMultiplier = 1,
+        public greenMultiplier = 1,
+        public blueMultiplier = 1,
+        public alphaMultiplier = 1,
+        public redOffset = 0,
+        public greenOffset = 0,
+        public blueOffset = 0,
+        public alphaOffset = 0) {
     }
 
-    get color(): number {
+    get color() {
         return this.redOffset << 16 | this.greenOffset << 8 | this.blueOffset;
     }
 
@@ -40,7 +22,7 @@ export class ColorTransform {
         this.blueMultiplier = 0;
     }
 
-    public concat(second: ColorTransform): void {
+    concat(second: ColorTransform) {
         this.redMultiplier *= second.redMultiplier;
         this.greenMultiplier *= second.greenMultiplier;
         this.blueMultiplier *= second.blueMultiplier;
@@ -51,7 +33,7 @@ export class ColorTransform {
         this.alphaOffset += second.alphaOffset;
     }
 
-    public serialize(): Object {
+    serialize() {
         return {
             'class': 'ColorTransform',
             'red': {
@@ -74,14 +56,14 @@ export class ColorTransform {
     }
 }
 
-export function createColorTransform(redMultiplier: number = 1,
-    greenMultiplier: number = 1,
-    blueMultiplier: number = 1,
-    alphaMultiplier: number = 1,
-    redOffset: number = 0,
-    greenOffset: number = 0,
-    blueOffset: number = 0,
-    alphaOffset: number = 0): ColorTransform {
+export function createColorTransform(redMultiplier = 1,
+    greenMultiplier = 1,
+    blueMultiplier = 1,
+    alphaMultiplier = 1,
+    redOffset = 0,
+    greenOffset = 0,
+    blueOffset = 0,
+    alphaOffset = 0) {
 
     return new ColorTransform(redMultiplier,
         greenMultiplier,

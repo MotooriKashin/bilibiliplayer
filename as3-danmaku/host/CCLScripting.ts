@@ -1,5 +1,5 @@
-import { BridgedSandbox } from "./host/BridgedSandbox";
-import { ScriptingContext } from "./host/ScriptingContext";
+import { BridgedSandbox } from "./BridgedSandbox";
+import { ScriptingContext } from "./ScriptingContext";
 
 export class CCLScripter {
     version = 1.0;

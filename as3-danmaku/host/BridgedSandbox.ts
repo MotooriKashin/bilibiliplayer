@@ -1,5 +1,5 @@
 import { init } from "grunt";
-import { CCLScripter } from "../CCLScripting";
+import { CCLScripter } from "./CCLScripting";
 import { ScriptingContext } from "./ScriptingContext";
 
 interface Message {

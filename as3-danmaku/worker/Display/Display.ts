@@ -1,3 +1,4 @@
+import { __pchannel, __schannel } from "../OOAPI";
 import { Bitmap, BitmapData } from "./Bitmap";
 import { ByteArray } from "./ByteArray";
 import { ColorTransform, createColorTransform } from "./ColorTransform";
@@ -63,37 +64,36 @@ export class Display {
     static createComment = createComment;
     static createTextField = createTextField;
 
-    accessor root = new RootSprite();
-    accessor loaderInfo: unknown;
-    accessor version = '';
-    accessor width = 0;
-    accessor height = 0;
-    accessor fullScreenWidth = 0;
-    accessor fullScreenHeight = 0;
+    static root = new RootSprite();
+    static loaderInfo: unknown;
+    static version = '';
+    static width = 0;
+    static height = 0;
+    static fullScreenWidth = 0;
+    static fullScreenHeight = 0;
 
-    _frameRate: number = 24;
+    static _frameRate: number = 24;
 
-    get stage() {
+    static get stage() {
         return this.root;
     }
-    get frameRate() {
+    static get frameRate() {
         return this._frameRate;
     }
-    set frameRate(v) {
+    static set frameRate(v) {
         this._frameRate = v;
         __pchannel("Display:SetFrameRate", v);
     }
-    toString() {
+    static toString() {
         return "[display Display]";
     }
-    constructor() {
-        __schannel("Update:DimensionUpdate", function (payload) {
-            this.width = payload["stageWidth"];
-            this.height = payload["stageHeight"];
-            if (payload.hasOwnProperty("screenWidth") && payload.hasOwnProperty("screenHeight")) {
-                this.fullScreenWidth = payload["screenWidth"];
-                this.fullScreenHeight = payload["screenHeight"];
-            }
-        });
-    }
 }
+
+__schannel("Update:DimensionUpdate", (payload: any) => {
+    Display.width = payload["stageWidth"];
+    Display.height = payload["stageHeight"];
+    if (payload.hasOwnProperty("screenWidth") && payload.hasOwnProperty("screenHeight")) {
+        Display.fullScreenWidth = payload["screenWidth"];
+        Display.fullScreenHeight = payload["screenHeight"];
+    }
+});

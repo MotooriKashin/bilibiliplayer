@@ -1,115 +1,131 @@
-/**
- * Partially Compliant CommentData Adapter
- */
-class CommentData {
-    private _dbid = 0;
+import { BitmapData } from "./Display/Bitmap";
+import { DisplayObject } from "./Display/DisplayObject";
+import { Filter } from "./Display/Filter";
+import { __schannel, __pchannel, __trace } from "./OOAPI";
+import { generateId, IMetaObject, getObject } from "./Runtime/Object";
+import { Runtime } from "./Runtime/Runtime";
+import { TimeKeeper } from "./Runtime/Timer";
 
-    constructor(comment: Object) {
-        this._dbid = comment["dbid"];
+export interface IComment {
+    dbid: number;
+    size: number;
+    text: string;
+    mode: number;
+    stime: number;
+    date: string;
+
+    bitmapData?: BitmapData;
+    parent?: DisplayObject;
+    motionGroup?: any[];
+    motion: any;
+
+    class: string;
+    x?: number;
+    y?: number;
+    alpha?: number;
+    filters?: Filter[];
+    lifeTime?: number;
+}
+/** 弹幕数据 */
+class CommentData {
+    blocked = false;
+    blockType = 0;
+    border = false;
+    credit = false;
+    date = "";
+    deleted = false;
+    id = 0;
+    mode = 0;
+    msg = "";
+    live = true;
+    locked = true;
+    on = true;
+    pool = 0;
+    preview = false;
+    reported = false;
+    size = 25;
+    stime = 0;
+    text = "";
+    type = "";
+    uid = "";
+
+    danmuId = 0;
+
+    constructor(comment: IComment) {
+        this.danmuId = comment["dbid"];
         this.size = comment["size"];
         this.text = comment["text"];
         this.mode = comment["mode"];
         this.stime = comment["stime"];
         this.date = comment["date"];
     }
-
-    public blocked: boolean = false;
-    public blockType: number = 0;
-    public border: boolean = false;
-    public credit: boolean = false;
-
-    get danmuId(): number {
-        return this._dbid;
-    }
-
-    public date: string = "";
-    public deleted: boolean = false;
-    public id: number = 0;
-    public mode: number = 0;
-    public msg: string = "";
-    public live: boolean = true;
-    public locked: boolean = true;
-    public on: boolean = true;
-    public pool: number = 0;
-    public preview: boolean = false;
-    public reported: boolean = false;
-    public size: number = 25;
-    public stime: number = 0;
-    public text: string = "";
-    public type: string = "";
-    public uid: string = "";
 }
-/**
- * Class for sound support
- */
 class Sound {
-    private _id: string;
-    private _isPlaying: boolean = false;
+    protected id = generateId('obj-snd');
+    protected isPlaying: boolean = false;
 
-    constructor(protected _source: string, public onload?: Function) {
-        this._id = Runtime.generateId('obj-snd');
+    constructor(protected source: string, protected onload?: Function) { }
+
+    createFromURL(url: string) {
+        this.source = url;
     }
 
-    public createFromURL(url: string): void {
-        this._source = url;
-    }
-
-    public play(): void {
-        if (this._isPlaying) {
+    play() {
+        if (this.isPlaying) {
             return;
         }
     }
 
-    public remove(): void {
+    remove() {
 
     }
 
-    public stop(): void {
-        if (!this._isPlaying) {
+    stop() {
+        if (!this.isPlaying) {
             return;
         }
     }
 
-    public loadPercent(): number {
+    loadPercent(): number {
         return 0;
     }
 
-    public getId(): string {
-        return this._id;
+    getId(): string {
+        return this.id;
     }
 
-    public dispatchEvent(_eventName: string, _params: any): void {
+    dispatchEvent(eventName: string, params: any) {
 
     }
 
-    public unload(): void {
+    unload() {
         this.stop();
     }
 
-    public serialize(): Object {
+    serialize() {
         return {
             'class': 'Sound',
-            'url': this._source
+            'url': this.source
         };
     }
 }
 
-function createSound(sample: string, onload?: Function): Sound {
+function createSound(sample: string, onload?: Function) {
     return new Sound(sample, onload);
 }
 
 export class Player {
     static createSound = createSound;
-    accessor readonly state: string = '';
-    private _time: string;
-    accessor readonly commentList: CommentData[];
-    accessor readonly refreshRate: number;
-    accessor readonly width: number;
-    accessor readonly height: number;
-    accessor readonly videoWidth: number;
-    accessor readonly videoHeight: number;
-    accessor readonly version: number;
-    lastUpdate: Runtime.TimeKeeper = new Runtime.TimeKeeper();
+    state: string = '';
+    protected _time: string = '';
+    commentList: CommentData[] = [];
+    refreshRate: number = 0;
+    width: number = 0;
+    height: number = 0;
+    videoWidth: number = 0;
+    videoHeight: number = 0;
+    version: number = 0;
+    lastUpdate: TimeKeeper = new TimeKeeper();
 
     get time() {
         if (this.state !== 'playing') {
@@ -121,7 +137,7 @@ export class Player {
 
 
     constructor() {
-        __schannel('Update:DimensionUpdate', (payload: object) => {
+        __schannel('Update:DimensionUpdate', (payload: any) => {
             this.width = payload["stageWidth"];
             this.height = payload["stageHeight"];
             if (payload.hasOwnProperty("videoWidth") &&
@@ -131,7 +147,7 @@ export class Player {
                 this.videoHeight = payload["videoHeight"];
             }
         });
-        __schannel("Update:TimeUpdate", (payload: object) => {
+        __schannel("Update:TimeUpdate", (payload: any) => {
             this.state = payload["state"];
             this._time = payload["time"];
             this.lastUpdate.reset();
@@ -154,6 +170,12 @@ export class Player {
             "params": offset
         });
     }
+    /**
+     * 跳转新视频
+     * @param video vid
+     * @param page p
+     * @param newWindow 是否新建标签页（默认 否）
+     */
     jump(
         video: string,
         page: number = 1,
@@ -168,7 +190,12 @@ export class Player {
             }
         });
     }
-    commentTrigger(callback: Function, timeout: number) {
+    /**
+     * 弹幕监听
+     * @param callback 监听回调
+     * @param timeout 延时
+     */
+    commentTrigger(callback: (comment: CommentData) => void, timeout: number) {
         if (!Runtime.hasObject('__player')) {
             __trace('Your environment does not support player triggers.', 'err');
             return;
@@ -176,16 +203,18 @@ export class Player {
         if (timeout < 0) {
             return;
         }
-        var listener = function (comment: CommentData) {
-            callback(comment);
-        };
-        var player: Runtime.IMetaObject =
-            Runtime.getObject<Runtime.IMetaObject>('__player');
-        player.addEventListener('comment', listener);
+        const player: IMetaObject = getObject('__player');
+        player.addEventListener('comment', (v: CommentData) => callback(v));
         //TODO: remove the listener after timeout
         //player.removeEventListener('comment', listener);
     }
-    keyTrigger(callback: Function,
+    /**
+     * 监听按键
+     * @param callback 案件名
+     * @param timeout 延时
+     * @param triggerOnUp 是否松开按钮再回调（默认 否）
+     */
+    keyTrigger(callback: (key: string) => void,
         timeout: number = 1000,
         triggerOnUp: boolean = false) {
         if (!Runtime.hasObject('__player')) {
@@ -195,13 +224,9 @@ export class Player {
         if (timeout < 0) {
             return;
         }
-        var eventName: string = 'key' + (triggerOnUp ? 'up' : 'down');
-        var listener: (number) => void = function (key) {
-            callback(key.keyCode);
-        };
-        var player: Runtime.IMetaObject =
-            Runtime.getObject<Runtime.IMetaObject>('__player');
-        player.addEventListener(eventName, listener);
+        const eventName: string = 'key' + (triggerOnUp ? 'up' : 'down');
+        const player: IMetaObject = getObject('__player');
+        player.addEventListener(eventName, (e: KeyboardEvent) => callback(e.key));
         //TODO: remove the listener after the timeout
         //player.removeEventListener(eventName, listener);
     }

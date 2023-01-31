@@ -1,132 +1,92 @@
-import { circular, cubic, exponential, extendWithEasingFunctions, getEasingFuncByName, linear, quadratic, quartic, sine } from "./Easing";
+import { __trace } from "../OOAPI";
+import { TimeKeeper, Timer } from "../Runtime/Timer";
+import { circular, cubic, exponential, extendWithEasingFunctions, getEasingFuncByName, linear, quadratic, quartic, quintic, sine } from "./Easing";
 
 // Property shorthand
-type ValueMap = { [prop: string]: number };
-type ValueListMap = { [prop: string]: Array<number> };
+type ValueMap = Record<string, number>;
+type ValueListMap = Record<string, number[]>;
 
-class ITween {
-    private _target: any = null;
-    private _duration: number;
-    private _isPlaying: boolean = false;
-    private _currentTime: number = 0;
-    private _repeats: number = 0;
-    private _timeKeeper: Runtime.TimeKeeper;
-    private _timer: Runtime.Timer;
-    public easing: Function = Tween.linear;
-    public step: Function = () => { };
+export class ITween {
+    protected isPlaying = false;
+    position = 0;
+    repeats = 0;
+    protected timeKeeper = new TimeKeeper();
+    protected timer = new Timer(40);
+    easing: Function = Tween.linear;
+    step: Function = () => { };
+    lastSeek?: number;
 
-    constructor(target: any, duration: number = 0) {
-        this._target = target;
-        this._duration = duration;
-        this._timeKeeper = new Runtime.TimeKeeper();
-        this._timer = new Runtime.Timer(40);
-
-        // Timer related
-        var self: ITween = this;
-        this._timer.addEventListener("timer", () => {
-            self._onTimerEvent();
+    constructor(public target: any, public duration = 0) {
+        this.timer.addEventListener("timer", () => {
+            this._onTimerEvent();
         });
     }
 
-    private _onTimerEvent(): void {
-        // Ignore all the timer events if we're not playing
-        if (this._isPlaying) {
-            this._currentTime += this._timeKeeper.elapsed;
-            this._timeKeeper.reset();
-            this.step(this._target, this._currentTime, this._duration);
-            if (this._currentTime >= this._duration) {
-                this._repeats--;
-                if (this._repeats < 0) {
+    protected _onTimerEvent() {
+        // 忽略非播放时的计时
+        if (this.isPlaying) {
+            this.position += this.timeKeeper.elapsed;
+            this.timeKeeper.reset();
+            this.step(this.target, this.position, this.duration);
+            if (this.position >= this.duration) {
+                this.repeats--;
+                if (this.repeats < 0) {
                     this.stop();
-                    this._currentTime = this._duration;
+                    this.position = this.duration;
                 } else {
-                    this._currentTime = 0;
+                    this.position = 0;
                 }
-                this.step(this._target, this._currentTime, this._duration);
+                this.step(this.target, this.position, this.duration);
             }
         }
     }
 
-    set duration(dur: number) {
-        this._duration = dur;
-    }
-
-    get duration(): number {
-        return this._duration;
-    }
-
-    set position(position: number) {
-        this._currentTime = position;
-    }
-
-    get position(): number {
-        return this._currentTime;
-    }
-
-    set repeat(r: number) {
-        this._repeats = r;
-    }
-
-    get repeat(): number {
-        return this._repeats;
-    }
-
-    set target(a: any) {
-        __trace("Deprecated: You should not set a new target for an old tween.",
-            "warn");
-        this._target = a;
-    }
-
-    get target(): any {
-        return this._target;
-    }
-
-    public clone(): ITween {
-        var clone: ITween = new ITween(this._target, this._duration);
+    clone() {
+        const clone = new ITween(this.target, this.duration);
         clone.easing = this.easing;
         clone.step = this.step;
         return clone;
     }
 
-    public scale(factor: number): void {
-        this._currentTime *= factor;
-        this._duration *= factor;
+    scale(factor: number) {
+        this.position *= factor;
+        this.duration *= factor;
     }
 
-    public play(): void {
-        if (this._isPlaying) {
+    play() {
+        if (this.isPlaying) {
             return;
         }
-        this.gotoAndPlay(this._currentTime);
+        this.gotoAndPlay(this.position);
     }
 
-    public stop(): void {
-        if (!this._isPlaying) {
+    stop() {
+        if (!this.isPlaying) {
             return;
         }
-        this.gotoAndStop(this._currentTime);
+        this.gotoAndStop(this.position);
     }
 
-    public gotoAndStop(position: number): void {
-        this._currentTime = position;
-        if (this._isPlaying) {
-            this._isPlaying = false;
-            this._timer.stop();
+    gotoAndStop(position: number) {
+        this.position = position;
+        if (this.isPlaying) {
+            this.isPlaying = false;
+            this.timer.stop();
         }
-        this.step(this._target, this._currentTime, this._duration);
+        this.step(this.target, this.position, this.duration);
     }
 
-    public gotoAndPlay(position: number): void {
-        this._currentTime = position;
-        if (!this._isPlaying) {
-            this._isPlaying = true;
-            this._timer.start();
+    gotoAndPlay(position: number) {
+        this.position = position;
+        if (!this.isPlaying) {
+            this.isPlaying = true;
+            this.timer.start();
         }
-        this.step(this._target, this._currentTime, this._duration);
+        this.step(this.target, this.position, this.duration);
     }
 
-    public togglePause(): void {
-        if (this._isPlaying) {
+    togglePause() {
+        if (this.isPlaying) {
             this.stop();
         } else {
             this.play();
@@ -135,18 +95,18 @@ class ITween {
 }
 
 function createStepFunction(object: any, dest: ValueMap, src: ValueMap, tween: ITween) {
-    for (var property in dest) {
+    for (const property in dest) {
         if (!src.hasOwnProperty(property)) {
             src[property] = object[property];
         }
     }
-    for (var property in src) {
+    for (const property in src) {
         if (!dest.hasOwnProperty(property)) {
             dest[property] = src[property];
         }
     }
     return function (object: any, currentTime: number, totalTime: number) {
-        for (var property in src) {
+        for (const property in src) {
             if (!src.hasOwnProperty(property)) {
                 continue;
             }
@@ -163,6 +123,7 @@ export class Tween {
     static quadratic = quadratic;
     static cubic = cubic;
     static quartic = quartic;
+    static quintic = quintic;
     static circular = circular;
     static sine = sine;
     static exponential = exponential;
@@ -173,23 +134,23 @@ export class Tween {
     static tween(object: any,
         dest: ValueMap = {},
         src: ValueMap = {},
-        duration: number = 0,
-        easing: Function = null!): ITween {
+        duration = 0,
+        easing?: Function) {
 
-        var t: ITween = new ITween(object, duration * 1000);
+        const t = new ITween(object, duration * 1000);
         t.step = createStepFunction(object, dest, src, t);
-        if (easing !== null) {
+        if (easing) {
             t.easing = easing;
         }
         return t;
     }
     static to(object: any,
         dest: ValueMap = {},
-        duration: number = 0,
-        easing: Function = null!): ITween {
+        duration = 0,
+        easing?: Function) {
 
-        var src: ValueMap = {};
-        for (var x in dest) {
+        const src: ValueMap = {};
+        for (const x in dest) {
             if (dest.hasOwnProperty(x)) {
                 if (typeof object[x] !== "undefined") {
                     src[x] = object[x];
@@ -204,16 +165,16 @@ export class Tween {
         dest: ValueMap,
         src: ValueMap,
         control: ValueListMap,
-        duration: number = 1.0,
-        easing: Function = null!): ITween {
+        duration = 1.0,
+        easing?: Function) {
 
-        var tween: ITween = new ITween(object, duration * 1000);
-        if (easing !== null && typeof easing === 'function') {
+        const tween = new ITween(object, duration * 1000);
+        if (easing && typeof easing === 'function') {
             tween.easing = easing;
         }
         // Create real control arrays
-        var finalControlPoints: ValueListMap = {};
-        for (var prop in control) {
+        const finalControlPoints: ValueListMap = {};
+        for (const prop in control) {
             if (Array.isArray(control[prop]) && control[prop].length > 0) {
                 finalControlPoints[prop] = control[prop];
             }
@@ -226,7 +187,7 @@ export class Tween {
             dest = {};
         }
         // Prepopulate the control points
-        for (var prop in finalControlPoints) {
+        for (const prop in finalControlPoints) {
             if (!(prop in src)) {
                 src[prop] = tween.target[prop];
             }
@@ -240,22 +201,22 @@ export class Tween {
          * See linked file for full license text.
          **/
         tween.step = function (target: any, currentTime: number, totalTime: number) {
-            var t: number = Math.min(tween.easing(currentTime, 0, 1, totalTime), 1);
-            for (var prop in finalControlPoints) {
-                var controlPoints: Array<number> = finalControlPoints[prop];
-                var numControl: number = controlPoints.length;
+            const t = Math.min(tween.easing(currentTime, 0, 1, totalTime), 1);
+            for (const prop in finalControlPoints) {
+                const controlPoints: number[] = finalControlPoints[prop];
+                const numControl = controlPoints.length;
                 // Figure out which three control points to use
-                var firstIndex: number = Math.floor(t * numControl);
+                const firstIndex = Math.floor(t * numControl);
                 // Figure out how far along that segment
-                var segmentT: number = (t - firstIndex / numControl) * numControl;
+                const segmentT = (t - firstIndex / numControl) * numControl;
                 if (numControl === 1) {
                     // 3 control points
                     target[prop] = src[prop] +
                         2 * t * (1 - t) * (controlPoints[0] - src[prop]) +
                         t * t * (dest[prop] - src[prop]);
                 } else {
-                    var p1: number = 0;
-                    var p2: number = 0;
+                    let p1: number = 0;
+                    let p2: number = 0;
                     if (firstIndex === 0) {
                         p1 = src[prop];
                         p2 = (controlPoints[0] + controlPoints[1]) / 2;
@@ -274,13 +235,13 @@ export class Tween {
         }
         return tween;
     }
-    static scale(src: ITween, scale: number): ITween {
-        var clone: ITween = src.clone();
+    static scale(src: ITween, scale: number) {
+        const clone = src.clone();
         clone.scale(scale);
         return clone;
     }
-    static delay(src: ITween, delay: number): ITween {
-        var newTween: ITween = new ITween(src.target, src.duration + delay * 1000);
+    static delay(src: ITween, delay: number) {
+        const newTween = new ITween(src.target, src.duration + delay * 1000);
         newTween.step = function (target: any, currentTime: number, totalTime: number) {
             if (currentTime <= delay * 1000) {
                 return;
@@ -289,21 +250,21 @@ export class Tween {
         }
         return newTween;
     }
-    static reverse(src: ITween): ITween {
-        var newTween: ITween = new ITween(src.target, src.duration);
+    static reverse(src: ITween) {
+        const newTween = new ITween(src.target, src.duration);
         newTween.step = function (target: any, currentTime: number, totalTime: number) {
             src.step(target, totalTime - currentTime, totalTime);
         }
         return newTween;
     }
-    static repeat(src: ITween, times: number): ITween {
-        var newTween: ITween = new ITween(src.target, src.duration * times);
+    static repeat(src: ITween, times: number) {
+        const newTween = new ITween(src.target, src.duration * times);
         newTween.step = function (target: any, currentTime: number, totalTime: number) {
             src.step(target, currentTime % src.duration, src.duration);
         };
         return newTween;
     }
-    static slice(src: ITween, from: number, to: number): ITween {
+    static slice(src: ITween, from: number, to: number) {
         if (to === null) {
             to = src.duration;
         }
@@ -312,40 +273,40 @@ export class Tween {
         }
         from *= 1000;
         to *= 1000;
-        var newTween: ITween = new ITween(src.target, to - from);
+        const newTween = new ITween(src.target, to - from);
         newTween.step = function (target: any, currentTime: number, totalTime: number) {
             src.step(target, from + currentTime, src.duration);
         }
         return newTween;
     }
-    static serial(...args: ITween[]): ITween {
+    static serial(...args: ITween[]) {
         // Check if there are any tweens
         if (args.length === 0) {
             return new ITween({}, 0);
         }
-        var totalTime: number = 0;
-        var end: Array<number> = [];
-        var start: Array<number> = [];
-        for (var i = 0; i < args.length; i++) {
+        let totalTime = 0;
+        const end: number[] = [];
+        const start: number[] = [];
+        for (let i = 0; i < args.length; i++) {
             start.push(totalTime);
             totalTime += args[i].duration;
             end.push(totalTime);
         }
-        var newTween: ITween = new ITween({}, totalTime);
+        const newTween = new ITween({}, totalTime);
         newTween["lastSeek"] = 0;
         newTween.step = function (target: any, currentTime: number, totalTime: number) {
-            if (currentTime <= end[newTween["lastSeek"]]) {
-                var currentTween: ITween = args[newTween["lastSeek"]];
-                currentTween.step(currentTween.target, currentTime - start[newTween["lastSeek"]], currentTween.duration);
+            if (currentTime <= end[newTween["lastSeek"]!]) {
+                const currentTween = args[newTween["lastSeek"]!];
+                currentTween.step(currentTween.target, currentTime - start[newTween["lastSeek"]!], currentTween.duration);
                 return;
             } else {
-                var oldTween: ITween = args[newTween["lastSeek"]];
+                const oldTween = args[newTween["lastSeek"]!];
                 oldTween.step(oldTween.target, oldTween.duration, oldTween.duration);
             }
-            for (var seek: number = 0; seek < end.length; seek++) {
+            for (let seek = 0; seek < end.length; seek++) {
                 if (currentTime < end[seek]) {
                     newTween["lastSeek"] = seek;
-                    var currentTween: ITween = args[newTween["lastSeek"]];
+                    const currentTween = args[newTween["lastSeek"]];
                     currentTween.step(currentTween.target, currentTime - start[newTween["lastSeek"]], currentTween.duration);
                     return;
                 }
@@ -353,15 +314,15 @@ export class Tween {
         }
         return newTween;
     }
-    static parallel(...args: ITween[]): ITween {
-        var totalTime: number = 0;
-        for (var i = 0; i < args.length; i++) {
+    static parallel(...args: ITween[]) {
+        let totalTime: number = 0;
+        for (let i = 0; i < args.length; i++) {
             totalTime = Math.max(args[i].duration, totalTime);
         }
-        var tweens: ITween[] = args;
-        var newTween: ITween = new ITween({}, totalTime);
+        const tweens = args;
+        const newTween = new ITween({}, totalTime);
         newTween.step = function (target: any, currentTime: number, totalTime: number) {
-            for (var i = 0; i < tweens.length; i++) {
+            for (let i = 0; i < tweens.length; i++) {
                 tweens[i].step(tweens[i].target, Math.min(currentTime, tweens[i].duration), tweens[i].duration);
             }
         }

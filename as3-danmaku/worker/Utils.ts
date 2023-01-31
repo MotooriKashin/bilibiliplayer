@@ -1,15 +1,14 @@
-function HSV2RGB(hue, saturation, brightness) {
-    // Conversion taken from Foley, van Dam, et al
-    var r, g, b;
-    if (saturation == 0) {
-        r = g = b = 1;
-    } else {
-        var h = (hue % 360) / 60;
-        var i = h | 0;
-        var f = h - i;
-        var p = 1 - saturation;
-        var q = 1 - saturation * f;
-        var t = 1 - saturation * (1 - f);
+import { getTimer } from "./Runtime/Timer";
+
+function HSV2RGB(hue: number, saturation: number, brightness: number) {
+    let r = 1, g = 1, b = 1;
+    if (saturation) {
+        const h = (hue % 360) / 60;
+        const i = h | 0;
+        const f = h - i;
+        const p = 1 - saturation;
+        const q = 1 - saturation * f;
+        const t = 1 - saturation * (1 - f);
         switch (i) {
             case 0: r = 1; g = t; b = p; break;
             case 1: r = q; g = 1; b = p; break;
@@ -26,81 +25,71 @@ function HSV2RGB(hue, saturation, brightness) {
 }
 
 export class Utils {
-    static _startTime: number = Date.now();
+    /** 启动时间 */
+    static startTime: number = Date.now();
 
     /**
-     * Concats RGB values to a single number
-     * @param r red component (0-255)
-     * @param g green component (0-255)
-     * @param b blue component (0-255)
-     * @returns rgb number representation
+     * RGB 转数字
+     * @param r 红 (0-255)
+     * @param g 绿 (0-255)
+     * @param b 蓝 (0-255)
      */
-    static rgb(r: number, g: number, b: number): number {
+    static rgb(r: number, g: number, b: number) {
         return r << 16 | g << 8 | b;
     }
     /**
-     * Convert HSV values to a single number
-     * @param h hue (0-360)
-     * @param s saturation (default 1, 0-1)
-     * @param v brightness (default 1, 0-1)
-     * @returns rgb number representation
+     * HSV 转数字
+     * @param h 色调 (0-360)
+     * @param s 饱和度 (default 1, 0-1)
+     * @param v 明度 (default 1, 0-1)
      */
     static hue(h: number, s: number = 1, v: number = 1): number {
         return HSV2RGB(h, s, v);
     }
     /**
-     * Converts seconds into displayable time mm:ss
-     * @param time seconds
-     * @returns string formatted time
+     * 格式化秒数
+     * @param time 秒数
      */
-    static formatTimes(time: number): string {
+    static formatTimes(time: number) {
         return Math.floor(time / 60) + ":" + (time % 60 > 9 ? "" : "0") + time % 60;
     }
     /**
-     * Returns the distance between two coordinates
-     * @param x1 point 1 x coordinate
-     * @param y1 point 1 y coordinate
-     * @param x2 point 2 x coordinate
-     * @param y2 point 2 y coordinate
-     * @returns distance
+     * 计算两点之间的距离
+     * @param x1 点 1 横坐标
+     * @param y1 点 1 纵坐标
+     * @param x2 点 2 横坐标
+     * @param y2 点 2 横坐标
      */
-    static distance(x1: number, y1: number, x2: number, y2: number): number {
+    static distance(x1: number, y1: number, x2: number, y2: number) {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
     }
     /**
-     * Finds a random integer between min and max
-     * @param min minimum
-     * @param max maximum
-     * @returns random number
+     * 获取一段区域内的随机数
+     * @param min 下限
+     * @param max 上限
      */
-    static rand(min: number, max: number): number {
+    static rand(min: number, max: number) {
         return min + Math.floor(Math.random() * (max - min));
     }
-    /**
-     * Number of milliseconds since the runtime has started
-     * @returns Current relative timestamp
-     */
-    static getTimer(): number {
-        return Date.now() - this._startTime;
+    /** 已运行时间（毫秒） */
+    static getTimer() {
+        return Date.now() - this.startTime;
     }
     /**
-     * Executes callback after a timeout specified. Defaults to 1000ms.
-     * @param callback Callback function to be executed
-     * @param delay delay in milliseconds (default 1000)
-     * @returns indicator of timeout used to cancel it
+     * 延时回调
+     * @param callback 回调
+     * @param delay 延时 (默认 1000 毫秒)
+     * @returns 用于取消回调的id（`clearTimeout`）
      */
     static timer(callback: Function, delay: number = 1000): number {
-        return Runtime.getTimer().setTimeout(callback, delay);
+        return getTimer().setTimeout(callback, delay);
     }
     /**
-     * Executes callback once every interval specified. Defaults to 1000ms.
-     * Will stop when executed for repeatCount times. Normally this will return
-     * an interval id integer, but if specified this may return a Timer object
-     * too.
-     * @param callback Callback function to be executed every tick
-     * @param interval interval in milliseconds (default 1000)
-     * @param repeatCount repeat ticks (default 1)
-     * @returns indicator of interval to allow cancelling
+     * 周期回调
+     * @param callback 回调
+     * @param interval 间隔 (默认 1000 毫秒)
+     * @param repeatCount 周期 (默认 1)
+     * @returns 用于取消回调的id（`clearInterval`）
      */
     static interval(
         callback: Function,
@@ -108,12 +97,12 @@ export class Utils {
         repeatCount: number = 1): number {
 
         if (repeatCount === 0) {
-            return Runtime.getTimer().setInterval(callback, interval);
+            return getTimer().setInterval(callback, interval);
         }
-        var ivl = Runtime.getTimer().setInterval(function () {
+        const ivl = getTimer().setInterval(function () {
             repeatCount--;
             if (repeatCount < 0) {
-                Runtime.getTimer().clearInterval(ivl);
+                getTimer().clearInterval(ivl);
             } else {
                 callback();
             }
@@ -121,18 +110,17 @@ export class Utils {
         return ivl;
     }
     /**
-     * Clears a scheduled timeout. If timeout id is not recognized no action
-     * is performed
-     * @param tid timeout id, returned by timer
+     * 取消延时回调
+     * @param tid id
      */
-    static clearTimeout(tid: number): void {
-        Runtime.getTimer().clearTimeout(tid);
+    static clearTimeout(tid: number) {
+        getTimer().clearTimeout(tid);
     }
     /**
-     * Clears an interval timer. If we are in timers mode then do nothing
-     * @param iid interval id
+     * 取消周期回调
+     * @param iid id
      */
-    static clearInterval(iid: number): void {
-        Runtime.getTimer().clearInterval(iid);
+    static clearInterval(iid: number) {
+        getTimer().clearInterval(iid);
     }
 }

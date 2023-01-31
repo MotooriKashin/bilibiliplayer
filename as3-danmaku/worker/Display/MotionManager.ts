@@ -1,3 +1,6 @@
+import { __trace } from "../OOAPI";
+import { Timer, TimeKeeper } from "../Runtime/Timer";
+import { ITween, Tween } from "../Tween/Tween";
 import { DisplayObject } from "./DisplayObject";
 
 /**
@@ -5,19 +8,19 @@ import { DisplayObject } from "./DisplayObject";
  * @author Jim Chen
  */
 export class MotionManager {
-    private _isRunning: boolean = false;
-    private _ttl: number;
-    private _dur: number;
-    private _parent: DisplayObject;
-    private _timer: Runtime.Timer;
-    private _timeKeeper: Runtime.TimeKeeper;
-    private _independentTimer: boolean;
-    private _tween: Tween.ITween;
-    public oncomplete: Function = null!;
+    protected _isRunning: boolean = false;
+    protected _ttl: number;
+    protected _dur: number;
+    protected _parent: DisplayObject;
+    protected _timer!: Timer;
+    protected _timeKeeper: TimeKeeper;
+    protected _independentTimer: boolean;
+    protected _tween?: ITween;
+    oncomplete?: Function;
 
     constructor(o: DisplayObject,
-        dur: number = 1000,
-        independentTimer: boolean = false) {
+        dur = 1000,
+        independentTimer = false) {
 
         if (typeof o === 'undefined' || o === null) {
             throw new Error('MotionManager must be bound to a DisplayObject.');
@@ -27,11 +30,11 @@ export class MotionManager {
         this._dur = dur;
         this._parent = o;
         this._independentTimer = independentTimer;
-        this._timeKeeper = new Runtime.TimeKeeper();
+        this._timeKeeper = new TimeKeeper();
 
-        var self = this;
+        const self = this;
         if (this._independentTimer) {
-            this._timer = new Runtime.Timer(41, 0);
+            this._timer = new Timer(41, 0);
             this._timer.addEventListener('timer', () => {
                 self._onTimerEvent();
             });
@@ -58,9 +61,9 @@ export class MotionManager {
     }
 
     /**
-     * Private method invoked every time a timer event is fired
+     * protected method invoked every time a timer event is fired
      */
-    private _onTimerEvent(): void {
+    protected _onTimerEvent() {
         // Ignore timer events if this is not running
         if (!this._isRunning) {
             return;
@@ -80,12 +83,12 @@ export class MotionManager {
         }
     }
 
-    public reset(): void {
+    reset() {
         this._ttl = this._dur;
         this._timeKeeper.reset();
     }
 
-    public play(): void {
+    play() {
         if (this._isRunning) {
             return;
         }
@@ -99,7 +102,7 @@ export class MotionManager {
         }
     }
 
-    public stop(): void {
+    stop() {
         if (!this._isRunning) {
             return;
         }
@@ -110,12 +113,12 @@ export class MotionManager {
         }
     }
 
-    public forecasting(_time: number): boolean {
+    forecasting(_time: number) {
         __trace('MotionManager.forecasting always returns false', 'warn');
         return false;
     }
 
-    public setPlayTime(playtime: number): void {
+    setPlayTime(playtime: number) {
         this._ttl = this._dur - playtime;
         if (this._tween) {
             if (this._isRunning) {
@@ -126,13 +129,13 @@ export class MotionManager {
         }
     }
 
-    private motionSetToTween(motion: Object): Tween.ITween {
-        var tweens: Array<Tween.ITween> = [];
-        for (var movingVars in motion) {
-            if (!motion.hasOwnProperty(movingVars)) {
+    protected motionSetToTween(motion: Record<string, any>) {
+        const tweens: Array<ITween> = [];
+        for (const movingconsts in motion) {
+            if (!motion.hasOwnProperty(movingconsts)) {
                 continue;
             }
-            var mProp: Object = motion[movingVars];
+            const mProp = motion[movingconsts];
             if (!mProp.hasOwnProperty("fromValue")) {
                 continue;
             }
@@ -142,9 +145,9 @@ export class MotionManager {
             if (!mProp.hasOwnProperty("lifeTime")) {
                 mProp["lifeTime"] = this._dur;
             }
-            var src: Object = {}, dst: Object = {};
-            src[movingVars] = mProp["fromValue"];
-            dst[movingVars] = mProp["toValue"];
+            const src: Record<string, any> = {}, dst: Record<string, any> = {};
+            src[movingconsts] = mProp["fromValue"];
+            dst[movingconsts] = mProp["toValue"];
             if (typeof mProp["easing"] === "string") {
                 mProp["easing"] = Tween.getEasingFuncByName(mProp["easing"]);
             }
@@ -170,19 +173,19 @@ export class MotionManager {
         return Tween.parallel.apply(Tween, tweens);
     }
 
-    public initTween(motion: Object, _repeat: boolean): void {
+    initTween(motion: Object, _repeat: boolean) {
         this._tween = this.motionSetToTween(motion);
     }
 
-    public initTweenGroup(motionGroup: Array<Object>, _lifeTime: number): void {
-        var tweens: Array<Tween.ITween> = [];
-        for (var i = 0; i < motionGroup.length; i++) {
+    initTweenGroup(motionGroup: Array<Object>, _lifeTime: number) {
+        const tweens: Array<ITween> = [];
+        for (let i = 0; i < motionGroup.length; i++) {
             tweens.push(this.motionSetToTween(motionGroup[i]));
         }
         this._tween = Tween.serial.apply(Tween, tweens);
     }
 
-    public setCompleteListener(listener: Function): void {
+    setCompleteListener(listener: Function) {
         this.oncomplete = listener;
     }
 }

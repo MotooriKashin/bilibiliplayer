@@ -1,23 +1,21 @@
+import { __trace } from "../OOAPI";
+import { getObject, IMetaObject } from "../Runtime/Object";
 import { DisplayObject } from "./DisplayObject";
 import { Graphics } from "./Graphics";
 import { Point } from "./Matrix";
 
-/**
- * Sprite Polyfill for AS3. Is also a UIComponent.
- * @author Jim Chen
- */
 export class Sprite extends DisplayObject {
     private _graphics: Graphics;
-    private _mouseEnabled: boolean = true;
-    private _mousePosition: Point = new Point(0, 0);
-    private _useHandCursor: boolean = false;
+    private _mouseEnabled = true;
+    private _mousePosition = new Point(0, 0);
+    private _useHandCursor = false;
 
     constructor(id?: string) {
         super(id);
         this._graphics = new Graphics(this);
     }
 
-    get graphics(): Graphics {
+    get graphics() {
         return this._graphics;
     }
 
@@ -25,11 +23,11 @@ export class Sprite extends DisplayObject {
         __trace('Sprite.graphics is read-only.', 'warn');
     }
 
-    get mouseEnabled(): boolean {
+    get mouseEnabled() {
         return this._mouseEnabled;
     }
 
-    set mouseEnabled(enabled: boolean) {
+    set mouseEnabled(enabled) {
         this._mouseEnabled = enabled;
         this.propertyUpdate('mouseEnabled', enabled);
     }
@@ -43,41 +41,37 @@ export class Sprite extends DisplayObject {
         this.propertyUpdate('useHandCursor', use);
     }
 
-    public serialize(): Object {
-        var serialized: Object = super.serialize();
+    serialize() {
+        const serialized = super.serialize();
         serialized['class'] = 'Sprite';
         return serialized;
     }
 }
 
-/**
- * Special sprite used for the root sprite
- * @author Jim Chen
- */
 export class RootSprite extends Sprite {
-    private _metaRoot: Runtime.IMetaObject;
+    private _metaRoot: IMetaObject;
     constructor() {
         super('__root');
-        this._metaRoot = Runtime.getObject('__root');
+        this._metaRoot = getObject('__root');
     }
 
-    get parent(): DisplayObject {
+    get parent() {
         __trace('SecurityError: No access above root sprite.', 'err');
         return null!;
     }
 
-    public addEventListener(eventName: string, listener: Function): void {
+    addEventListener(eventName: string, listener: Function) {
         __trace('Listener[' + eventName + '] on root sprite inadvisible', 'warn');
         this._metaRoot.addEventListener(eventName, listener);
     }
 
-    public removeEventListener(eventName: string, listener: Function): void {
+    removeEventListener(eventName: string, listener: Function) {
         this._metaRoot.removeEventListener(eventName, listener, false);
     }
 }
 
 export class UIComponent extends Sprite {
-    private _styles: { [name: string]: any } = {};
+    private _styles: Record<string, any> = {};
 
     constructor(id?: string) {
         super(id);
@@ -87,7 +81,7 @@ export class UIComponent extends Sprite {
      * Clears the style for the UIComponent which this is
      * @param style - style to clear
      */
-    public clearStyle(style: string): void {
+    clearStyle(style: string) {
         delete this._styles[style];
     }
 
@@ -96,7 +90,7 @@ export class UIComponent extends Sprite {
      * @param style - style to set
      * @return value - value of that style
      */
-    public getStyle(style: string): any {
+    getStyle(style: string) {
         return this._styles[style];
     }
 
@@ -105,21 +99,21 @@ export class UIComponent extends Sprite {
      * @param styleProp - style to set
      * @param value - value to set the style to
      */
-    public setStyle(styleProp: string, value: any): void {
+    setStyle(styleProp: string, value: any) {
         __trace("UIComponent.setStyle not implemented", "warn");
         this._styles[styleProp] = value;
     }
 
-    public setFocus(): void {
+    setFocus() {
         this.methodCall("setFocus", null);
     }
 
-    public setSize(width: number, height: number): void {
+    setSize(width: number, height: number) {
         this.width = width;
         this.height = height;
     }
 
-    public move(x: number, y: number): void {
+    move(x: number, y: number) {
         this.x = x;
         this.y = y;
     }

@@ -1,10 +1,6 @@
 import { DisplayObject } from "./DisplayObject";
 import { Graphics } from "./Graphics";
 
-/**
- * Shape Polyfill for AS3.
- * @author Jim Chen
- */
 export class Shape extends DisplayObject {
     private _graphics: Graphics;
 
@@ -13,12 +9,12 @@ export class Shape extends DisplayObject {
         this._graphics = new Graphics(this);
     }
 
-    get graphics(): Graphics {
+    get graphics() {
         return this._graphics;
     }
 
-    public serialize(): Object {
-        var serialized: Object = super.serialize();
+    public serialize() {
+        var serialized = super.serialize();
         serialized['class'] = 'Shape';
         return serialized;
     }

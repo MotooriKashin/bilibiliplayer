@@ -1,11 +1,11 @@
-import { __trace, __pchannel, __schannel, __achannel } from "../../OOAPI";
+import { __trace, __pchannel, __schannel, __achannel } from "../OOAPI";
+import { NotCrypto } from "./NotCrypto";
+import { Runtime } from "./Runtime";
 
 type ObjectRegistry = { [objectName: string]: RegisterableObject };
 export type IMetaObject = RegisterableObject & Listenable;
-/**
- * Global interface for Listenable objects
- */
-export interface Listenable {
+/** 事件管理基类 */
+interface Listenable {
     addEventListener(
         event: string,
         listener: Function,
@@ -19,92 +19,87 @@ export interface Listenable {
     hasEventListener(event: string): boolean;
 }
 
-/**
- * Interface to define an object that can be registered to the runtime
- */
-export interface RegisterableObject {
+/** 运行时支持的事件 */
+interface RegisterableObject {
     getId(): string;
     dispatchEvent(event: string, data?: any): void;
     serialize(): Object;
     unload(): void;
 }
 
-/**
- * Meta object that serves only to receive and send events
- */
+/** 事件管理组件 */
 class MetaObject implements IMetaObject {
-    private _name: string;
-    private _listeners: { [name: string]: Array<Function> } = {};
+    protected name: string;
+    protected listeners: { [name: string]: Array<Function> } = {};
 
     constructor(name: string) {
         if (name.slice(0, 2) !== '__') {
             throw new Error('MetaObject names must start with two underscores.');
         }
-        this._name = name;
+        this.name = name;
     }
 
-    public addEventListener(event: string,
+    addEventListener(event: string,
         listener: Function,
-        _useCapture: boolean = false,
-        _priority: number = 0): void {
+        _useCapture = false,
+        _priority = 0) {
 
-        if (!(event in this._listeners)) {
-            this._listeners[event] = [];
+        if (!(event in this.listeners)) {
+            this.listeners[event] = [];
         }
-        this._listeners[event].push(listener);
+        this.listeners[event].push(listener);
     }
 
-    public removeEventListener(event: string,
+    removeEventListener(event: string,
         listener: Function,
-        _useCapture: boolean = false): void {
+        _useCapture = false) {
 
-        if (!(event in this._listeners)) {
+        if (!(event in this.listeners)) {
             return;
         }
-        var index = this._listeners[event].indexOf(listener)
+        const index = this.listeners[event].indexOf(listener)
         if (index >= 0) {
-            this._listeners[event].splice(index, 1);
+            this.listeners[event].splice(index, 1);
         }
     }
 
-    public hasEventListener(event: string): boolean {
-        return event in this._listeners && this._listeners[event].length > 0;
+    hasEventListener(event: string) {
+        return event in this.listeners && this.listeners[event].length > 0;
     }
 
-    public dispatchEvent(event: string, data?: any): void {
-        if (!(event in this._listeners)) {
+    dispatchEvent(event: string, data?: any) {
+        if (!(event in this.listeners)) {
             return; // Ignore
         }
-        for (var i: number = 0; i < this._listeners[event].length; i++) {
-            this._listeners[event][i](data);
+        for (let i = 0; i < this.listeners[event].length; i++) {
+            this.listeners[event][i](data);
         }
     }
 
-    public getId(): string {
-        return this._name;
+    getId() {
+        return this.name;
     }
 
-    public serialize(): Object {
+    serialize() {
         return {
-            "class": this._name
+            "class": this.name
         };
     }
 
-    public unload(): void {
+    unload() {
         throw new Error('Meta objects should not be unloaded!');
     }
 }
 
-/** Variables **/
-// objCount is uniformly increasing to make object names unique
-var objCount: number = 0;
-var _registeredObjects: ObjectRegistry = {
+/** 对象计数，使对象名互斥 */
+let objCount = 0;
+const _registeredObjects: ObjectRegistry = {
     '__self': new MetaObject('__self'),
     '__player': new MetaObject('__player'),
     '__root': new MetaObject('__root')
 };
 
-export var registeredObjects: ObjectRegistry;
+export let registeredObjects: ObjectRegistry;
 Object.defineProperty(Runtime, 'registeredObjects', {
     get: function () {
         return _registeredObjects;
@@ -115,14 +110,13 @@ Object.defineProperty(Runtime, 'registeredObjects', {
 });
 
 /**
- * Dispatches an event to the corresponding object
- * @param {string} objectId - object to dispatch to
- * @param {string} event - event id
- * @param {any} payload - event object
- * @private
+ * 分发对象事件
+ * @param objectId 对象
+ * @param event 事件名
+ * @param payload 内容
  */
 function _dispatchEvent(objectId: string, event: string, payload: any) {
-    var obj: RegisterableObject = _registeredObjects[objectId];
+    const obj: RegisterableObject = _registeredObjects[objectId];
     if (typeof obj === "object") {
         if (obj.dispatchEvent) {
             obj.dispatchEvent(event, payload);
@@ -131,9 +125,8 @@ function _dispatchEvent(objectId: string, event: string, payload: any) {
 }
 
 /**
- * Checks to see if an object is registered under the id given
- * @param {string} objectId - Id to check
- * @returns {boolean} - whether the objectid is registered
+ * 检查对象是否已注册
+ * @param objectId 对象id
  */
 export function hasObject(objectId: string): boolean {
     return _registeredObjects.hasOwnProperty(objectId) &&
@@ -141,20 +134,17 @@ export function hasObject(objectId: string): boolean {
 }
 
 /**
- * Gets the object registered by id
- * @param {string} objectId - objectid of object
- * @returns {RegisterableObject} - object or undefined if not found
+ * 获取对象
+ * @param objectId 对象id
  */
 export function getObject<T extends RegisterableObject>(objectId: string): T {
     return <T>_registeredObjects[objectId];
 }
 
 /**
- * Registers an object to allow two way communication between the API
- * and the host.
- * @param {RegisterableObject} object - object to be registered.
+ * 注册沟通对象
  */
-export function registerObject(object: RegisterableObject): void {
+export function registerObject(object: RegisterableObject) {
     if (!object.getId) {
         __trace('Cannot register object without getId method.', 'warn');
         return;
@@ -181,14 +171,11 @@ export function registerObject(object: RegisterableObject): void {
 }
 
 /**
- * De-Registers an object from the runtime. This not only removes the object
- * from the stage if it is onstage, but also prevents the element from
- * receiving any more events.
- *
- * @param {RegisterableObject} object - object to remove
+ * 注销对象（不再接收新事件）
+ * @param object 对象名
  */
-export function deregisterObject(object: RegisterableObject): void {
-    var objectId: string = object.getId();
+export function deregisterObject(object: RegisterableObject) {
+    const objectId: string = object.getId();
     deregisterObjectById(objectId);
 }
 
@@ -211,42 +198,35 @@ function deregisterObjectById(objectId: string) {
     }
 }
 
-function _makeId(type: string = "obj"): string {
+function _makeId(type: string = "obj") {
     return type + ":" + Date.now() + "|" +
-        Runtime.NotCrypto.random(16) + ":" + objCount;
+        NotCrypto.random(16) + ":" + objCount;
 }
 
 /**
- * Generates an objectid that isn't registered
- * @param {string} type - object type
- * @returns {string} - objectid that has not been registered
+ * 生成新对象
+ * @param type 对象类型
  */
-export function generateId(type: string = "obj"): string {
-    var id: string = _makeId(type);
+export function generateId(type: string = "obj") {
+    let id: string = _makeId(type);
     while (Runtime.hasObject(id)) {
         id = _makeId(type);
     }
     return id;
 };
 
-/**
- * De-registers all objects. This also unloads them. Objects
- * will not receive any more events
- */
-export function reset(): void {
-    for (var i in _registeredObjects) {
+/** 注销所有对象（不再接收新事件） */
+export function reset() {
+    for (const i in _registeredObjects) {
         if (i.substr(0, 2) !== "__") {
             deregisterObjectById(i);
         }
     }
 }
 
-/**
- * Unloads all objects. Does not deregister them, so they may
- * still receive events.
- */
-export function clear(): void {
-    for (var i in _registeredObjects) {
+/** 清空对象 */
+export function clear() {
+    for (const i in _registeredObjects) {
         if (i.substr(0, 2) === "__") {
             continue;
         }
@@ -256,26 +236,21 @@ export function clear(): void {
     }
 }
 
-/**
- * Invoke termination of script from outside the sandbox
- */
-export function crash(): void {
+/** 通知沙箱外停止运行脚本 */
+export function crash() {
     __trace("Runtime.crash() : Manual crash", "fatal");
 }
 
-/**
- * Invoke graceful exit of script engine
- */
-export function exit(): void {
+/** 正常退出引擎 */
+export function exit() {
     __achannel("::worker:state", "worker", "terminated");
     self.close();
 }
 
 /**
- * Attempts to invoke an alert dialog.
- * Note: that this may not work if the Host policy does not allow it
- * @param {string} msg - message for alert
+ * 发送通知（主机有权拒绝）
+ * @param msg 通知
  */
-export function alert(msg: string): void {
+export function alert(msg: string) {
     __achannel("Runtime::alert", "::Runtime", msg);
 }

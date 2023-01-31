@@ -1,40 +1,25 @@
+import { __trace } from "../OOAPI";
+import { generateId } from "../Runtime/Object";
 import { DisplayObject } from "./DisplayObject";
 
-/**
- * TextFormat polyfill for AS3
- * @author Jim Chen
- */
 class TextFormat {
-    public font: string;
-    public size: number;
-    public color: number;
-    public bold: boolean;
-    public italic: boolean;
-    public underline: boolean;
+    align!: string;
+    fontsize!: number;
+    constructor(public font = "SimHei",
+        public size = 25,
+        public color = 0xFFFFFF,
+        public bold = false,
+        public italic = false,
+        public underline = false,
+        _url = "",
+        _target = "",
+        _align = "left",
+        _leftMargin = 0,
+        _rightMargin = 0,
+        _indent = 0,
+        _leading = 0) { }
 
-    constructor(font: string = "SimHei",
-        size: number = 25,
-        color: number = 0xFFFFFF,
-        bold: boolean = false,
-        italic: boolean = false,
-        underline: boolean = false,
-        _url: string = "",
-        _target: string = "",
-        _align: string = "left",
-        _leftMargin: number = 0,
-        _rightMargin: number = 0,
-        _indent: number = 0,
-        _leading: number = 0) {
-
-        this.font = font;
-        this.size = size;
-        this.color = color;
-        this.bold = bold;
-        this.italic = italic;
-        this.underline = underline;
-    }
-
-    public serialize(): Object {
+    serialize(): Object {
         return {
             "class": "TextFormat",
             "font": this.font,
@@ -47,28 +32,22 @@ class TextFormat {
     }
 }
 
-/**
- * TextField Polyfill for AS3.
- * @author Jim Chen
- */
-export class TextField extends DisplayObject {
-    private _text: string;
-    private _textFormat: TextFormat;
-    private _background: boolean = false;
-    private _backgroundColor: number = 0xffffff;
-    private _border: boolean = false;
-    private _borderColor: number = 0;
 
-    constructor(text: string = "", color: number = 0) {
-        super(Runtime.generateId('obj-textfield'));
-        this._text = text;
-        this._textFormat = new TextFormat();
+export class TextField extends DisplayObject {
+    private _textFormat = new TextFormat();
+    private _background = false;
+    private _backgroundColor = 0xffffff;
+    private _border = false;
+    private _borderColor = 0;
+
+    constructor(private _text = "", color = 0) {
+        super(generateId('obj-textfield'));
         this._textFormat.color = color;
         this.boundingBox.width = this.textWidth;
         this.boundingBox.height = this.textHeight;
     }
 
-    get text(): string {
+    get text() {
         return this._text;
     }
 
@@ -79,7 +58,7 @@ export class TextField extends DisplayObject {
         this.propertyUpdate("text", this._text);
     }
 
-    get length(): number {
+    get length() {
         return this.text.length;
     }
 
@@ -87,7 +66,7 @@ export class TextField extends DisplayObject {
         __trace("TextField.length is read-only.", "warn");
     }
 
-    get htmlText(): string {
+    get htmlText() {
         return this.text;
     }
 
@@ -104,17 +83,17 @@ export class TextField extends DisplayObject {
         __trace("TextField.textHeight is read-only", "warn");
     }
 
-    get textWidth(): number {
+    get textWidth() {
         /** TODO: Fix this to actually calculate the width **/
         return this._text.length * this._textFormat.size;
     }
 
-    get textHeight(): number {
+    get textHeight() {
         /** TODO: Fix this to actually calculate the height **/
         return this._textFormat.size;
     }
 
-    get color(): number {
+    get color() {
         return this._textFormat.color;
     }
 
@@ -123,7 +102,7 @@ export class TextField extends DisplayObject {
         this.setTextFormat(this._textFormat);
     }
 
-    get background(): boolean {
+    get background() {
         return this._background;
     }
 
@@ -132,7 +111,7 @@ export class TextField extends DisplayObject {
         this.propertyUpdate("background", enabled);
     }
 
-    get backgroundColor(): number {
+    get backgroundColor() {
         return this._backgroundColor;
     }
 
@@ -141,7 +120,7 @@ export class TextField extends DisplayObject {
         this.propertyUpdate("backgroundColor", color);
     }
 
-    get border(): boolean {
+    get border() {
         return this._border;
     }
 
@@ -150,7 +129,7 @@ export class TextField extends DisplayObject {
         this.propertyUpdate('border', enabled);
     }
 
-    get borderColor(): number {
+    get borderColor() {
         return this._borderColor;
     }
 
@@ -159,21 +138,21 @@ export class TextField extends DisplayObject {
         this.propertyUpdate('borderColor', color);
     }
 
-    public getTextFormat(): any {
+    getTextFormat() {
         return this._textFormat;
     }
 
-    public setTextFormat(tf: any) {
-        this._textFormat = <TextFormat>tf;
+    setTextFormat(tf: TextFormat) {
+        this._textFormat = tf;
         this.methodCall("setTextFormat", tf.serialize());
     }
 
-    public appendText(t: string): void {
+    appendText(t: string) {
         this.text = this.text + t;
     }
 
-    public serialize(): Object {
-        var serialized: Object = super.serialize();
+    serialize() {
+        const serialized = super.serialize();
         serialized["class"] = "TextField";
         serialized["text"] = this._text;
         serialized["textFormat"] = this._textFormat.serialize();
@@ -181,6 +160,6 @@ export class TextField extends DisplayObject {
     }
 }
 
-export function createTextFormat(): any {
+export function createTextFormat() {
     return new TextFormat();
 }

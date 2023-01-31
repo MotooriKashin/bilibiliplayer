@@ -1,7 +1,7 @@
 import { NotCrypto } from "./NotCrypto";
 import { alert, hasObject, getObject, registerObject, deregisterObject, generateId, reset, clear, crash, exit } from "./Object";
 import { requestPermission, hasPermission, openWindow, injectStyle, privilegedCode } from "./Permissions";
-import { ScriptManagerImpl } from "./ScriptManagerImpl";
+import { ScriptManager } from "./ScriptManager";
 import { supports, requestLibrary } from "./Supports";
 import { getTimer, TimeKeeper, Timer, updateFrameRate } from "./Timer";
 
@@ -11,7 +11,7 @@ export class Runtime {
     static TimeKeeper = TimeKeeper;
     static getTimer = getTimer;
     static updateFrameRate = updateFrameRate;
-    static _defaultScriptManager = new ScriptManagerImpl();
+    static _defaultScriptManager = new ScriptManager();
     static requestPermission = requestPermission;
     static hasPermission = hasPermission;
     static openWindow = openWindow;

@@ -1,251 +1,201 @@
-import { Filter } from "./Filter";
-import { Point } from "./Matrix";
+import { __trace, __pchannel } from "../OOAPI";
+import { IComment } from "../Player";
+import { generateId } from "../Runtime/Object";
+import { Display } from "./Display";
+import { Filter, IFilter } from "./Filter";
+import { createPoint, Point } from "./Matrix";
 import { Transform } from "./Transform";
 
-export class BlendMode {
-    static ADD: string = "add";
-    static ALPHA: string = "alpha";
-    static DARKEN: string = "darken";
-    static DIFFERENCE: string = "difference";
-    static ERASE: string = "erase";
-    static HARDLIGHT: string = "hardlight";
-    static INVERT: string = "invert";
-    static LAYER: string = "layer";
-    static LIGHTEN: string = "lighten";
-    static MULTIPLY: string = "multiply";
-    static NORMAL: string = "normal";
-    static OVERLAY: string = "overlay";
-    static SCREEN: string = "screen";
-    static SHADER: string = "shader";
-    static SUBTRACT: string = "subtract";
+export enum BlendMode {
+    ADD = "add",
+    ALPHA = "alpha",
+    DARKEN = "darken",
+    DIFFERENCE = "difference",
+    ERASE = "erase",
+    HARDLIGHT = "hardlight",
+    INVERT = "invert",
+    LAYER = "layer",
+    LIGHTEN = "lighten",
+    MULTIPLY = "multiply",
+    NORMAL = "normal",
+    OVERLAY = "overlay",
+    SCREEN = "screen",
+    SHADER = "shader",
+    SUBTRACT = "subtract"
 }
 
 export class Rectangle {
-    private _x: number;
-    private _y: number;
-    private _width: number;
-    private _height: number;
-    constructor(x: number = 0,
-        y: number = 0,
-        width: number = 0,
-        height: number = 0) {
-
-        this._x = x;
-        this._y = y;
-        this._width = width;
-        this._height = height;
+    constructor(public x = 0,
+        public y = 0,
+        public width = 0,
+        public height = 0) {
     }
 
-    public set x(v: number) {
-        if (v !== null) {
-            this._x = v;
-        }
+    get left() {
+        return this.x;
     }
 
-    public set y(v: number) {
-        if (v !== null) {
-            this._y = v;
-        }
+    get right() {
+        return this.x + this.width;
     }
 
-    public set width(v: number) {
-        if (v !== null) {
-            this._width = v;
-        }
+    get top() {
+        return this.y;
     }
 
-    public set height(v: number) {
-        if (v !== null) {
-            this._height = v;
-        }
+    get bottom() {
+        return this.y + this.height;
     }
 
-    public get x(): number {
-        return this._x;
+    get size() {
+        return createPoint(this.width, this.height);
     }
 
-    public get y(): number {
-        return this._y;
-    }
-
-    public get width(): number {
-        return this._width;
-    }
-
-    public get height(): number {
-        return this._height;
-    }
-
-    public get left(): number {
-        return this._x;
-    }
-
-    public get right(): number {
-        return this._x + this._width;
-    }
-
-    public get top(): number {
-        return this._y;
-    }
-
-    public get bottom(): number {
-        return this._y + this._height;
-    }
-
-    public get size(): any {
-        return Display.createPoint(this._width, this._height);
-    }
-
-    public contains(x: number, y: number): boolean {
+    contains(x: number, y: number) {
         return x >= this.left &&
             y >= this.top &&
             x <= this.right &&
             y <= this.bottom;
     }
 
-    public containsPoint(p: Point): boolean {
+    containsPoint(p: Point) {
         return this.contains(p.x, p.y);
     }
 
-    public containsRect(r: Rectangle): boolean {
+    containsRect(r: Rectangle) {
         return this.contains(r.left, r.top) && this.contains(r.right, r.bottom);
     }
 
-    public copyFrom(source: Rectangle): void {
-        this._x = source._x;
-        this._y = source._y;
-        this._width = source._width;
-        this._height = source._height;
+    copyFrom(source: Rectangle) {
+        this.x = source.x;
+        this.y = source.y;
+        this.width = source.width;
+        this.height = source.height;
     }
 
-    public equals(other: Rectangle): boolean {
-        return this._x === other._x &&
-            this._y === other._y &&
-            this._width === other._width &&
-            this._height === other._height;
+    equals(other: Rectangle) {
+        return this.x === other.x &&
+            this.y === other.y &&
+            this.width === other.width &&
+            this.height === other.height;
     }
 
-    public inflate(dx: number = 0, dy: number = 0): void {
-        this._x -= dx;
-        this._width += 2 * dx;
-        this._y -= dy;
-        this._height += 2 * dy;
+    inflate(dx: number = 0, dy: number = 0) {
+        this.x -= dx;
+        this.width += 2 * dx;
+        this.y -= dy;
+        this.height += 2 * dy;
     }
 
-    public inflatePoint(p: Point): void {
+    inflatePoint(p: Point) {
         this.inflate(p.x, p.y);
     }
 
-    public isEmpty(): boolean {
-        return this._width <= 0 || this.height <= 0;
+    isEmpty() {
+        return this.width <= 0 || this.height <= 0;
     }
 
-    public setTo(x: number = 0,
+    setTo(x: number = 0,
         y: number = 0,
         width: number = 0,
         height: number = 0): void {
 
-        this._x = x;
-        this._y = y;
-        this._width = width;
-        this._height = height;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
-    public offset(x: number = 0, y: number = 0): void {
-        this._x += x;
-        this._y += y;
+    offset(x: number = 0, y: number = 0) {
+        this.x += x;
+        this.y += y;
     }
 
-    public offsetPoint(p: Point): void {
+    offsetPoint(p: Point) {
         this.offset(p.x, p.y);
     }
 
-    public setEmpty(): void {
+    setEmpty() {
         this.setTo(0, 0, 0, 0);
     }
 
     /**
-     * Unions the rectangle with a point coordinate
-     * @param x - x coordinate
-     * @param y - y coordinate
+     * 根据坐标生成矩形
+     * @param x 横坐标
+     * @param y 纵坐标
      */
-    public unionCoord(x: number, y: number): void {
-        var dx: number = x - this._x;
-        var dy: number = y - this._y;
+    unionCoord(x: number, y: number) {
+        const dx = x - this.x;
+        const dy: number = y - this.y;
         if (dx >= 0) {
-            this._width = Math.max(this._width, dx);
+            this.width = Math.max(this.width, dx);
         } else {
-            this._x += dx;
-            this._width -= dx;
+            this.x += dx;
+            this.width -= dx;
         }
         if (dy >= 0) {
-            this._height = Math.max(this._height, dy);
+            this.height = Math.max(this.height, dy);
         } else {
-            this._y += dy;
-            this._height -= dy;
+            this.y += dy;
+            this.height -= dy;
         }
     }
 
-    public unionPoint(p: Point): void {
+    unionPoint(p: Point) {
         this.unionCoord(p.x, p.y);
     }
 
-    public union(r: Rectangle): Rectangle {
-        var n = this.clone();
+    union(r: Rectangle) {
+        const n = this.clone();
         n.unionCoord(r.left, r.top);
         n.unionCoord(r.right, r.bottom);
         return n;
     }
 
-    public toString(): string {
-        return "(x=" + this._x + ", y=" + this._y + ", width=" + this._width +
-            ", height=" + this._height + ")";
+    toString() {
+        return "(x=" + this.x + ", y=" + this.y + ", width=" + this.width +
+            ", height=" + this.height + ")";
     }
 
-    public clone(): Rectangle {
-        return new Rectangle(this._x, this._y, this._width, this._height);
+    clone() {
+        return new Rectangle(this.x, this.y, this.width, this.height);
     }
 
-    public serialize(): Object {
+    serialize() {
         return {
-            x: this._x,
-            y: this._y,
-            width: this._width,
-            height: this._height
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height
         };
     }
 }
 
 export class DisplayObject {
-    private static SANDBOX_EVENTS: Array<string> = ["enterFrame"];
+    protected static SANDBOX_EVENTS: string[] = ["enterFrame"];
     /** This represents an element in the HTML rendering **/
-    private _id: string;
-    private _alpha: number = 1;
-    private _anchor: Point = new Point();
-    private _boundingBox: Rectangle = new Rectangle();
-    private _z: number = 0;
-    private _scaleX: number = 1;
-    private _scaleY: number = 1;
-    private _scaleZ: number = 1;
-    private _rotationX: number = 0;
-    private _rotationY: number = 0;
-    private _rotationZ: number = 0;
-    private _filters: Array<Filter> = [];
-    private _visible: boolean = false;
-    private _blendMode: string = "normal";
-    private _listeners: Object = {};
-    private _parent: DisplayObject = null!;
-    private _name: string = "";
-    private _children: Array<DisplayObject> = [];
-    private _transform: Transform = new Transform(this);
-    private _hasSetDefaults: boolean = false;
+    protected _alpha = 1;
+    protected _anchor = new Point();
+    protected _boundingBox = new Rectangle();
+    protected _z = 0;
+    protected _scaleX = 1;
+    protected _scaleY = 1;
+    protected _scaleZ = 1;
+    protected _rotationX = 0;
+    protected _rotationY = 0;
+    protected _rotationZ = 0;
+    protected _filters: Filter[] = [];
+    protected _blendMode = "normal";
+    protected _listeners: Record<string, Function[]> = {};
+    protected _parent?: DisplayObject;
+    protected _name = "";
+    protected _children: DisplayObject[] = [];
+    protected _transform = new Transform(this);
+    protected _hasSetDefaults = false;
 
-    constructor(id: string = Runtime.generateId()) {
-        this._id = id;
-        this._visible = true;
-    }
+    constructor(protected id = generateId(), protected _visible = true) { }
 
-    public setDefaults(defaults: Object = {}): void {
+    setDefaults(defaults = <IComment>{}) {
         if (this._hasSetDefaults) {
             __trace("DisplayObject.setDefaults called more than once.", "warn");
             return;
@@ -254,7 +204,7 @@ export class DisplayObject {
         try {
             /** Try reading the defaults from motion fields **/
             if (defaults.hasOwnProperty("motion")) {
-                var motion: Object = defaults["motion"];
+                const motion = defaults["motion"];
                 if (motion.hasOwnProperty("alpha")) {
                     this._alpha = motion["alpha"]["fromValue"];
                 }
@@ -266,7 +216,7 @@ export class DisplayObject {
                 }
             } else if (defaults.hasOwnProperty("motionGroup") &&
                 defaults["motionGroup"] && defaults["motionGroup"].length > 0) {
-                var motion: Object = defaults["motionGroup"][0];
+                const motion = defaults["motionGroup"][0];
                 if (motion.hasOwnProperty("alpha")) {
                     this._alpha = motion["alpha"]["fromValue"];
                 }
@@ -281,90 +231,85 @@ export class DisplayObject {
 
         }
         if (defaults.hasOwnProperty("alpha")) {
-            this._alpha = defaults["alpha"];
+            this._alpha = defaults["alpha"]!;
         }
         if (defaults.hasOwnProperty("x")) {
-            this._anchor.x = defaults["x"];
+            this._anchor.x = defaults["x"]!;
         }
         if (defaults.hasOwnProperty("y")) {
-            this._anchor.y = defaults["y"];
+            this._anchor.y = defaults["y"]!;
         }
     }
 
-    /**
-     * These are meant to be internal public methods, so they
-     * are named noun-verb instead of verb-noun
-     */
-
-    public eventToggle(eventName: string, mode: string = "enable"): void {
+    eventToggle(eventName: string, mode = "enable") {
         if (DisplayObject.SANDBOX_EVENTS.indexOf(eventName) > -1) {
             return;
             /* No need to notify */
         }
         __pchannel("Runtime:ManageEvent", {
-            "id": this._id,
+            "id": this.id,
             "name": eventName,
             "mode": mode
         });
     }
 
-    public propertyUpdate(propertyName: string, updatedValue: any): void {
+    propertyUpdate(propertyName: string, updatedValue: any) {
         __pchannel("Runtime:UpdateProperty", {
-            "id": this._id,
+            "id": this.id,
             "name": propertyName,
             "value": updatedValue
         });
     }
 
-    public methodCall(methodName: string, params: any): void {
+    methodCall(methodName: string, params: any) {
         __pchannel("Runtime:CallMethod", {
-            "id": this._id,
+            "id": this.id,
             "method": methodName,
             "params": params
         });
     }
 
     /** Properties **/
-    public set alpha(value: number) {
+    set alpha(value: number) {
         this._alpha = value;
         this.propertyUpdate("alpha", value);
     }
 
-    public get alpha(): number {
+    get alpha(): number {
         return this._alpha;
     }
 
-    public set anchor(p: Point) {
+    set anchor(p: Point) {
         this._anchor = p;
         this.propertyUpdate("x", p.x);
         this.propertyUpdate("y", p.y);
     }
 
-    public get anchor(): Point {
+    get anchor() {
         return this._anchor;
     }
 
-    public set boundingBox(r: Rectangle) {
+    set boundingBox(r: Rectangle) {
         this._boundingBox = r;
         this.propertyUpdate("boundingBox", r.serialize());
     }
 
-    public get boundingBox(): Rectangle {
+    get boundingBox() {
         return this._boundingBox;
     }
 
-    public set cacheAsBitmap(_value: boolean) {
+    set cacheAsBitmap(_value: boolean) {
         __trace("DisplayObject.cacheAsBitmap is not supported", "warn");
     }
 
-    public get cacheAsBitmap(): boolean {
+    get cacheAsBitmap() {
         return false;
     }
 
-    public set filters(filters: Array<Filter>) {
+    set filters(filters: Filter[]) {
         this._filters = filters ? filters : [];
-        var serializedFilters: Array<Object> = [];
-        for (var i = 0; i < this._filters.length; i++) {
+        const serializedFilters: Array<Object> = [];
+        for (let i = 0; i < this._filters.length; i++) {
             if (!this.filters[i]) {
                 continue;
             }
@@ -373,28 +318,28 @@ export class DisplayObject {
         this.propertyUpdate("filters", serializedFilters);
     }
 
-    public get filters(): Array<Filter> {
+    get filters() {
         return this._filters;
     }
 
-    public get root(): DisplayObject {
+    get root() {
         return Display.root;
     }
 
-    public set root(_s: DisplayObject) {
+    set root(_s: DisplayObject) {
         __trace("DisplayObject.root is read-only.", "warn");
     }
 
-    public get stage(): DisplayObject {
+    get stage() {
         return Display.root;
     }
 
-    public set stage(_s: DisplayObject) {
+    set stage(_s: DisplayObject) {
         __trace("DisplayObject.stage is read-only.", "warn");
     }
 
     /** Start Transform Area **/
-    private _updateBox(mode: string = this._transform.getMatrixType()): void {
+    protected _updateBox(mode = this._transform.getMatrixType()) {
         if (mode === "3d") {
             this._transform.box3d(this._scaleX,
                 this._scaleY,
@@ -413,134 +358,134 @@ export class DisplayObject {
         this.transform = this._transform;
     }
 
-    public set rotationX(x: number) {
+    set rotationX(x: number) {
         this._rotationX = x;
         this._updateBox("3d");
     }
 
-    public set rotationY(y: number) {
+    set rotationY(y: number) {
         this._rotationY = y;
         this._updateBox("3d");
     }
 
-    public set rotationZ(z: number) {
+    set rotationZ(z: number) {
         this._rotationZ = z;
         this._updateBox();
     }
 
-    public set rotation(r: number) {
+    set rotation(r: number) {
         this._rotationZ = r;
         this._updateBox();
     }
 
-    public set scaleX(val: number) {
+    set scaleX(val: number) {
         this._scaleX = val;
         this._updateBox();
     }
 
-    public set scaleY(val: number) {
+    set scaleY(val: number) {
         this._scaleY = val;
         this._updateBox();
     }
 
-    public set scaleZ(val: number) {
+    set scaleZ(val: number) {
         this._scaleZ = val;
         this._updateBox("3d");
     }
 
-    public set x(val: number) {
+    set x(val: number) {
         this._anchor.x = val;
         this.propertyUpdate("x", val);
     }
 
-    public set y(val: number) {
+    set y(val: number) {
         this._anchor.y = val;
         this.propertyUpdate("y", val);
     }
 
-    public set z(val: number) {
+    set z(val: number) {
         this._z = val;
         this._updateBox("3d");
     }
 
-    public get rotationX(): number {
+    get rotationX() {
         return this._rotationX;
     }
 
-    public get rotationY(): number {
+    get rotationY() {
         return this._rotationY;
     }
 
-    public get rotationZ(): number {
+    get rotationZ() {
         return this._rotationZ;
     }
 
-    public get rotation(): number {
+    get rotation() {
         return this._rotationZ;
     }
 
-    public get scaleX(): number {
+    get scaleX() {
         return this._scaleX;
     }
 
-    public get scaleY(): number {
+    get scaleY() {
         return this._scaleY;
     }
 
-    public get scaleZ(): number {
+    get scaleZ() {
         return this._scaleZ;
     }
 
-    public get x(): number {
+    get x() {
         return this._anchor.x;
     }
 
-    public get y(): number {
+    get y() {
         return this._anchor.y;
     }
 
-    public get z(): number {
+    get z() {
         return this._z;
     }
     /** End Transform Area **/
 
-    public set width(w: number) {
+    set width(w: number) {
         this._boundingBox.width = w;
         this.propertyUpdate('width', w);
     }
 
-    public get width(): number {
+    get width() {
         return this._boundingBox.width;
     }
 
-    public set height(h: number) {
+    set height(h: number) {
         this._boundingBox.height = h;
         this.propertyUpdate('height', h);
     }
 
-    public get height(): number {
+    get height() {
         return this._boundingBox.height;
     }
 
-    public set visible(visible: boolean) {
+    set visible(visible: boolean) {
         this._visible = visible;
         this.propertyUpdate('visible', visible);
     }
 
-    public get visible(): boolean {
+    get visible() {
         return this._visible;
     }
 
-    public set blendMode(blendMode: string) {
+    set blendMode(blendMode: string) {
         this._blendMode = blendMode;
         this.propertyUpdate('blendMode', blendMode);
     }
 
-    public get blendMode(): string {
+    get blendMode() {
         return this._blendMode;
     }
 
-    public set transform(t: any) {
+    set transform(t: any) {
         this._transform = t;
         if (this._transform.parent !== this) {
             this._transform.parent = this;
@@ -548,48 +493,48 @@ export class DisplayObject {
         this.propertyUpdate('transform', this._transform.serialize());
     }
 
-    public get transform(): any {
+    get transform() {
         return this._transform;
     }
 
-    public set name(name: string) {
+    set name(name: string) {
         this._name = name;
         this.propertyUpdate('name', name);
     }
 
-    public get name(): string {
+    get name() {
         return this._name;
     }
 
-    public set loaderInfo(_name: any) {
+    set loaderInfo(_name: any) {
         __trace("DisplayObject.loaderInfo is read-only", "warn");
     }
 
-    public get loaderInfo(): any {
+    get loaderInfo() {
         __trace("DisplayObject.loaderInfo is not supported", "warn");
         return {};
     }
 
-    public set parent(_p: DisplayObject) {
+    set parent(_p: DisplayObject) {
         __trace("DisplayObject.parent is read-only", "warn");
     }
 
-    public get parent(): DisplayObject {
-        return this._parent !== null ? this._parent : Display.root;
+    get parent() {
+        return this._parent ?? Display.root;
     }
 
     /** AS3 Stuff **/
-    public dispatchEvent(event: string, data?: any): void {
+    dispatchEvent(event: string, data?: any) {
         if (this._listeners.hasOwnProperty(event)) {
-            if (this._listeners[event] !== null) {
-                for (var i = 0; i < this._listeners[event].length; i++) {
+            if (this._listeners[event]) {
+                for (let i = 0; i < this._listeners[event].length; i++) {
                     try {
                         this._listeners[event][i](data);
                     } catch (e) {
-                        if (e.hasOwnProperty('stack')) {
-                            __trace(e.stack.toString(), 'err');
+                        if ((<Error>e).hasOwnProperty('stack')) {
+                            __trace((<Error>e).stack?.toString(), 'err');
                         } else {
-                            __trace(e.toString(), 'err');
+                            __trace((<Error>e).toString(), 'err');
                         }
                     }
                 }
@@ -597,7 +542,7 @@ export class DisplayObject {
         }
     }
 
-    public addEventListener(event: string, listener: Function): void {
+    addEventListener(event: string, listener: Function) {
         if (!this._listeners.hasOwnProperty(event)) {
             this._listeners[event] = [];
         }
@@ -607,12 +552,12 @@ export class DisplayObject {
         }
     }
 
-    public removeEventListener(event: string, listener: Function): void {
+    removeEventListener(event: string, listener: Function) {
         if (!this._listeners.hasOwnProperty(event) ||
             this._listeners[event].length === 0) {
             return;
         }
-        var index = this._listeners[event].indexOf(listener);
+        const index = this._listeners[event].indexOf(listener);
         if (index >= 0) {
             this._listeners[event].splice(index, 1);
         }
@@ -622,11 +567,11 @@ export class DisplayObject {
     }
 
     /** DisplayObjectContainer **/
-    get numChildren(): number {
+    get numChildren() {
         return this._children.length;
     }
 
-    public addChild(o: DisplayObject): void {
+    addChild(o: DisplayObject) {
         // Make sure we're not adding a child onto a parent
         if (typeof o === 'undefined' || o === null) {
             throw new Error('Cannot add an empty child!');
@@ -638,52 +583,52 @@ export class DisplayObject {
         this._boundingBox.unionCoord(o._anchor.x + o._boundingBox.left, o._anchor.y + o._boundingBox.top);
         this._boundingBox.unionCoord(o._anchor.x + o._boundingBox.right, o._anchor.y + o._boundingBox.bottom);
         o._parent = this;
-        this.methodCall('addChild', o._id);
+        this.methodCall('addChild', o.id);
     }
 
-    public removeChild(o: DisplayObject): void {
-        var index = this._children.indexOf(o);
+    removeChild(o: DisplayObject) {
+        const index = this._children.indexOf(o);
         if (index >= 0) {
             this.removeChildAt(index);
         }
     }
 
-    public getChildAt(index: number): DisplayObject {
+    getChildAt(index: number) {
         if (index < 0 || index > this._children.length) {
             throw new RangeError('No child at index ' + index);
         }
         return this._children[index];
     }
 
-    public getChildIndex(o: DisplayObject): number {
+    getChildIndex(o: DisplayObject) {
         return this._children.indexOf(o);
     }
 
-    public removeChildAt(index: number): void {
-        var o: DisplayObject = this.getChildAt(index);
+    removeChildAt(index: number) {
+        const o: DisplayObject = this.getChildAt(index);
         this._children.splice(index, 1);
         o._parent = null!;
-        this.methodCall('removeChild', o._id);
+        this.methodCall('removeChild', o.id);
     }
 
-    public removeChildren(begin: number, end: number = this._children.length): void {
-        var removed: Array<DisplayObject> = this._children.splice(begin, end - begin);
-        var ids: Array<string> = [];
-        for (var i = 0; i < removed.length; i++) {
+    removeChildren(begin: number, end: number = this._children.length) {
+        const removed: Array<DisplayObject> = this._children.splice(begin, end - begin);
+        const ids: Array<string> = [];
+        for (let i = 0; i < removed.length; i++) {
             removed[i]._parent = null!;
-            ids.push(removed[i]._id);
+            ids.push(removed[i].id);
         }
         this.methodCall('removeChildren', ids);
     }
 
-    public contains(child: DisplayObject): boolean {
+    contains(child: DisplayObject) {
         if (child === this) {
             return true;
         }
         if (this._children.indexOf(child) >= 0) {
             return true;
         }
-        for (var i = 0; i < this._children.length; i++) {
+        for (let i = 0; i < this._children.length; i++) {
             if (this._children[i].contains(child)) {
                 return true;
             }
@@ -694,25 +639,25 @@ export class DisplayObject {
     /**
      * Removes the object from a parent if exists.
      */
-    public remove(): void {
+    remove() {
         // Remove itself
-        if (this._parent !== null) {
+        if (this._parent) {
             this._parent.removeChild(this);
         } else {
             this.root.removeChild(this);
         }
     }
 
-    public toString(): string {
+    toString() {
         return '[' + (this._name.length > 0 ? this._name : 'displayObject') +
-            ' DisplayObject]@' + this._id;
+            ' DisplayObject]@' + this.id;
     }
 
     /**
      * Clones the current display object
      */
-    public clone(): DisplayObject {
-        var alternate: DisplayObject = new DisplayObject();
+    clone() {
+        const alternate = new DisplayObject();
         alternate._transform = this._transform.clone();
         alternate._transform.parent = alternate;
         alternate._boundingBox = this._boundingBox.clone();
@@ -721,7 +666,7 @@ export class DisplayObject {
         return alternate;
     }
 
-    public hasOwnProperty(prop: string): boolean {
+    hasOwnProperty(prop: string) {
         if (prop === 'clone') {
             return true;
         } else {
@@ -730,13 +675,13 @@ export class DisplayObject {
     }
 
     /** Common Functions **/
-    public serialize(): Object {
+    serialize() {
         this._hasSetDefaults = true;
-        var filters: Array<Object> = [];
-        for (var i: number = 0; i < this._filters.length; i++) {
+        const filters: IFilter[] = [];
+        for (let i: number = 0; i < this._filters.length; i++) {
             filters.push(this._filters[i].serialize());
         }
-        return {
+        return <any>{
             'class': 'DisplayObject',
             'x': this._anchor.x,
             'y': this._anchor.y,
@@ -745,13 +690,13 @@ export class DisplayObject {
         };
     }
 
-    public unload(): void {
+    unload() {
         this._visible = false;
         this.remove();
         this.methodCall('unload', null);
     }
 
-    public getId(): string {
-        return this._id;
+    getId() {
+        return this.id;
     }
 }

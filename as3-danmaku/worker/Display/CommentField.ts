@@ -1,20 +1,19 @@
-import { DisplayObject } from "./DisplayObject";
+import { __trace } from "../OOAPI";
+import { IComment } from "../Player";
+import { registerObject } from "../Runtime/Object";
 import { MotionManager } from "./MotionManager";
 import { TextField } from "./TextField";
 
-/**
- * Compliant CommentField Polyfill For BiliScriptEngine
- */
 class CommentField extends TextField {
-    private _mM: MotionManager = new MotionManager(this);
+    protected mM: MotionManager = new MotionManager(this);
 
-    constructor(text: string, params: Object = {}) {
+    constructor(text: string, params = <IComment>{}) {
         super(text, 0xffffff);
         this.setDefaults(params);
         this.initStyle(params);
-        Runtime.registerObject(this);
+        registerObject(this);
         this.bindParent(params);
-        this._mM.play();
+        this.mM.play();
     }
 
     set fontsize(size: number) {
@@ -23,7 +22,7 @@ class CommentField extends TextField {
         this.setTextFormat(tf);
     }
 
-    get fontsize(): number {
+    get fontsize() {
         return this.getTextFormat().fontsize;
     }
 
@@ -33,7 +32,7 @@ class CommentField extends TextField {
         this.setTextFormat(tf);
     }
 
-    get font(): string {
+    get font() {
         return this.getTextFormat().font;
     }
 
@@ -43,7 +42,7 @@ class CommentField extends TextField {
         this.setTextFormat(tf);
     }
 
-    get align(): string {
+    get align() {
         return this.getTextFormat().align;
     }
 
@@ -53,30 +52,27 @@ class CommentField extends TextField {
         this.setTextFormat(tf);
     }
 
-    get bold(): boolean {
+    get bold() {
         return this.getTextFormat().bold;
     }
 
-    get motionManager(): MotionManager {
-        return this._mM;
+    get motionManager() {
+        return this.mM;
     }
 
     set motionManager(_m: MotionManager) {
         __trace("IComment.motionManager is read-only", "warn");
     }
 
-    private bindParent(params: Object): void {
+    protected bindParent(params: IComment) {
         if (params.hasOwnProperty("parent")) {
-            (<DisplayObject>params["parent"]).addChild(this);
+            params["parent"]?.addChild(this);
         }
     }
 
-    public initStyle(style: Object): void {
-        if (typeof style === 'undefined' || style === null) {
-            style = {};
-        }
+    initStyle(style: any = {}) {
         if ("lifeTime" in style) {
-            this._mM.dur = <number>style["lifeTime"] * 1000;
+            this.mM.dur = <number>style["lifeTime"] * 1000;
         }
         if ("fontsize" in style) {
             this.getTextFormat().size = style["fontsize"];
@@ -91,17 +87,17 @@ class CommentField extends TextField {
             this.getTextFormat().bold = style["bold"];
         }
         if (style.hasOwnProperty("motionGroup")) {
-            this._mM.initTweenGroup(style["motionGroup"], this._mM.dur);
+            this.mM.initTweenGroup(style["motionGroup"]!, this.mM.dur);
         } else if (style.hasOwnProperty("motion")) {
-            this._mM.initTween(style["motion"], false);
+            this.mM.initTween(style["motion"]!, false);
         }
     }
 }
 
-export function createComment(text: string, params: Object): any {
+export function createComment(text: string, params: IComment): any {
     return new CommentField(text, params);
 }
 
-export function createTextField(): any {
-    return new CommentField("", {});
+export function createTextField() {
+    return new CommentField("", <IComment>{});
 }

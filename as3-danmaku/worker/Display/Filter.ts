@@ -1,10 +1,17 @@
-/**
- * Filter Polyfill for AS3.
- * @author Jim Chen
- */
+export interface IFilter {
+    class: string;
+    type?: string;
+    params?: Record<string, any>;
+    matrix?: Record<string, any>;
+    divisor?: number;
+    preserveAlpha?: boolean;
+    clamp?: boolean;
+    color?: number;
+    alpha?: number;
+}
 export class Filter {
-    public serialize(): Object {
-        return {
+    serialize() {
+        return <IFilter>{
             'class': 'Filter',
             'type': 'nullfilter'
         };
@@ -12,193 +19,139 @@ export class Filter {
 }
 
 class BlurFilter extends Filter {
-    private _blurX: number;
-    private _blurY: number;
-
-    constructor(blurX: number = 4.0, blurY: number = 4.0) {
+    constructor(protected blurX = 4.0, protected blurY = 4.0) {
         super();
-        this._blurX = blurX;
-        this._blurY = blurY;
     }
 
-    public serialize(): Object {
-        var s: Object = super.serialize();
+    serialize() {
+        const s = super.serialize();
         s['type'] = 'blur';
         s['params'] = {
-            'blurX': this._blurX,
-            'blurY': this._blurY
+            'blurX': this.blurX,
+            'blurY': this.blurY
         }
         return s;
     }
 }
 
 class GlowFilter extends Filter {
-    private _color: number;
-    private _alpha: number;
-    private _blurX: number;
-    private _blurY: number;
-    private _strength: number;
-    private _quality: number;
-    private _inner: boolean;
-    private _knockout: boolean;
-
-    constructor(color: number = 16711680,
-        alpha: number = 1.0,
-        blurX: number = 6.0,
-        blurY: number = 6.0,
-        strength: number = 2,
-        quality = null,
-        inner: boolean = false,
-        knockout: boolean = false) {
-
+    constructor(protected color = 16711680,
+        protected alpha = 1.0,
+        protected blurX = 6.0,
+        protected blurY = 6.0,
+        protected strength = 2,
+        protected quality?: number,
+        protected inner = false,
+        protected knockout = false) {
         super();
-        this._color = color;
-        this._alpha = alpha;
-        this._blurX = blurX;
-        this._blurY = blurY;
-        this._strength = strength;
-        this._quality = quality!;
-        this._inner = inner;
-        this._knockout = knockout;
     }
 
-    public serialize(): Object {
-        var s: Object = super.serialize();
+    serialize() {
+        const s = super.serialize();
         s['type'] = 'glow';
         s['params'] = {
-            'color': this._color,
-            'alpha': this._alpha,
-            'blurX': this._blurX,
-            'blurY': this._blurY,
-            'strength': this._strength,
-            'inner': this._inner,
-            'knockout': this._knockout
+            'color': this.color,
+            'alpha': this.alpha,
+            'blurX': this.blurX,
+            'blurY': this.blurY,
+            'strength': this.strength,
+            'inner': this.inner,
+            'knockout': this.knockout
         };
         return s;
     }
 }
 
 class DropShadowFilter extends Filter {
-    private _color: number;
-    private _alpha: number;
-    private _blurX: number;
-    private _blurY: number;
-    private _strength: number;
-    private _quality: number;
-    private _inner: boolean;
-    private _knockout: boolean;
-    private _distance: number;
-    private _angle: number;
-
-    constructor(distance: number = 4.0,
-        angle: number = 45,
-        color: number = 0,
-        alpha: number = 1,
-        blurX: number = 4.0,
-        blurY: number = 4.0,
-        strength: number = 1.0,
-        quality: number = 1) {
-
+    protected inner = false;
+    protected knockout = false;
+    constructor(protected distance: number = 4.0,
+        protected angle: number = 45,
+        protected color: number = 0,
+        protected alpha: number = 1,
+        protected blurX: number = 4.0,
+        protected blurY: number = 4.0,
+        protected strength: number = 1.0,
+        protected quality: number = 1) {
         super();
-        this._color = color;
-        this._alpha = alpha;
-        this._blurX = blurX;
-        this._blurY = blurY;
-        this._strength = strength;
-        this._quality = quality;
-        /* TODO: Update to support inner & knockout */
-        this._inner = false;
-        this._knockout = false;
-        this._distance = distance;
-        this._angle = angle;
     }
 
-    public serialize(): Object {
-        var s: Object = super.serialize();
+    serialize() {
+        const s = super.serialize();
         s['type'] = 'dropShadow';
         s['params'] = {
-            'distance': this._distance,
-            'angle': this._angle,
-            'color': this._color,
-            'blurY': this._blurY,
-            'strength': this._strength,
-            'inner': this._inner,
-            'knockout': this._knockout
+            'distance': this.distance,
+            'angle': this.angle,
+            'color': this.color,
+            'blurY': this.blurY,
+            'strength': this.strength,
+            'inner': this.inner,
+            'knockout': this.knockout
         };
         return s;
     }
 }
 
 class ConvolutionFilter extends Filter {
-    private _matrixX: number;
-    private _matrixY: number;
-    private _matrix: number[];
-    private _divisor: number;
-    private _bias: number;
-    private _preserveAlpha: boolean;
-    private _clamp: boolean;
-    private _color: number;
-    private _alpha: number;
-
-    constructor(matrixX: number = 0,
-        matrixY: number = 0,
-        matrix: number[] = null!,
-        divisor: number = 1.0,
-        bias: number = 0.0,
-        preserveAlpha: boolean = true,
-        clamp: boolean = true,
-        color: number = 0,
-        alpha: number = 0.0) {
+    constructor(protected matrixX = 0,
+        protected matrixY = 0,
+        protected matrix?: number[],
+        protected divisor = 1.0,
+        protected bias = 0.0,
+        protected preserveAlpha = true,
+        protected clamp = true,
+        protected color = 0,
+        protected alpha = 0.0) {
         super();
     };
 
-    public serialize(): Object {
-        var s: Object = super.serialize();
+    serialize() {
+        const s = super.serialize();
         s['type'] = 'convolution';
         s['matrix'] = {
-            'x': this._matrixX,
-            'y': this._matrixY,
-            'data': this._matrix
+            'x': this.matrixX,
+            'y': this.matrixY,
+            'data': this.matrix
         };
-        s['divisor'] = this._divisor;
-        s['preserveAlpha'] = this._preserveAlpha;
-        s['clamp'] = this._clamp;
-        s['color'] = this._color;
-        s['alpha'] = this._alpha;
+        s['divisor'] = this.divisor;
+        s['preserveAlpha'] = this.preserveAlpha;
+        s['clamp'] = this.clamp;
+        s['color'] = this.color;
+        s['alpha'] = this.alpha;
         return s;
     }
 }
 
 export function createDropShadowFilter(
-    distance: number = 4.0,
-    angle: number = 45,
-    color: number = 0,
-    alpha: number = 1,
-    blurX: number = 4.0,
-    blurY: number = 4.0,
-    strength: number = 1.0,
-    quality: number = 1): any {
+    distance = 4.0,
+    angle = 45,
+    color = 0,
+    alpha = 1,
+    blurX = 4.0,
+    blurY = 4.0,
+    strength = 1.0,
+    quality = 1): any {
 
     return new DropShadowFilter(distance, angle, color, alpha, blurX, blurY, strength, quality);
 }
 
 export function createGlowFilter(
-    color: number = 16711680,
-    alpha: number = 1.0,
-    blurX: number = 6.0,
-    blurY: number = 6.0,
-    strength: number = 2,
-    quality = null,
-    inner: boolean = false,
-    knockout: boolean = false): any {
+    color = 16711680,
+    alpha = 1.0,
+    blurX = 6.0,
+    blurY = 6.0,
+    strength = 2,
+    quality?: number,
+    inner = false,
+    knockout = false): any {
 
     return new GlowFilter(color, alpha, blurX, blurY, strength, quality, inner, knockout);
 }
 
 export function createBlurFilter(
-    blurX: number = 6.0,
-    blurY: number = 6.0,
-    strength: number = 2): any {
+    blurX = 6.0,
+    blurY = 6.0,
+    strength = 2): any {
 
     return new BlurFilter(blurX, blurY);
 }
@@ -207,15 +160,15 @@ export function createBevelFilter() {
     throw new Error('Display.createBevelFilter not implemented');
 }
 
-export function createConvolutionFilter(matrixX: number = 0,
-    matrixY: number = 0,
-    matrix: number[] = null!,
-    divisor: number = 1.0,
-    bias: number = 0.0,
-    preserveAlpha: boolean = true,
-    clamp: boolean = true,
-    color: number = 0,
-    alpha: number = 0.0) {
+export function createConvolutionFilter(matrixX = 0,
+    matrixY = 0,
+    matrix?: number[],
+    divisor = 1.0,
+    bias = 0.0,
+    preserveAlpha = true,
+    clamp = true,
+    color = 0,
+    alpha = 0.0) {
 
     return new ConvolutionFilter(matrixX, matrixY, matrix, divisor, bias, preserveAlpha, clamp, color, alpha);
 }

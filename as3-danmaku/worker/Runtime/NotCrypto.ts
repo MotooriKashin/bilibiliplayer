@@ -14,11 +14,11 @@ class Rc4 {
     }
 }
 export class NotCrypto {
-    protected _rngState = [
+    static _rngState = [
         Math.floor(Date.now() / 1024) % 1024,
         Date.now() % 1024
     ];
-    protected xorshift128p() {
+    static xorshift128p() {
         var s0 = this._rngState[1], s1 = this._rngState[0];
         this._rngState[0] = s0;
         s1 ^= s1 << 23;
@@ -27,7 +27,7 @@ export class NotCrypto {
         s1 ^= s0 >> 26;
         this._rngState[1] = s1;
     }
-    random(bits: number = 16) {
+    static random(bits: number = 16) {
         if (bits === void 0) { bits = 16; }
         if (bits > 32) {
             throw new Error('NotCrypto.random expects 32 bits or less');
@@ -40,10 +40,10 @@ export class NotCrypto {
             return value;
         }
         else {
-            return Runtime.NotCrypto.fallbackRandom(Date.now() % 1024, bits);
+            return this.fallbackRandom(Date.now() % 1024, bits);
         }
     }
-    fallbackRandom(seed: number, bits: number = 16) {
+    static fallbackRandom(seed: number, bits = 16) {
         if (bits === void 0) { bits = 16; }
         if (bits > 32) {
             throw new Error('NotCrypto.fallbackRandom expects 32 bits or less');
@@ -57,7 +57,7 @@ export class NotCrypto {
         }
         return (this._rngState[0] + this._rngState[1]) & mask;
     }
-    toHex(value, length) {
+    static toHex(value: number, length: number) {
         if (length === void 0) { length = 0; }
         if (length <= 0) {
             return value.toString(16);

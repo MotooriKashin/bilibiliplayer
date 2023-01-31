@@ -1,5 +1,7 @@
-var permissions: Object = {};
-export function requestPermission(name: string, callback?: Function): void {
+import { __channel, __pchannel, __trace } from "../OOAPI";
+
+const permissions: Record<string, boolean> = {};
+export function requestPermission(name: string, callback?: Function) {
     __channel("Runtime:RequestPermission", {
         "name": name
     }, (result: boolean) => {
@@ -14,7 +16,7 @@ export function requestPermission(name: string, callback?: Function): void {
     })
 }
 
-export function hasPermission(name: string): boolean {
+export function hasPermission(name: string) {
     if (permissions.hasOwnProperty(name) &&
         permissions[name]) {
         return true;
@@ -22,20 +24,20 @@ export function hasPermission(name: string): boolean {
     return false;
 }
 
-export function openWindow(url: string, params?: any, callback?: Function): void {
+export function openWindow(url: string, params?: any, callback?: Function) {
     __channel("Runtime:PrivilegedAPI", {
         "method": "openWindow",
         "params": [url, params]
-    }, function (windowId) {
+    }, function (windowId: string) {
         // Create a small compact window object
-        var WND: Object = {
-            "moveTo": function (x, y) {
+        const WND = {
+            "moveTo": function (x: number, y: number) {
                 __pchannel("Runtime:PrivilegedAPI", {
                     "method": "window",
                     "params": [windowId, "moveTo", [x, y]]
                 });
             },
-            "resizeTo": function (w, h) {
+            "resizeTo": function (w: number, h: number) {
                 __pchannel("Runtime:PrivilegedAPI", {
                     "method": "window",
                     "params": [windowId, "resizeTo", [w, h]]
@@ -58,13 +60,13 @@ export function openWindow(url: string, params?: any, callback?: Function): void
     });
 }
 
-export function injectStyle(referenceObject: string, style: Object): void {
+export function injectStyle(referenceObject: string, style: Object) {
     __pchannel("Runtime:PrivilegedAPI", {
         "method": "injectStyle",
         "params": [referenceObject, style]
     });
 }
 
-export function privilegedCode(): void {
+export function privilegedCode() {
     __trace('Runtime.privilegedCode not available.', 'warn');
 }

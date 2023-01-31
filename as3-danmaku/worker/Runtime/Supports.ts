@@ -1,4 +1,4 @@
-var supported: Object = {
+const supported = {
     "js": ["*"],
     "Runtime": ["*", "openWindow", "injectStyle"],
     "Display": ["*"],
@@ -8,16 +8,15 @@ var supported: Object = {
 };
 
 /**
- * Check if a certain feature is supported by the Runtime
- * @param {string} featureName - feature to be checked
- * @param {string} subfeature - sub feature (defaults to all)
- * @return {boolean} indicator of whether feature is supported
+ * 检查特性是否受支持
+ * @param featureName 特性名
+ * @param subfeature 二级特性
  */
-export function supports(featureName: string, subfeature: string = "*"): boolean {
+export function supports(featureName: string, subfeature: string = "*") {
     if (!supported.hasOwnProperty(featureName)) {
         return false;
     } else {
-        if (supported[featureName].indexOf(subfeature) >= 0) {
+        if (supported[<'js'>featureName].indexOf(subfeature) >= 0) {
             return true;
         }
     }
@@ -25,11 +24,11 @@ export function supports(featureName: string, subfeature: string = "*"): boolean
 };
 
 /**
- * Requests for a library and loads it. This is used by the load method
- * @param {string} libraryName - library to be loaded
- * @param {function} callback - function called after loading completes/fails
+ * 加载组件
+ * @param libraryName 组件名
+ * @param callback 成功/失败回调
  */
-export function requestLibrary(libraryName: string, callback: Function): void {
+export function requestLibrary(libraryName: string, callback: Function) {
     if (libraryName === 'libBitmap') {
         callback(null, {
             'type': 'noop'

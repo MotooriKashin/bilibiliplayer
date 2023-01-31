@@ -4,5 +4,8 @@
     "description": "",
     "main": "index.ts",
     "author": "bilibili",
-    "license": "MIT"
+    "license": "MIT",
+    "scripts": {
+        "build": "node ./build.js"
+    }
 }

@@ -1,4 +1,4 @@
-import { CCLScripter } from "../CCLScripting";
+import { CCLScripter } from "./CCLScripting";
 import { Unpack } from "./Unpack/Unpack";
 
 interface ISerializedData {

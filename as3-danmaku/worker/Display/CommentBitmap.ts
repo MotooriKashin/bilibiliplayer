@@ -1,21 +1,23 @@
+import { __trace } from "../OOAPI";
+import { IComment } from "../Player";
+import { registerObject } from "../Runtime/Object";
+import { Bitmap, BitmapData } from "./Bitmap";
+import { Display } from "./Display";
 import { DisplayObject } from "./DisplayObject";
 import { MotionManager } from "./MotionManager";
 
-/**
- * Compliant CommentBitmap Polyfill For BiliScriptEngine
- */
 export class CommentBitmap extends Bitmap {
     private _mM: MotionManager = new MotionManager(this);
 
-    constructor(params: Object) {
+    constructor(params: IComment) {
         super('bitmapData' in params ? params['bitmapData'] : undefined);
         this.initStyle(params);
-        Runtime.registerObject(this);
+        registerObject(this);
         this.bindParent(params);
         this._mM.play();
     }
 
-    get motionManager(): MotionManager {
+    get motionManager() {
         return this._mM;
     }
 
@@ -23,13 +25,13 @@ export class CommentBitmap extends Bitmap {
         __trace("IComment.motionManager is read-only", "warn");
     }
 
-    private bindParent(params: Object): void {
-        if (params.hasOwnProperty("parent")) {
-            (<DisplayObject>params["parent"]).addChild(this);
+    private bindParent(params: IComment) {
+        if ("parent" in params) {
+            params["parent"]?.addChild(this);
         }
     }
 
-    public initStyle(style: Object): void {
+    public initStyle(style: Object) {
         if (typeof style === 'undefined' || style === null) {
             style = {};
         }
@@ -39,19 +41,19 @@ export class CommentBitmap extends Bitmap {
     }
 }
 
-export function createBitmap(params: Object): any {
+export function createBitmap(params: IComment) {
     return new CommentBitmap(params);
 }
 
-export function createParticle(params: Object): any {
+export function createParticle(params: IComment) {
     __trace('Bitmap.createParticle not implemented', 'warn');
     return new CommentBitmap(params);
 }
 
 export function createBitmapData(width: number,
     height: number,
-    transparent: boolean = true,
-    fillColor: number = 0xffffffff): any {
+    transparent = true,
+    fillColor = 0xffffffff) {
 
     return new Display.BitmapData(width, height, transparent, fillColor);
 }

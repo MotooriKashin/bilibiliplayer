@@ -1,23 +1,22 @@
-import { DisplayObject } from "./DisplayObject";
+import { __trace } from "../OOAPI";
+import { IComment } from "../Player";
+import { registerObject } from "../Runtime/Object";
 import { MotionManager } from "./MotionManager";
 import { Shape } from "./Shape";
 
-/**
- * Compliant CommentShape Polyfill For BiliScriptEngine
- */
 class CommentShape extends Shape {
-    private _mM: MotionManager = new MotionManager(this);
+    protected _mM: MotionManager = new MotionManager(this);
 
-    constructor(params: Object) {
+    constructor(params: IComment) {
         super();
         this.setDefaults(params);
         this.initStyle(params);
-        Runtime.registerObject(this);
+        registerObject(this);
         this.bindParent(params);
         this._mM.play();
     }
 
-    get motionManager(): MotionManager {
+    get motionManager() {
         return this._mM;
     }
 
@@ -25,28 +24,25 @@ class CommentShape extends Shape {
         __trace("IComment.motionManager is read-only", "warn");
     }
 
-    private bindParent(params: Object): void {
+    protected bindParent(params: IComment) {
         if (params.hasOwnProperty("parent")) {
-            (<DisplayObject>params["parent"]).addChild(this);
+            params["parent"]?.addChild(this);
         }
     }
 
-    public initStyle(style: Object): void {
-        if (typeof style === 'undefined' || style === null) {
-            style = {};
-        }
+    initStyle(style = <IComment>{}) {
         if (style["lifeTime"]) {
             this._mM.dur = style["lifeTime"] * 1000;
         }
         if (style.hasOwnProperty("motionGroup")) {
-            this._mM.initTweenGroup(style["motionGroup"], this._mM.dur);
+            this._mM.initTweenGroup(style["motionGroup"]!, this._mM.dur);
         } else if (style.hasOwnProperty("motion")) {
-            this._mM.initTween(style["motion"], false);
+            this._mM.initTween(style["motion"]!, false);
         }
     }
 
 }
 
-export function createShape(params: Object): any {
+export function createShape(params: IComment): any {
     return new CommentShape(params);
 }

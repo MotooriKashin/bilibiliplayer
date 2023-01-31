@@ -1,35 +1,33 @@
-import { Timer } from "./Timer";
+import { __trace } from "../OOAPI";
+import { clear } from "./Object";
+import { getTimer, Timer } from "./Timer";
 
 interface IMotionManager {
     stop(): void;
 }
-export class ScriptManagerImpl {
-    private _managedElements: { [name: string]: IMotionManager } = {};
+export class ScriptManager {
+    protected managedElements: Record<string, IMotionManager> = {};
 
-    constructor() { }
-
-    /**
-     * Internal method to register an element's MotionManager with ScriptManager
-     */
-    public _registerElement(name: string, mM: IMotionManager): void {
-        this._managedElements[name] = mM;
+    /** 注册元素动作管理 */
+    _registerElement(name: string, mM: IMotionManager) {
+        this.managedElements[name] = mM;
     }
 
-    public clearTimer(): void {
-        Runtime.getTimer().clearAll('interval');
+    clearTimer() {
+        getTimer().clearAll('interval');
     }
 
-    public clearEl(): void {
+    clearEl() {
         // Remove all elements drawn
         __trace("ScriptManager.clearEl may not be properly implemented.", "warn");
-        Runtime.clear();
+        clear();
     }
 
-    public clearTrigger(): void {
+    clearTrigger() {
         __trace("ScriptManager.clearTrigger not implemented.", "warn");
     }
 
-    public pushEl(el: any): void {
+    pushEl(el: any) {
         __trace("ScriptManager.pushEl is not properly implemented.", "warn");
         if (el['motionManager']) {
             <IMotionManager>el['motionManager'].start();
@@ -37,7 +35,7 @@ export class ScriptManagerImpl {
         el['visible'] = true;
     }
 
-    public popEl(el: any): void {
+    popEl(el: any) {
         __trace("ScriptManager.popEl is not properly implemented.", "warn");
         // TODO: Create some kind of thing to register motion managers properly
         if (el['motionManager']) {
@@ -46,15 +44,15 @@ export class ScriptManagerImpl {
         el['visible'] = false;
     }
 
-    public pushTimer(t: Timer): void {
+    pushTimer(t: Timer) {
         __trace("ScriptManager.pushTimer not implemented.", "warn");
     }
 
-    public popTimer(t: Timer): void {
+    popTimer(t: Timer) {
         __trace("ScriptManager.popTimer not implemented.", "warn");
     }
 
-    public toString(): string {
+    toString() {
         return '[scriptManager ScriptManager]';
     }
 }

@@ -1,64 +1,63 @@
-import { DisplayObject } from "./DisplayObject";
+import { __trace } from "../OOAPI";
+import { IComment } from "../Player";
+import { registerObject } from "../Runtime/Object";
 import { MotionManager } from "./MotionManager";
 import { UIComponent } from "./Sprite";
 
-/**
- * Compliant CommentButton Polyfill For BiliScriptEngine
- */
 class CommentButton extends UIComponent {
-    private _mM: MotionManager = new MotionManager(this);
-    private _label: string = "";
+    protected mM = new MotionManager(this);
+    protected label = "";
 
-    constructor(params: Object) {
+    constructor(params: IComment) {
         super();
         this.setDefaults(params);
         this.initStyle(params);
-        Runtime.registerObject(this);
+        registerObject(this);
         this.bindParent(params);
-        this._mM.play();
+        this.mM.play();
     }
 
-    get motionManager(): MotionManager {
-        return this._mM;
+    get motionManager() {
+        return this.mM;
     }
 
     set motionManager(_m: MotionManager) {
         __trace("IComment.motionManager is read-only", "warn");
     }
 
-    private bindParent(params: Object): void {
+    protected bindParent(params: IComment) {
         if (params.hasOwnProperty("parent")) {
-            (<DisplayObject>params["parent"]).addChild(this);
+            params["parent"]?.addChild(this);
         }
     }
 
-    public initStyle(style: Object): void {
+    initStyle(style: IComment) {
         if (typeof style === 'undefined' || style === null) {
-            style = {};
+            style = <any>{};
         }
         if ("lifeTime" in style) {
-            this._mM.dur = <number>style["lifeTime"] * 1000;
+            this.mM.dur = <number>style["lifeTime"] * 1000;
         } else {
-            this._mM.dur = 4000;
+            this.mM.dur = 4000;
         }
         if (style.hasOwnProperty("text")) {
-            this._label = style["text"];
+            this.label = style["text"];
         }
         if (style.hasOwnProperty("motionGroup")) {
-            this._mM.initTweenGroup(style["motionGroup"], this._mM.dur);
+            this.mM.initTweenGroup(style["motionGroup"]!, this.mM.dur);
         } else if (style.hasOwnProperty("motion")) {
-            this._mM.initTween(style["motion"], false);
+            this.mM.initTween(style["motion"]!, false);
         }
     }
 
-    public serialize(): Object {
-        var serialized: Object = super.serialize();
+    serialize() {
+        const serialized = super.serialize();
         serialized["class"] = "Button";
-        serialized["text"] = this._label;
+        serialized["text"] = this.label;
         return serialized;
     }
 }
 
-export function createButton(params: Object): any {
+export function createButton(params: IComment) {
     return new CommentButton(params);
 }
