@@ -1,24 +1,18 @@
-import { CCLScripter } from "./CCLScripting";
+import { DisplayObject } from "./Unpack/DisplayObject";
 import { Unpack } from "./Unpack/Unpack";
 
 interface ISerializedData {
     class: string;
 }
-interface IBaseObject {
-    unpackedObject: any;
-    destroy(): void;
-    getClass(): string;
-}
 export class ScriptingContext {
-    protected objects: Record<string, IBaseObject> = {};
-    protected Unpack = Unpack;
-    constructor(private scripter: CCLScripter, private stage: HTMLElement) { }
+    protected objects: Record<string, DisplayObject> = {};
+    constructor(private wrap: HTMLElement) { }
     registerObject(objectId: string, serialized: ISerializedData) {
-        if (typeof this.Unpack[serialized["class"]] === "function") {
-            this.objects[objectId] = new this.Unpack[serialized["class"]](this.stage,
+        if (typeof Unpack[<'Button'>serialized["class"]] === "function") {
+            this.objects[objectId] = new Unpack[<'Button'>serialized["class"]](this.wrap,
                 serialized, this);
         } else {
-            this.scripter.logger.error("Cannot unpack class \"" +
+            console.error("Cannot unpack class \"" +
                 serialized["class"] + "\". No valid unpacker found");
             return;
         }
@@ -28,63 +22,63 @@ export class ScriptingContext {
     };
     updateProperty(objectId: string, propName: string, value: any) {
         if (!this.objects[objectId]) {
-            this.scripter.logger.error("Object (" + objectId + ") not found.");
+            console.error("Object (" + objectId + ") not found.");
             return;
         }
-        if (this.objects[objectId][propName] === undefined) {
-            this.scripter.logger.error("Property \"" + propName
+        if ((<any>this).objects[objectId][propName] === undefined) {
+            console.error("Property \"" + propName
                 + "\" not defined for object of type " +
                 this.objects[objectId].getClass() + ".");
             return;
         }
-        this.objects[objectId][propName] = value;
+        (<any>this).objects[objectId][propName] = value;
     };
     callMethod(objectId: string, methodName: string, params: any[]) {
         if (!this.objects[objectId]) {
-            this.scripter.logger.error("Object (" + objectId + ") not found.");
+            console.error("Object (" + objectId + ") not found.");
             return;
         }
-        if (!this.objects[objectId][methodName]) {
-            this.scripter.logger.error("Method \"" + methodName
+        if (!(<any>this).objects[objectId][methodName]) {
+            console.error("Method \"" + methodName
                 + "\" not defined for object of type " +
                 this.objects[objectId].getClass() + ".");
             return;
         }
         try {
-            this.objects[objectId][methodName](params);
+            (<any>this).objects[objectId][methodName](params);
         } catch (e) {
-            if (e.stack) {
-                this.scripter.logger.error(e.stack);
+            if ((<Error>e).stack) {
+                console.error((<Error>e).stack);
             } else {
-                this.scripter.logger.error(e.toString());
+                console.error((<Error>e).toString());
             };
         }
     };
-    getObject(objectId: string) {
+    getObject<T extends DisplayObject>(objectId: string): T {
         if (!this.objects.hasOwnProperty(objectId)) {
-            this.scripter.logger.error("Object (" + objectId + ") not found.");
-            return this.objects[objectId];
+            console.error("Object (" + objectId + ") not found.");
+            return <T>this.objects[objectId];
         }
-        return this.objects[objectId];
+        return <T>this.objects[objectId];
     };
     invokeError(msg: any, mode: string) {
         switch (mode) {
             case "err":
-                this.scripter.logger.error(msg);
+                console.error(msg);
                 break;
             case "warn":
-                this.scripter.logger.warn(msg);
+                console.warn(msg);
                 break;
             default:
-                this.scripter.logger.log(msg);
+                console.log(msg);
                 break;
         }
     };
     clear() { }
     getDimensions() {
         return {
-            "stageWidth": this.stage.offsetWidth,
-            "stageHeight": this.stage.offsetHeight,
+            "stageWidth": this.wrap.offsetWidth,
+            "stageHeight": this.wrap.offsetHeight,
             "screenWidth": window.screen.width,
             "screenHeight": window.screen.height
         };

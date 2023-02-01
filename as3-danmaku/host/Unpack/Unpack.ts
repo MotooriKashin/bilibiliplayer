@@ -22,8 +22,8 @@ export function modernize<T extends object>(styles: T): T {
     };
     for (const key in modernizeLibrary) {
         if (styles.hasOwnProperty(key)) {
-            for (let i = 0; i < modernizeLibrary[key].length; i++) {
-                styles[modernizeLibrary[key][i]] = styles[key];
+            for (let i = 0; i < modernizeLibrary[<'transform'>key].length; i++) {
+                (<any>styles)[modernizeLibrary[<'transform'>key][i]] = (<any>styles)[key];
             }
         }
     }
@@ -36,7 +36,7 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(tagName: K 
             if (key === "style") {
                 props[key] = modernize(props[key]);
                 for (const style in props[key]) {
-                    elem["style"][style] = props[key][style];
+                    (<any>elem)["style"][style] = props[key][style];
                 }
             } else if (key === "className") {
                 elem.classList.add(props[key]);

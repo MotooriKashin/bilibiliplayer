@@ -8,7 +8,7 @@ interface Transform {
 }
 export class TextField extends DisplayObject {
     DOM: HTMLDivElement;
-    protected _transform: Transform;
+    protected __transform!: Transform;
     constructor(stage: HTMLElement, data: Record<string, any>, context: ScriptingContext) {
         super(stage, data, context);
         sensibleDefaults(data, {
@@ -113,7 +113,7 @@ export class TextField extends DisplayObject {
         return this.DOM.style.textShadow.split(',');
     }
     set transform(f: Transform) {
-        this._transform = f;
+        this.__transform = f;
         if (f.mode === "2d") {
             const rm = [f.matrix[0], f.matrix[3], f.matrix[1], f.matrix[4], f.matrix[2], f.matrix[5]];
             this.DOM.style.transform = "matrix(" + (rm.join(",")) + ")";
@@ -122,7 +122,7 @@ export class TextField extends DisplayObject {
         }
     }
     get transform() {
-        return this._transform;
+        return this.__transform;
     }
     getClass() {
         return 'TextField';

@@ -1,2 +1,2 @@
-const exp: new () => Worker;
-export default exp;
+const ParserWorker: new () => Worker;
+export default ParserWorker;

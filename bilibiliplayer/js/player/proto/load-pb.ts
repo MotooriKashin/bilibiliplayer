@@ -462,10 +462,11 @@ export default class LoadPb {
 
         let target: any;
         let action: any;
-        let basList: any[] = [];
-        let dmList: any[] = [];
-        let dmPk: any[] = [];
-        let dmBoom: any[] = [];
+        const basList: any[] = [];
+        const as3List: any[] = [];
+        const dmList: any[] = [];
+        const dmPk: any[] = [];
+        const dmBoom: any[] = [];
         let item: IDmData;
 
         for (let i = 0; i < danmakuArray.length; i++) {
@@ -531,6 +532,10 @@ export default class LoadPb {
                         });
                         this.dmTrack.dmadv++;
                         break;
+                    case 8:
+                        target.weight = 11;
+                        as3List.push(target);
+                        break;
                     case 9:
                         target.weight = 11;
                         basList.push(target);
@@ -556,6 +561,9 @@ export default class LoadPb {
         if (basList.length) {
             this.appendDmBas(basList);
             this.dmTrack.dmbas += basList.length;
+        }
+        if (as3List.length) {
+            this.player.as3Danmaku?.add(as3List);
         }
         if (dmBoom.length) {
             this.player.allPlugins?.startBoom(dmBoom);

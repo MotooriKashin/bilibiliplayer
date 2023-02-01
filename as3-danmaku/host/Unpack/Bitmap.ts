@@ -3,7 +3,7 @@ import { DisplayObject } from "./DisplayObject";
 import { createElement } from "./Unpack";
 
 export class BitmapData extends DisplayObject {
-    DOM: HTMLDivElement;
+    DOM!: HTMLDivElement;
     protected _notifyList: Bitmap[] = [];
     protected _data: ImageData;
 
@@ -39,7 +39,7 @@ export class BitmapData extends DisplayObject {
             this._notifyList.splice(index, 1);
         }
     };
-    updateBox(update: unknown) {
+    updateBox(update: any) {
         const box = update.box;
         for (let y = box.y; y < box.y + box.height; y++) {
             for (let x = box.x; x < box.x + box.width; x++) {
@@ -68,7 +68,7 @@ export class BitmapData extends DisplayObject {
 }
 export class Bitmap extends DisplayObject {
     DOM: HTMLCanvasElement;
-    protected _bitmapDataId: number;
+    protected _bitmapDataId?: number;
 
     constructor(stage: HTMLElement, data: Record<string, any>, context: ScriptingContext) {
         super(stage, data, context);
@@ -87,16 +87,16 @@ export class Bitmap extends DisplayObject {
         // Hook DOM
         stage.appendChild(this.DOM);
     }
-    _draw(imageData) {
+    _draw(imageData: any) {
         this.DOM.setAttribute('width', imageData.width);
         this.DOM.setAttribute('height', imageData.height);
         const ctx = this.DOM.getContext('2d')!;
         ctx.putImageData(imageData, 0, 0);
     };
     setBitmapData(id: number) {
-        const bitmapData: BitmapData = this.context.getObject(id);
-        if (this._bitmapDataId !== null) {
-            this.context.getObject(this._bitmapDataId)._deregisterNotify(this);
+        const bitmapData = this.context.getObject<BitmapData>(<any>id);
+        if (this._bitmapDataId) {
+            this.context.getObject<BitmapData>(<any>this._bitmapDataId)._deregisterNotify(this);
         }
         bitmapData._registerNotify(this);
         this._bitmapDataId = id;

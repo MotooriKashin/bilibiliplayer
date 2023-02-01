@@ -6,8 +6,8 @@ interface Transformation {
 }
 export abstract class DisplayObject {
     abstract DOM: HTMLDivElement | SVGSVGElement | HTMLCanvasElement;
-    protected _x: number;
-    protected _y: number;
+    protected _x!: number;
+    protected _y!: number;
     protected _transform = <Transformation>{};
     constructor(protected stage: HTMLElement, protected data: Record<string, any>, protected context: ScriptingContext) { }
     unload() {
@@ -73,7 +73,7 @@ export abstract class DisplayObject {
     protected setHeight(height: number) {
         this.DOM.style.height = height + "px";
     };
-    protected addChild(childitem: unknown) {
+    protected addChild(childitem: any) {
         const child = this.context.getObject(childitem);
         this.data.children.push(child);
         if (!child)
@@ -90,14 +90,18 @@ export abstract class DisplayObject {
             this.context.invokeError("Sprite.addChild failed. Attempted to add non object", "err");
         }
     };
-    protected removeChild(childitem: unknown) {
+    protected removeChild(childitem: any) {
         const child = this.context.getObject(childitem);
         if (!child)
             return;
         try {
-            this.DOM.removeChild(child.DOM);
+            this.DOM.removeChild(child.DOM!);
         } catch (e) {
-            this.context.invokeError(e.stack, "err");
+            this.context.invokeError((<Error>e).stack, "err");
         }
     };
+    protected offset(x: number, y: number) { }
+    getClass() {
+        return 'DisplayObject';
+    }
 }

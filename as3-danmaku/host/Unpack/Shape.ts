@@ -501,7 +501,7 @@ export class Shape extends DisplayObject {
         for (let i = 0; i < children.length; i++) {
             this.state.scheduleClear.push(children[i]);
         }
-        this.state.scheduleTimer = setTimeout(() => {
+        this.state.scheduleTimer = self.setTimeout(() => {
             this._clear();
             this.state.scheduleTimer = -1;
         }, 60);
