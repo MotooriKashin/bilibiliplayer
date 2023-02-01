@@ -1363,6 +1363,7 @@ class Danmaku {
         this.resizeTimer && clearTimeout(this.resizeTimer);
         this.danmaku.destroy();
         this.loadPb?.destroy();
+        this.player.as3Danmaku?.destroy();
     }
 
     exportColorEffect() {

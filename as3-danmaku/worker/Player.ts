@@ -115,18 +115,18 @@ function createSound(sample: string, onload?: Function) {
 
 export class Player {
     static createSound = createSound;
-    state: string = '';
-    protected _time: string = '';
-    commentList: CommentData[] = [];
-    refreshRate: number = 0;
-    width: number = 0;
-    height: number = 0;
-    videoWidth: number = 0;
-    videoHeight: number = 0;
-    version: number = 0;
-    lastUpdate: TimeKeeper = new TimeKeeper();
+    static state: string = '';
+    static _time: string = '';
+    static commentList: CommentData[] = [];
+    static refreshRate: number = 0;
+    static width: number = 0;
+    static height: number = 0;
+    static videoWidth: number = 0;
+    static videoHeight: number = 0;
+    static version: number = 0;
+    static lastUpdate: TimeKeeper = new TimeKeeper();
 
-    get time() {
+    static get time() {
         if (this.state !== 'playing') {
             return this._time;
         } else {
@@ -134,36 +134,17 @@ export class Player {
         }
     }
 
-
-    constructor() {
-        __schannel('Update:DimensionUpdate', (payload: any) => {
-            this.width = payload["stageWidth"];
-            this.height = payload["stageHeight"];
-            if (payload.hasOwnProperty("videoWidth") &&
-                payload.hasOwnProperty("videoHeight")) {
-
-                this.videoWidth = payload["videoWidth"];
-                this.videoHeight = payload["videoHeight"];
-            }
-        });
-        __schannel("Update:TimeUpdate", (payload: any) => {
-            this.state = payload["state"];
-            this._time = payload["time"];
-            this.lastUpdate.reset();
-        });
-    }
-
-    play() {
+    static play() {
         __pchannel("Player::action", {
             "action": "play"
         });
     }
-    pause() {
+    static pause() {
         __pchannel("Player::action", {
             "action": "pause"
         });
     }
-    seek(offset: number) {
+    static seek(offset: number) {
         __pchannel("Player::action", {
             "action": "seek",
             "params": offset
@@ -175,7 +156,7 @@ export class Player {
      * @param page p
      * @param newWindow 是否新建标签页（默认 否）
      */
-    jump(
+    static jump(
         video: string,
         page: number = 1,
         newWindow: boolean = false) {
@@ -194,7 +175,7 @@ export class Player {
      * @param callback 监听回调
      * @param timeout 延时
      */
-    commentTrigger(callback: (comment: CommentData) => void, timeout: number) {
+    static commentTrigger(callback: (comment: CommentData) => void, timeout: number) {
         if (!Runtime.hasObject('__player')) {
             __trace('Your environment does not support player triggers.', 'err');
             return;
@@ -213,7 +194,7 @@ export class Player {
      * @param timeout 延时
      * @param triggerOnUp 是否松开按钮再回调（默认 否）
      */
-    keyTrigger(callback: (key: string) => void,
+    static keyTrigger(callback: (key: string) => void,
         timeout: number = 1000,
         triggerOnUp: boolean = false) {
         if (!Runtime.hasObject('__player')) {
@@ -229,10 +210,25 @@ export class Player {
         //TODO: remove the listener after the timeout
         //player.removeEventListener(eventName, listener);
     }
-    setMask(_mask: any) {
+    static setMask(_mask: any) {
         __trace('Masking not supported yet', 'warn');
     }
-    toString() {
+    static toString() {
         return '[player Player]';
     }
 }
+__schannel('Update:DimensionUpdate', (payload: any) => {
+    Player.width = payload["stageWidth"];
+    Player.height = payload["stageHeight"];
+    if (payload.hasOwnProperty("videoWidth") &&
+        payload.hasOwnProperty("videoHeight")) {
+
+        Player.videoWidth = payload["videoWidth"];
+        Player.videoHeight = payload["videoHeight"];
+    }
+});
+__schannel("Update:TimeUpdate", (payload: any) => {
+    Player.state = payload["state"];
+    Player._time = payload["time"];
+    Player.lastUpdate.reset();
+});

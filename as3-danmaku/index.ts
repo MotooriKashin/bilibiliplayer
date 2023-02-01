@@ -376,4 +376,10 @@ export class As3Danmaku {
             this.wrap.innerHTML = '';
         }
     }
+    destroy() {
+        if (this.worker) {
+            this.worker.terminate();
+            delete this.worker;
+        }
+    }
 }
