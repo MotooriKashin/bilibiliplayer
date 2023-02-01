@@ -1,9 +1,8 @@
 import { __trace } from "../OOAPI";
 import { IComment } from "../Player";
-import { registerObject } from "../Runtime/Object";
-import { Bitmap, BitmapData } from "./Bitmap";
+import { Runtime } from "../Runtime/Runtime";
+import { Bitmap } from "./Bitmap";
 import { Display } from "./Display";
-import { DisplayObject } from "./DisplayObject";
 import { MotionManager } from "./MotionManager";
 
 export class CommentBitmap extends Bitmap {
@@ -12,7 +11,7 @@ export class CommentBitmap extends Bitmap {
     constructor(params: IComment) {
         super('bitmapData' in params ? params['bitmapData'] : undefined);
         this.initStyle(params);
-        registerObject(this);
+        Runtime.registerObject(this);
         this.bindParent(params);
         this._mM.play();
     }

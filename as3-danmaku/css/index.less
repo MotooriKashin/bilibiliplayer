@@ -1,0 +1,78 @@
+.as3-danmaku {
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: absolute;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 10
+}
+
+.as3-danmaku.as3-danmaku-pause .as3-danmaku-item {
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused
+}
+
+.as3-danmaku>canvas {
+    pointer-events: auto
+}
+
+.as3-danmaku-item {
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: absolute;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    line-height: 1;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0
+}
+
+.as3-danmaku-item .as3-danmaku-item {
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.as3-danmaku-item.as3-danmaku-item-button {
+    pointer-events: auto;
+    padding: 10px 20px;
+    border-radius: 3px
+}
+
+.as3-danmaku-item-wrap {
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: 10
+}
+
+.as3-danmaku-item-inner {
+    border: 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0
+}
+
+.as3-danmaku-item-text .as3-danmaku-item-inner {
+    pointer-events: none;
+    border-style: solid
+}

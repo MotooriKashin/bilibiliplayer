@@ -1,6 +1,8 @@
 import { ScriptingContext } from "./host/ScriptingContext";
 import ParserWorker from "./host/worker";
 
+import './css/index.less';
+
 /** 配置数据 */
 interface IOption {
     /** 弹幕面板 */
@@ -89,6 +91,7 @@ export class As3Danmaku {
     /** 初始化 */
     init() {
         if (!this.inited) {
+            this.inited = true;
             this.wrap = document.createElement('div');
             this.wrap.classList.add('as3-danmaku');
             this.container.appendChild(this.wrap);
@@ -109,6 +112,8 @@ export class As3Danmaku {
                     }
                 }
             });
+
+            console.log(this);
         }
     }
     /** 添加弹幕 */
@@ -147,11 +152,11 @@ export class As3Danmaku {
                     case "fatal":
                         console.error(data.obj);
                         this.InitWorker();
-                        return;
                     default:
                         console.log(data.obj);
                         break;
                 }
+                return;
             }
             if (data.channel.substring(0, 8) === "::worker") {
                 const type = data.channel.substring(8);
@@ -231,7 +236,7 @@ export class As3Danmaku {
     }
     /** 渲染流程 */
     protected render() {
-        if (!this.paused) {
+        if (!this.paused && this.dmList.length) {
             window['requestAnimationFrame'](() => {
                 this.render();
             });
@@ -291,7 +296,7 @@ export class As3Danmaku {
         this.startTime = new Date().getTime();
         this.pauseTime = 0;
         this.paused = false;
-        this.wrap && this.wrap.classList.remove('bas-danmaku-pause');
+        this.wrap && this.wrap.classList.remove('as3-danmaku-pause');
         if (this.dmList.length) {
             if (!this.inited) {
                 this.init();
@@ -305,7 +310,7 @@ export class As3Danmaku {
         if (!this.inited) {
             this.init();
         }
-        this.wrap?.classList.add('bas-danmaku-pause');
+        this.wrap?.classList.add('as3-danmaku-pause');
         // 记录时间
         const currentTime = new Date().getTime();
         this.pauseTime = this.time0 + currentTime - this.startTime;

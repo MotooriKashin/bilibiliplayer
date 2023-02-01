@@ -1,5 +1,5 @@
 import { __trace } from "../OOAPI";
-import { getObject, IMetaObject } from "../Runtime/Object";
+import { Runtime } from "../Runtime/Runtime";
 import { DisplayObject } from "./DisplayObject";
 import { Graphics } from "./Graphics";
 import { Point } from "./Matrix";
@@ -49,10 +49,10 @@ export class Sprite extends DisplayObject {
 }
 
 export class RootSprite extends Sprite {
-    private _metaRoot: IMetaObject;
+    private _metaRoot: any;
     constructor() {
         super('__root');
-        this._metaRoot = getObject('__root');
+        this._metaRoot = Runtime.getObject('__root');
     }
 
     get parent() {

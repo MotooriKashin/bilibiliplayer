@@ -1,5 +1,4 @@
 import { __trace } from "../OOAPI";
-import { registeredObjects } from "./Object";
 
 /** 主机时间记录 */
 class RuntimeTimer {
@@ -7,12 +6,12 @@ class RuntimeTimer {
         return this.dur;
     }
     set ttl(v) {
-        this.ttl = v;
+        this.dur = v;
     }
     constructor(public type: string, public dur: number, public key: number, public callback: Function) { }
 }
 /** 延时/循环管理 */
-class TimerRuntime {
+export class TimerRuntime {
     protected timer = -1;
     protected timers: RuntimeTimer[] = [];
     protected lastToken = 0;
@@ -206,48 +205,4 @@ export class TimeKeeper {
     reset() {
         this.lastTime = this.clock();
     }
-}
-
-/** 主机时间 */
-const masterTimer = new TimerRuntime();
-
-/** 刷新时间 */
-let internalTimer = new Timer(40);
-const enterFrameDispatcher = function () {
-    for (const object in registeredObjects) {
-        if (object.substring(0, 2) === '__' && object !== '__root') {
-            continue;
-        }
-        try {
-            registeredObjects[object].dispatchEvent('enterFrame');
-        } catch (e) { }
-    }
-};
-masterTimer.start();
-internalTimer.start();
-internalTimer.addEventListener('timer', enterFrameDispatcher);
-
-/** 获取主机时间 */
-export function getTimer() {
-    return masterTimer;
-}
-
-/**
- * 帧率同步
- * @param frameRate 帧率
- */
-export function updateFrameRate(frameRate: number) {
-    if (frameRate > 60 || frameRate < 0) {
-        __trace('Frame rate should be in the range (0, 60]', 'warn');
-        return;
-    }
-    if (frameRate === 0) {
-        // Stop broadcasting of enterFrame
-        internalTimer.stop();
-        return;
-    }
-    internalTimer.stop();
-    internalTimer = new Timer(Math.floor(1000 / frameRate));
-    internalTimer.addEventListener('timer', enterFrameDispatcher);
-    internalTimer.start();
 }

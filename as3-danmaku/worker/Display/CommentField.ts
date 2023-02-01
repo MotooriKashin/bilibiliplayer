@@ -1,6 +1,6 @@
 import { __trace } from "../OOAPI";
 import { IComment } from "../Player";
-import { registerObject } from "../Runtime/Object";
+import { Runtime } from "../Runtime/Runtime";
 import { MotionManager } from "./MotionManager";
 import { TextField } from "./TextField";
 
@@ -11,7 +11,7 @@ class CommentField extends TextField {
         super(text, 0xffffff);
         this.setDefaults(params);
         this.initStyle(params);
-        registerObject(this);
+        Runtime.registerObject(this);
         this.bindParent(params);
         this.mM.play();
     }

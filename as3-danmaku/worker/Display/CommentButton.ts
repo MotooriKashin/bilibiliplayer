@@ -1,6 +1,6 @@
 import { __trace } from "../OOAPI";
 import { IComment } from "../Player";
-import { registerObject } from "../Runtime/Object";
+import { Runtime } from "../Runtime/Runtime";
 import { MotionManager } from "./MotionManager";
 import { UIComponent } from "./Sprite";
 
@@ -12,7 +12,7 @@ class CommentButton extends UIComponent {
         super();
         this.setDefaults(params);
         this.initStyle(params);
-        registerObject(this);
+        Runtime.registerObject(this);
         this.bindParent(params);
         this.mM.play();
     }

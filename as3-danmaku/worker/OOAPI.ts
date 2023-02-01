@@ -129,7 +129,7 @@ export const __OOAPI = new OOAPI();
  * @param obj 内容
  * @param traceMode 级别
  */
-export function __trace(obj: any, traceMode: string) {
+export function __trace(obj: any, traceMode?: 'log' | 'warn' | 'err' | 'fatal') {
     self.postMessage(JSON.stringify({
         'channel': '',
         'obj': obj,

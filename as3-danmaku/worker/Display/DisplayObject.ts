@@ -1,6 +1,6 @@
 import { __trace, __pchannel } from "../OOAPI";
 import { IComment } from "../Player";
-import { generateId } from "../Runtime/Object";
+import { Runtime } from "../Runtime/Runtime";
 import { Display } from "./Display";
 import { Filter, IFilter } from "./Filter";
 import { createPoint, Point } from "./Matrix";
@@ -193,7 +193,7 @@ export class DisplayObject {
     protected _transform = new Transform(this);
     protected _hasSetDefaults = false;
 
-    constructor(protected id = generateId(), protected _visible = true) { }
+    constructor(protected id = Runtime.generateId(), protected _visible = true) { }
 
     setDefaults(defaults = <IComment>{}) {
         if (this._hasSetDefaults) {

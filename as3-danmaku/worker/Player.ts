@@ -2,7 +2,6 @@ import { BitmapData } from "./Display/Bitmap";
 import { DisplayObject } from "./Display/DisplayObject";
 import { Filter } from "./Display/Filter";
 import { __schannel, __pchannel, __trace } from "./OOAPI";
-import { generateId, IMetaObject, getObject } from "./Runtime/Object";
 import { Runtime } from "./Runtime/Runtime";
 import { TimeKeeper } from "./Runtime/Timer";
 
@@ -61,7 +60,7 @@ class CommentData {
     }
 }
 class Sound {
-    protected id = generateId('obj-snd');
+    protected id = Runtime.generateId('obj-snd');
     protected isPlaying: boolean = false;
 
     constructor(protected source: string, protected onload?: Function) { }
@@ -203,8 +202,8 @@ export class Player {
         if (timeout < 0) {
             return;
         }
-        const player: IMetaObject = getObject('__player');
-        player.addEventListener('comment', (v: CommentData) => callback(v));
+        const player = Runtime.getObject('__player');
+        (<any>player).addEventListener('comment', (v: CommentData) => callback(v));
         //TODO: remove the listener after timeout
         //player.removeEventListener('comment', listener);
     }
@@ -225,8 +224,8 @@ export class Player {
             return;
         }
         const eventName: string = 'key' + (triggerOnUp ? 'up' : 'down');
-        const player: IMetaObject = getObject('__player');
-        player.addEventListener(eventName, (e: KeyboardEvent) => callback(e.key));
+        const player = Runtime.getObject('__player');
+        (<any>player).addEventListener(eventName, (e: KeyboardEvent) => callback(e.key));
         //TODO: remove the listener after the timeout
         //player.removeEventListener(eventName, listener);
     }

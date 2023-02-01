@@ -1,5 +1,5 @@
 import { __trace } from "../OOAPI";
-import { generateId } from "../Runtime/Object";
+import { Runtime } from "../Runtime/Runtime";
 import { DisplayObject } from "./DisplayObject";
 
 class TextFormat {
@@ -41,7 +41,7 @@ export class TextField extends DisplayObject {
     private _borderColor = 0;
 
     constructor(private _text = "", color = 0) {
-        super(generateId('obj-textfield'));
+        super(Runtime.generateId('obj-textfield'));
         this._textFormat.color = color;
         this.boundingBox.width = this.textWidth;
         this.boundingBox.height = this.textHeight;

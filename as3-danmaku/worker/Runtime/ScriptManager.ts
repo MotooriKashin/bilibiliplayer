@@ -1,6 +1,6 @@
 import { __trace } from "../OOAPI";
-import { clear } from "./Object";
-import { getTimer, Timer } from "./Timer";
+import { Runtime } from "./Runtime";
+import { Timer } from "./Timer";
 
 interface IMotionManager {
     stop(): void;
@@ -14,13 +14,13 @@ export class ScriptManager {
     }
 
     clearTimer() {
-        getTimer().clearAll('interval');
+        Runtime.getTimer().clearAll('interval');
     }
 
     clearEl() {
         // Remove all elements drawn
         __trace("ScriptManager.clearEl may not be properly implemented.", "warn");
-        clear();
+        Runtime.clear();
     }
 
     clearTrigger() {

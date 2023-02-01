@@ -123,7 +123,7 @@ export class Shape extends DisplayObject {
         this.defaultEffects = Shape._svg('defs', {});
         this.defaultGroup = Shape._svg('g', {});
         this.defaultContainer = Shape._svg('g', {
-            'transform': `translate(${this._x}, ${this._y})`,
+            'transform': `translate(${this._x || 0}, ${this._y || 0})`,
             'opacity': this._alpha
         });
         this.defaultContainer.appendChild(this.defaultGroup);
@@ -134,10 +134,10 @@ export class Shape extends DisplayObject {
         stage.appendChild(this.DOM);
     }
     protected offset(x: number, y: number) {
-        this.offsetX = x;
-        this.offsetY = y;
+        this.offsetX = Number(x);
+        this.offsetY = Number(y);
         Shape._svg(this.defaultContainer, {
-            "transform": "translate(" + (this._x + this.offsetX) + "," + (this._y + this.offsetY) + ")"
+            transform: `translate(${(this._x + this.offsetX) || 0},${(this._y + this.offsetY) || 0})`
         });
     };
     protected setX(x: number) {
@@ -145,7 +145,7 @@ export class Shape extends DisplayObject {
             return;
         this._x = x;
         Shape._svg(this.defaultContainer, {
-            "transform": "translate(" + (this._x + this.offsetX) + "," + (this._y + this.offsetY) + ")"
+            transform: `translate(${(this._x + this.offsetX) || 0},${(this._y + this.offsetY) || 0})`
         });
     };
     protected setY(y: number) {
@@ -153,7 +153,7 @@ export class Shape extends DisplayObject {
             return;
         this._y = y;
         Shape._svg(this.defaultContainer, {
-            "transform": "translate(" + (this._x + this.offsetX) + "," + (this._y + this.offsetY) + ")"
+            transform: `translate(${(this._x + this.offsetX) || 0},${(this._y + this.offsetY) || 0})`
         });
     };
     protected setAlpha(alpha: string) {
@@ -252,13 +252,13 @@ export class Shape extends DisplayObject {
         return this._filters;
     }
     set x(x) {
-        this.setX(x);
+        this.setX(Number(x));
     }
     get x() {
         return this._x;
     }
     set y(y) {
-        this.setY(y);
+        this.setY(Number(y));
     }
     get y() {
         return this._y;

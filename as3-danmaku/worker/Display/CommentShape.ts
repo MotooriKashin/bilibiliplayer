@@ -1,6 +1,6 @@
 import { __trace } from "../OOAPI";
 import { IComment } from "../Player";
-import { registerObject } from "../Runtime/Object";
+import { Runtime } from "../Runtime/Runtime";
 import { MotionManager } from "./MotionManager";
 import { Shape } from "./Shape";
 
@@ -11,7 +11,7 @@ class CommentShape extends Shape {
         super();
         this.setDefaults(params);
         this.initStyle(params);
-        registerObject(this);
+        Runtime.registerObject(this);
         this.bindParent(params);
         this._mM.play();
     }

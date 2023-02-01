@@ -58,3 +58,7 @@ export function foreach(enumerable: ArrayLike<any>, callback: Function) {
         }
     }
 }
+/** 停止执行 */
+export function stopExecution() {
+    throw new Error('stopExecution')
+}

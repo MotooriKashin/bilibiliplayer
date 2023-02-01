@@ -1,4 +1,4 @@
-import { getTimer } from "./Runtime/Timer";
+import { Runtime } from "./Runtime/Runtime";
 
 function HSV2RGB(hue: number, saturation: number, brightness: number) {
     let r = 1, g = 1, b = 1;
@@ -82,7 +82,7 @@ export class Utils {
      * @returns 用于取消回调的id（`clearTimeout`）
      */
     static timer(callback: Function, delay: number = 1000): number {
-        return getTimer().setTimeout(callback, delay);
+        return Runtime.getTimer().setTimeout(callback, delay);
     }
     /**
      * 周期回调
@@ -97,12 +97,12 @@ export class Utils {
         repeatCount: number = 1): number {
 
         if (repeatCount === 0) {
-            return getTimer().setInterval(callback, interval);
+            return Runtime.getTimer().setInterval(callback, interval);
         }
-        const ivl = getTimer().setInterval(function () {
+        const ivl = Runtime.getTimer().setInterval(function () {
             repeatCount--;
             if (repeatCount < 0) {
-                getTimer().clearInterval(ivl);
+                Runtime.getTimer().clearInterval(ivl);
             } else {
                 callback();
             }
@@ -114,13 +114,13 @@ export class Utils {
      * @param tid id
      */
     static clearTimeout(tid: number) {
-        getTimer().clearTimeout(tid);
+        Runtime.getTimer().clearTimeout(tid);
     }
     /**
      * 取消周期回调
      * @param iid id
      */
     static clearInterval(iid: number) {
-        getTimer().clearInterval(iid);
+        Runtime.getTimer().clearInterval(iid);
     }
 }

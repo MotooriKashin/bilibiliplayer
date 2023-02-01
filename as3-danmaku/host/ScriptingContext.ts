@@ -21,16 +21,16 @@ export class ScriptingContext {
         delete this.objects[objectId];
     };
     updateProperty(objectId: string, propName: string, value: any) {
-        if (!this.objects[objectId]) {
-            console.error("Object (" + objectId + ") not found.");
-            return;
-        }
-        if ((<any>this).objects[objectId][propName] === undefined) {
-            console.error("Property \"" + propName
-                + "\" not defined for object of type " +
-                this.objects[objectId].getClass() + ".");
-            return;
-        }
+        // if (!this.objects[objectId]) {
+        //     console.error("Object (" + objectId + ") not found.");
+        //     return;
+        // }
+        // if ((<any>this).objects[objectId][propName] === undefined) {
+        //     console.error("Property \"" + propName
+        //         + "\" not defined for object of type " +
+        //         this.objects[objectId].getClass() + ".");
+        //     return;
+        // }
         (<any>this).objects[objectId][propName] = value;
     };
     callMethod(objectId: string, methodName: string, params: any[]) {

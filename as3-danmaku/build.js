@@ -14,7 +14,7 @@ const plugin = {
     setup(build) {
         build.onEnd(result => {
             result.outputFiles.forEach(d => {
-                fs.promises.writeFile(d.path, banner + d.text.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$') + footer);
+                fs.promises.writeFile(d.path, banner + d.text.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$').replace('"use strict";', '') + footer);
             })
         })
     },
@@ -24,7 +24,7 @@ esbuild.build({
         'worker/Worker.ts'
     ],
     bundle: true,
-    format: 'esm',
+    format: 'iife',
     minify: true,
     treeShaking: true,
     charset: 'utf8',

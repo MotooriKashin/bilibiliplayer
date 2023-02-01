@@ -1,5 +1,5 @@
 import { __trace, __pchannel } from "../OOAPI";
-import { generateId, registerObject } from "../Runtime/Object";
+import { Runtime } from "../Runtime/Runtime";
 import { ByteArray } from "./ByteArray";
 import { ColorTransform } from "./ColorTransform";
 import { Rectangle, DisplayObject } from "./DisplayObject";
@@ -43,7 +43,7 @@ class DirtyArea {
 export class Bitmap extends DisplayObject {
 
     constructor(protected bitmapData?: BitmapData) {
-        super(generateId('obj-bmp'));
+        super(Runtime.generateId('obj-bmp'));
     }
 
     get width() {
@@ -100,14 +100,14 @@ export class BitmapData {
         height: number,
         protected transparent = true,
         protected fillColor = 0xffffffff,
-        protected id = generateId('obj-bmp-data')) {
+        protected id = Runtime.generateId('obj-bmp-data')) {
 
         this.rect = new Rectangle(0, 0, width, height);
 
         this._fill();
 
         // Register this
-        registerObject(this);
+        Runtime.registerObject(this);
     }
 
     protected _fill() {
