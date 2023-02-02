@@ -3,6 +3,7 @@ import { IComment } from "../Player";
 import { Runtime } from "../Runtime/Runtime";
 import { Bitmap } from "./Bitmap";
 import { Display } from "./Display";
+import { Rectangle } from "./DisplayObject";
 import { MotionManager } from "./MotionManager";
 
 export class CommentBitmap extends Bitmap {
@@ -38,6 +39,21 @@ export class CommentBitmap extends Bitmap {
             this._mM.dur = <number>style["lifeTime"] * 1000;
         }
     }
+
+    static createBitmap(params: IComment) {
+        return createBitmap(params);
+    }
+    static createParticle(params: IComment) {
+        return createParticle(params);
+    }
+    static createBitmapData(width: number, height: number, transparent?: boolean, fillColor?: number) {
+        if (transparent === void 0) { transparent = true; }
+        if (fillColor === void 0) { fillColor = 0xffffffff; }
+        return createBitmapData(width, height, transparent, fillColor);
+    }
+    static createRectangle(x?: number, y?: number, width?: number, height?: number) {
+        return new Rectangle(x, y, width, height);
+    }
 }
 
 export function createBitmap(params: IComment) {
@@ -56,3 +72,4 @@ export function createBitmapData(width: number,
 
     return new Display.BitmapData(width, height, transparent, fillColor);
 }
+

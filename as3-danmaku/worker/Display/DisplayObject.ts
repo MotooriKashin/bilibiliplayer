@@ -1,5 +1,5 @@
 import { __trace, __pchannel } from "../OOAPI";
-import { IComment } from "../Player";
+import { IComment, Player } from "../Player";
 import { Runtime } from "../Runtime/Runtime";
 import { Display } from "./Display";
 import { Filter, IFilter } from "./Filter";
@@ -521,6 +521,10 @@ export class DisplayObject {
 
     get parent() {
         return this._parent ?? Display.root;
+    }
+
+    get video() {
+        return Player;
     }
 
     /** AS3 Stuff **/

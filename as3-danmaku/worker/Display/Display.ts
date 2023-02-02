@@ -2,6 +2,7 @@ import { __pchannel, __schannel } from "../OOAPI";
 import { Bitmap, BitmapData } from "./Bitmap";
 import { ByteArray } from "./ByteArray";
 import { ColorTransform, createColorTransform } from "./ColorTransform";
+import { createBitmap, createParticle, createBitmapData } from "./CommentBitmap";
 import { createButton } from "./CommentButton";
 import { createCanvas } from "./CommentCanvas";
 import { createComment, createTextField } from "./CommentField";
@@ -63,6 +64,9 @@ export class Display {
     static createTextFormat = createTextFormat;
     static createComment = createComment;
     static createTextField = createTextField;
+    static createBitmap = createBitmap;
+    static createParticle = createParticle;
+    static createBitmapData = createBitmapData;
 
     static root = new RootSprite();
     static loaderInfo: unknown;

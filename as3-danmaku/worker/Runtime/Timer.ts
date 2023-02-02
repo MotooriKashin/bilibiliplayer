@@ -2,13 +2,10 @@ import { __trace } from "../OOAPI";
 
 /** 主机时间记录 */
 class RuntimeTimer {
-    get ttl() {
-        return this.dur;
+    ttl: number
+    constructor(public type: string, public dur: number, public key: number, public callback: Function) {
+        this.ttl = dur;
     }
-    set ttl(v) {
-        this.dur = v;
-    }
-    constructor(public type: string, public dur: number, public key: number, public callback: Function) { }
 }
 /** 延时/循环管理 */
 export class TimerRuntime {

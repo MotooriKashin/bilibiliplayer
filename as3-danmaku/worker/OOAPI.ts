@@ -1,3 +1,5 @@
+import { debug } from "../debug";
+
 interface IChannel {
     max: number;
     auth?: number;
@@ -130,11 +132,24 @@ export const __OOAPI = new OOAPI();
  * @param traceMode 级别
  */
 export function __trace(obj: any, traceMode?: 'log' | 'warn' | 'err' | 'fatal') {
-    self.postMessage(JSON.stringify({
-        'channel': '',
-        'obj': obj,
-        'mode': (traceMode ? traceMode : 'log')
-    }));
+    switch (traceMode) {
+        case "warn":
+            debug.warn(obj);
+            break;
+        case "err":
+            debug.error(obj);
+            break;
+        case "fatal":
+            debug.error(obj);
+            self.postMessage(JSON.stringify({
+                'channel': 'fatal',
+                'obj': obj
+            }));
+            break;
+        default:
+            debug(obj);
+            break;
+    }
 };
 /**
  * 发送消息（回调）

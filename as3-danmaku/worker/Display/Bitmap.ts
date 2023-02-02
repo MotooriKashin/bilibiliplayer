@@ -47,7 +47,6 @@ export class Bitmap extends DisplayObject {
     }
 
     get width() {
-        console.log(this.bitmapData);
         return this.bitmapData ? this.bitmapData.width * this.scaleX : 0;
     }
 

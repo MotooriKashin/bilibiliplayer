@@ -1,3 +1,4 @@
+import { debug } from "../debug";
 import { DisplayObject } from "./Unpack/DisplayObject";
 import { Unpack } from "./Unpack/Unpack";
 
@@ -12,7 +13,7 @@ export class ScriptingContext {
             this.objects[objectId] = new Unpack[<'Button'>serialized["class"]](this.wrap,
                 serialized, this);
         } else {
-            console.error("Cannot unpack class \"" +
+            debug.error("Cannot unpack class \"" +
                 serialized["class"] + "\". No valid unpacker found");
             return;
         }
@@ -22,11 +23,11 @@ export class ScriptingContext {
     };
     updateProperty(objectId: string, propName: string, value: any) {
         // if (!this.objects[objectId]) {
-        //     console.error("Object (" + objectId + ") not found.");
+        //     _debug.error( "Object (" + objectId + ") not found.");
         //     return;
         // }
         // if ((<any>this).objects[objectId][propName] === undefined) {
-        //     console.error("Property \"" + propName
+        //     _debug.error( "Property \"" + propName
         //         + "\" not defined for object of type " +
         //         this.objects[objectId].getClass() + ".");
         //     return;
@@ -35,11 +36,11 @@ export class ScriptingContext {
     };
     callMethod(objectId: string, methodName: string, params: any[]) {
         if (!this.objects[objectId]) {
-            console.error("Object (" + objectId + ") not found.");
+            debug.error("Object (" + objectId + ") not found.");
             return;
         }
         if (!(<any>this).objects[objectId][methodName]) {
-            console.error("Method \"" + methodName
+            debug.error("Method \"" + methodName
                 + "\" not defined for object of type " +
                 this.objects[objectId].getClass() + ".");
             return;
@@ -48,15 +49,15 @@ export class ScriptingContext {
             (<any>this).objects[objectId][methodName](params);
         } catch (e) {
             if ((<Error>e).stack) {
-                console.error((<Error>e).stack);
+                debug.error((<Error>e).stack);
             } else {
-                console.error((<Error>e).toString());
+                debug.error((<Error>e).toString());
             };
         }
     };
     getObject<T extends DisplayObject>(objectId: string): T {
         if (!this.objects.hasOwnProperty(objectId)) {
-            console.error("Object (" + objectId + ") not found.");
+            debug.error("Object (" + objectId + ") not found.");
             return <T>this.objects[objectId];
         }
         return <T>this.objects[objectId];
@@ -64,13 +65,13 @@ export class ScriptingContext {
     invokeError(msg: any, mode: string) {
         switch (mode) {
             case "err":
-                console.error(msg);
+                debug.error(msg);
                 break;
             case "warn":
-                console.warn(msg);
+                debug.warn(msg);
                 break;
             default:
-                console.log(msg);
+                debug(msg);
                 break;
         }
     };

@@ -7,51 +7,71 @@ import { Player } from './Player';
 import { Global } from './Global/Global';
 import { ScriptManager } from './Runtime/ScriptManager';
 import { trace, load, clone, foreach, stopExecution } from './Function';
+import { CommentBitmap } from './Display/CommentBitmap';
 
 // 建立频道
 __OOAPI.createChannel("::eval", 1, Math.round(Math.random() * 100000));
 __OOAPI.createChannel("::debug", 1, Math.round(Math.random() * 100000));
 
-// 执行AS3代码
-function EVAL(code: string) {
+// 暴露接口
+Object.defineProperties(self, {
+    Runtime: { value: Runtime },
+    Display: { value: Display },
+    $: { value: Display },
+    Player: { value: Player },
+    Tween: { value: Tween },
+    Utils: { value: Utils },
+    Global: { value: Global },
+    $G: { value: Global },
+    Bitmap: { value: CommentBitmap },
+    trace: { value: trace },
+    load: { value: load },
+    clone: { value: clone },
+    foreach: { value: foreach },
+    stopExecution: { value: stopExecution },
+    ScriptManager: { value: ScriptManager },
+    getTimer: { value: Utils.getTimer },
+    interval: { value: Utils.interval },
+    timer: { value: Utils.timer },
+    clearTimeout: { value: Utils.clearTimeout },
+    clearInterval: { value: Utils.clearInterval },
+    none: { value: null },
+    // 以下是兼容数据
+    // 似乎很多作品将true拼错了？
+    ture: { value: true },
+    // [拜年祭2012](av203614)
+    ph: {
+        get: () => Player.height,
+        set: v => Player.height = v
+    },
+    pw: {
+        get: () => Player.width,
+        set: v => Player.width = v
+    }
+})
+
+// 主频道
+__schannel("::eval", function (msg: any) {
     try {
-        new Function(
-            'Runtime', 'Display', '$', 'Player',
-            'Tween', 'Utils', 'getTimer', 'interval',
-            'timer', 'Global', '$G', 'clearTimeout',
-            'clearInterval', 'trace', 'load', 'clone',
-            'foreach', 'stopExecution', 'ScriptManager',
-            'importScripts', 'postMessage', 'addEventListener', 'self',
-            code)(
-                Runtime, Display, Display, Player,
-                Tween, Utils, Utils.getTimer, Utils.interval,
-                Utils.timer, Global, Global, Utils.clearTimeout,
-                Utils.clearInterval, trace, load, clone,
-                foreach, stopExecution, ScriptManager,
-                undefined, undefined, undefined, undefined
-            );
+        (0, eval)('let importScripts,postMessage,addEventListener,self;\n' + msg
+            .replace(/(\/n|\\n|\n|\r\n)/g, '\n') // 处理换行变成 /n 导致代码报错
+            .replace(/`/g, '\\`') // （前置）转义模板字符串标记
+            .replace(/'|"/g, '`') // 替换引号为模板字符串以处理前面 /n 可能导致的语法错误
+            .replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
+                // 处理误当成xml非法字符的转义字符
+                return <string>{
+                    '&amp;': '&',
+                    '&lt;': '<',
+                    '&gt;': '>',
+                    '&apos;': '\'',
+                    '&quot;': '"'
+                }[a]
+            })
+        );
     } catch (e) {
         if ((<Error>e).message === 'stopExecution') return;
         throw e;
     }
-}
-// 主频道
-__schannel("::eval", function (msg: any) {
-    EVAL(msg
-        .replace(/(\/n|\\n|\n|\r\n)/g, '\n') // 处理换行变成 /n 导致代码报错
-        .replace(/`/g, '\\`') // （前置）转义模板字符串标记
-        .replace(/'|"/g, '`') // 替换引号为模板字符串以处理前面 /n 可能导致的语法错误
-        .replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
-            // 处理误当成xml非法字符的转义字符
-            return <string>{
-                '&amp;': '&',
-                '&lt;': '<',
-                '&gt;': '>',
-                '&apos;': '\'',
-                '&quot;': '"'
-            }[a]
-        })
-    );
 });
 // 调试频道
 __schannel("::debug", function (msg: any) {
@@ -64,7 +84,7 @@ __schannel("::debug", function (msg: any) {
         __achannel('::worker:debug', 'worker', __OOAPI.listChannels());
     } else if (msg.action === 'raw-eval') {
         try {
-            __achannel('::worker:debug', 'worker', EVAL(msg.code));
+            __achannel('::worker:debug', 'worker', (0, eval)(msg.code));
         } catch (e) {
             __achannel('::worker:debug', 'worker', 'Error: ' + e);
         }

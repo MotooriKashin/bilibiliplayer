@@ -1,3 +1,4 @@
+import { debug } from "../../debug";
 import { ScriptingContext } from "../ScriptingContext";
 import { DisplayObject } from "./DisplayObject";
 import { createElement, sensibleDefaults } from "./Unpack";
@@ -19,7 +20,7 @@ interface LineContext {
 }
 interface State {
     lastPath: Element;
-    scheduleClear: Node[];
+    scheduleClear: HTMLElement[];
     scheduleTimer: number;
     drawing: number;
 }
@@ -50,8 +51,8 @@ export class Shape extends DisplayObject {
     protected static applyStroke(element: Element, ref: Shape) {
         this._svg(element, {
             "stroke": ref.line.color,
-            "stroke-width": ref.line.width,
-            "stroke-opacity": ref.line.alpha
+            "stroke-width": ref.line.width || 0,
+            "stroke-opacity": ref.line.alpha || 0
         });
         if (ref.line.caps) {
             element.setAttribute("stroke-linecap", ref.line.caps);
@@ -66,7 +67,7 @@ export class Shape extends DisplayObject {
     protected static applyFill(element: Element, ref: Shape) {
         this._svg(element, {
             "fill": ref.fill.fill,
-            "fill-opacity": ref.fill.alpha,
+            "fill-opacity": ref.fill.alpha || 0,
             "fill-rule": ref.fill.fillRule
         });
     };
@@ -166,7 +167,7 @@ export class Shape extends DisplayObject {
     };
     protected setFilters(params: any[]) {
         this._filters = params;
-        this.DOM.removeChild(this.defaultEffects);
+        this.defaultEffects.remove();
         this.defaultEffects = Shape._svg("defs");
         for (let i = 0; i < this.filters.length; i++) {
             const filter = this.filters[i];
@@ -220,7 +221,7 @@ export class Shape extends DisplayObject {
         // Add new filters
         this.DOM.appendChild(this.defaultEffects);
         // Apply filters
-        this.DOM.removeChild(this.defaultGroup);
+        this.defaultGroup.remove();
         let tGroup = this.defaultContainer;
         for (let i = 0; i < this.filters.length; i++) {
             const layeredG = Shape._svg("g", {
@@ -240,7 +241,7 @@ export class Shape extends DisplayObject {
             this.state.scheduleTimer = -1;
         }
         while (this.defaultGroup.lastChild && this.state.scheduleClear.length > 0) {
-            this.defaultGroup.removeChild(this.state.scheduleClear.pop()!);
+            this.state.scheduleClear.pop()?.remove();
         }
         this.state.scheduleClear = [];
     };
@@ -413,7 +414,7 @@ export class Shape extends DisplayObject {
         const ratios = params[3];
         for (let i = 0; i < ratios.length; i++) {
             grad.appendChild(Shape._svg('stop', {
-                'offset': ratios[i] / 255,
+                'offset': (ratios[i] / 255) || 0,
                 'stop-color': Shape.toRGB(colors[i]),
                 'stop-opacity': alphas[i]
             }));
@@ -426,7 +427,7 @@ export class Shape extends DisplayObject {
     };
     drawRect(params: any[]) {
         if (this.state.drawing)
-            console.log(this.state.drawing);
+            debug(this.state.drawing);
         if (params[2] < 0) {
             params[0] += params[2];
             params[2] = -params[2];
@@ -436,10 +437,10 @@ export class Shape extends DisplayObject {
             params[3] = -params[3];
         }
         const r = Shape._svg("rect", {
-            "x": params[0],
-            "y": params[1],
-            "width": params[2],
-            "height": params[3]
+            "x": params[0] || 0,
+            "y": params[1] || 0,
+            "width": params[2] || 0,
+            "height": params[3] || 0
         });
         Shape.applyFill(r, this);
         Shape.applyStroke(r, this);
@@ -447,12 +448,12 @@ export class Shape extends DisplayObject {
     };
     drawRoundRect(params: any[]) {
         const r = Shape._svg("rect", {
-            "x": params[0],
-            "y": params[1],
-            "width": params[2],
-            "height": params[3],
-            "rx": params[4],
-            "ry": params[5]
+            "x": params[0] || 0,
+            "y": params[1] || 0,
+            "width": params[2] || 0,
+            "height": params[3] || 0,
+            "rx": params[4] || 0,
+            "ry": params[5] || 0
         });
         Shape.applyFill(r, this);
         Shape.applyStroke(r, this);
@@ -460,9 +461,9 @@ export class Shape extends DisplayObject {
     };
     drawCircle(params: any[]) {
         const c = Shape._svg("circle", {
-            "cx": params[0],
-            "cy": params[1],
-            "r": params[2]
+            "cx": params[0] || 0,
+            "cy": params[1] || 0,
+            "r": params[2] || 0
         });
         Shape.applyFill(c, this);
         Shape.applyStroke(c, this);
@@ -470,10 +471,10 @@ export class Shape extends DisplayObject {
     };
     drawEllipse(params: any[]) {
         const e = Shape._svg("ellipse", {
-            "cx": params[0],
-            "cy": params[1],
-            "rx": params[2],
-            "ry": params[3]
+            "cx": params[0] || 0,
+            "cy": params[1] || 0,
+            "rx": params[2] || 0,
+            "ry": params[3] || 0
         });
         Shape.applyFill(e, this);
         Shape.applyStroke(e, this);
@@ -499,7 +500,7 @@ export class Shape extends DisplayObject {
     clear() {
         const children = this.defaultGroup.children ? this.defaultGroup.children : this.defaultGroup.childNodes;
         for (let i = 0; i < children.length; i++) {
-            this.state.scheduleClear.push(children[i]);
+            this.state.scheduleClear.push(<any>children[i]);
         }
         this.state.scheduleTimer = self.setTimeout(() => {
             this._clear();

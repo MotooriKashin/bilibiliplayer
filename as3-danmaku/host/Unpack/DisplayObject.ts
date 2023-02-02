@@ -9,10 +9,12 @@ export abstract class DisplayObject {
     protected _x!: number;
     protected _y!: number;
     protected _transform = <Transformation>{};
-    constructor(protected stage: HTMLElement, protected data: Record<string, any>, protected context: ScriptingContext) { }
+    constructor(protected stage: HTMLElement, protected data: Record<string, any>, protected context: ScriptingContext) {
+        data && (data.children = []);
+    }
     unload() {
         try {
-            this.stage.removeChild(this.DOM);
+            this.DOM.remove();
         } catch (e) { };
     }
     set visible(v) {
@@ -95,7 +97,7 @@ export abstract class DisplayObject {
         if (!child)
             return;
         try {
-            this.DOM.removeChild(child.DOM!);
+            child.DOM?.remove();
         } catch (e) {
             this.context.invokeError((<Error>e).stack, "err");
         }

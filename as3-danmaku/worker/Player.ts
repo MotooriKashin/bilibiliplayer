@@ -218,18 +218,6 @@ export class Player {
     }
 }
 
-// [拜年祭2012](https://www.bilibili.com/video/av203614/)
-Object.defineProperties(self, {
-    ph: {
-        get: () => Player.height,
-        set: v => Player.height = v
-    },
-    pw: {
-        get: () => Player.width,
-        set: v => Player.width = v
-    }
-})
-
 __schannel('Update:DimensionUpdate', (payload: any) => {
     Player.width = payload["stageWidth"];
     Player.height = payload["stageHeight"];

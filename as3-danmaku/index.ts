@@ -2,6 +2,7 @@ import { ScriptingContext } from "./host/ScriptingContext";
 import ParserWorker from "./host/worker";
 
 import './css/index.less';
+import { debug } from "./debug";
 
 /** 配置数据 */
 interface IOption {
@@ -113,7 +114,7 @@ export class As3Danmaku {
                 }
             });
 
-            console.log(this);
+            debug(this);
         }
     }
     /** 添加弹幕 */
@@ -141,22 +142,11 @@ export class As3Danmaku {
     protected WorkerMessage = (msg: MessageEvent) => {
         try {
             const data = <IWorkerMessage>JSON.parse(msg.data);
-            if (data.channel === '') {
-                switch (data.mode) {
-                    case "warn":
-                        console.warn(data.obj);
-                        break;
-                    case "err":
-                        console.error(data.obj);
-                        break;
-                    case "fatal":
-                        console.error(data.obj);
-                        this.InitWorker();
-                    default:
-                        console.log(data.obj);
-                        break;
-                }
+            if (!data.channel) {
                 return;
+            }
+            if (data.channel === 'fatal') {
+                return this.InitWorker();
             }
             if (data.channel.substring(0, 8) === "::worker") {
                 const type = data.channel.substring(8);
@@ -167,10 +157,10 @@ export class As3Danmaku {
                         }
                         break;
                     case ':debug':
-                        console.log(JSON.stringify(data.payload));
+                        debug(JSON.stringify(data.payload));
                         break;
                     default:
-                        console.log(JSON.stringify(data));
+                        debug(JSON.stringify(data));
                         break;
                 }
             } else {
@@ -222,7 +212,7 @@ export class As3Danmaku {
         if (this.channels[data.channel]) {
             this.channels[data.channel].forEach(d => { d(data.payload) });
         } else {
-            console.warn('As3: 未捕获沙箱信息', data);
+            debug.warn( '未捕获沙箱信息', data);
         }
     }
     /** 更新分辨率信息 */
