@@ -96,6 +96,7 @@
   "include": [
     "ace",
     "adv-danmaku",
+    "as3-danmaku",
     "audio-effect",
     "b-back",
     "b-io",
@@ -104,6 +105,7 @@
     "combo",
     "danmaku",
     "dash-player",
+    "drm",
     "event-log",
     "flv.js",
     "must-h5",

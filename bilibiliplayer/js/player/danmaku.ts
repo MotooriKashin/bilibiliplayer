@@ -243,7 +243,8 @@ class Danmaku {
         const player = this.player;
         player.bind(STATE.EVENT.VIDEO_MEDIA_SEEK, (e: JQuery.Event, obj: any) => {
             this.danmaku.seek(obj.time, true);
-            this.player.basDanmaku && this.player.basDanmaku.seek(obj.time, true);
+            this.player.basDanmaku?.seek(obj.time, true);
+            this.player.as3Danmaku?.seek(obj.time);
         });
         player.bind(STATE.EVENT.VIDEO_PLAYER_RESIZE, () => {
             this.resize();
@@ -327,18 +328,20 @@ class Danmaku {
         this.dmPlayerFrame = window['requestAnimationFrame'](() => {
             this.danmaku.play();
         });
-        this.player.advDanmaku && this.player.advDanmaku.play();
-        this.player.basDanmaku && this.player.basDanmaku.play();
-        this.player.controller.danmakuLite && this.player.controller.danmakuLite.maskStart();
+        this.player.advDanmaku?.play();
+        this.player.basDanmaku?.play();
+        this.player.as3Danmaku?.play();
+        this.player.controller.danmakuLite?.maskStart();
         this.player.allPlugins?.play();
     }
 
     pause() {
         window['cancelAnimationFrame'](this.dmPlayerFrame);
         this.danmaku.pause();
-        this.player.advDanmaku && this.player.advDanmaku.pause();
-        this.player.basDanmaku && this.player.basDanmaku.pause();
-        this.player.controller.danmakuLite && this.player.controller.danmakuLite.maskStop();
+        this.player.advDanmaku?.pause();
+        this.player.basDanmaku?.pause();
+        this.player.as3Danmaku?.pause();
+        this.player.controller.danmakuLite?.maskStop();
         this.player.allPlugins?.pause();
     }
 
@@ -346,16 +349,18 @@ class Danmaku {
         this.resizeTimer && clearTimeout(this.resizeTimer);
         this.resizeTimer = window.setTimeout(() => {
             this.danmaku.resize(show);
-            this.player.advDanmaku && this.player.advDanmaku.resize();
-            this.player.basDanmaku && this.player.basDanmaku.resize();
+            this.player.advDanmaku?.resize();
+            this.player.basDanmaku?.resize();
+            this.player.as3Danmaku?.resize();
         });
     }
 
     visible(value: boolean) {
         this.danmaku.visible(value);
-        this.player.advDanmaku && this.player.advDanmaku.visible(value);
-        this.player.basDanmaku && this.player.basDanmaku.visible(value);
-        this.player.controller.danmakuLite && this.player.controller.danmakuLite.danmakuVisible(value);
+        this.player.advDanmaku?.visible(value);
+        this.player.basDanmaku?.visible(value);
+        this.player.as3Danmaku?.visible(value);
+        this.player.controller.danmakuLite?.danmakuVisible(value);
         this.player.allPlugins?.option('visible', value);
     }
 
@@ -532,12 +537,14 @@ class Danmaku {
         this.manager.fresh();
         this.player.advDanmaku?.refreshCdmList(true);
         this.player.basDanmaku?.refreshCdmList(true);
+        this.player.as3Danmaku?.refreshCdmList();
     }
 
     clear() {
         this.danmaku.clear();
         this.player.advDanmaku?.clear();
         this.player.basDanmaku?.clear();
+        this.player.as3Danmaku?.clear();
         this.player.allPlugins?.clear();
     }
 
@@ -1356,6 +1363,7 @@ class Danmaku {
         this.resizeTimer && clearTimeout(this.resizeTimer);
         this.danmaku.destroy();
         this.loadPb?.destroy();
+        this.player.as3Danmaku?.destroy();
     }
 
     exportColorEffect() {

@@ -1,87 +1,76 @@
 // 工具
 import md5 from 'md5';
-import csrf from './plugins/csrf';
-import SessionController from './player/session-controller';
-import ScreenSHOT from './plugins/screen-shot';
-import EventLogger from './plugins/event-logger';
-import VideoInfo from './plugins/video-info';
-import AllPlugins from './plugins/all-plugins';
 import AdvDanmaku from './adv-danmaku/adv-danmaku';
-import STATE, { FNVAL_TYPE, PLAYER_CODEC_ID, PLAYER_STATE } from './player/state';
+import SessionController from './player/session-controller';
 import BILIBILI_PLAYER_SETTINGS from './player/settings';
+import STATE, { FNVAL_TYPE, PLAYER_CODEC_ID, PLAYER_STATE } from './player/state';
+import AllPlugins from './plugins/all-plugins';
+import csrf from './plugins/csrf';
+import EventLogger from './plugins/event-logger';
+import ScreenSHOT from './plugins/screen-shot';
+import VideoInfo from './plugins/video-info';
 
 import VideoEvent from './player/out-event/video-event';
 import WindowEvent from './player/out-event/window-event';
 
-import Template from './player/template';
-import LoadingPanel from './player/loading-panel';
-import EndingPanel from './player/ending-panel';
+import Block from './player/block';
 import Controller from './player/controller';
 import Setting, { ISettingType } from './player/controller/setting';
-import Block from './player/block';
+import Danmaku from './player/danmaku';
+import EndingPanel from './player/ending-panel';
+import ErrorHandler from './player/error-handler';
+import GlobalFunction from './player/global-function';
+import LoadingPanel from './player/loading-panel';
 import Playlist from './player/playlist';
-import PlaylistNoView from './player/watchlater';
+import Send from './player/send';
+import Template from './player/template';
 import User, { IUserStatusInterface } from './player/user';
 import VideoTop from './player/video-top';
-import GlobalFunction from './player/global-function';
-import Send from './player/send';
-import Danmaku from './player/danmaku';
-import ErrorHandler from './player/error-handler';
+import PlaylistNoView from './player/watchlater';
 
-import Resolve, { IMediaDataSourceInterface, VIDEO_DATA } from './player/r';
-import QuickLogin from './player/quicklogin';
-import PartManager from './player/part-manager';
-import ElectricPanel from './player/electric-panel';
-import BangumiPayPanel from './player/bangumi-pay-panel';
-import VideoInfoData from './player/video-info-data';
-import Toast from './player/toast';
-import RealTimeDanmaku from './player/realtime-danmaku';
 import BasDanmaku from '@jsc/bas-danmaku/js';
-import BasPanel from './player/bas-panel';
-import Popup, { IPoputBodyInterface } from './player/popup';
-import Subtitle from './player/subtitle';
-import Record from './player/record';
-import { DirectiveManager } from './player/directive-manager';
 import rebuildPlayerExtraParams, { IPlayerExtraParams } from './io/rebuild-player-extra-params';
+import BangumiPayPanel from './player/bangumi-pay-panel';
+import BasPanel from './player/bas-panel';
+import { DirectiveManager } from './player/directive-manager';
+import ElectricPanel from './player/electric-panel';
 import InteractiveVideo, { IIVideoConfig } from './player/interactive-button';
+import PartManager from './player/part-manager';
+import Popup, { IPoputBodyInterface } from './player/popup';
+import QuickLogin from './player/quicklogin';
+import Resolve, { IMediaDataSourceInterface, VIDEO_DATA } from './player/r';
+import RealTimeDanmaku from './player/realtime-danmaku';
+import Record from './player/record';
+import Subtitle from './player/subtitle';
+import Toast from './player/toast';
+import VideoInfoData from './player/video-info-data';
 
-import { IPlayerConfig } from './io/rebuild-player-config';
 import { gtQualityNeedLogin, gtQualityNormal } from './config';
-import URLS from './io/urls';
 import { VI_DATA_INIT } from './const/player-directive';
 import * as WD from './const/webpage-directive';
+import { IPlayerConfig } from './io/rebuild-player-config';
+import URLS from './io/urls';
 import Lab from './player/lab';
 
-import { FlvEventHandler } from './player/flv-event-handler';
-import { ReloadMedia } from './player/reload-media';
-import { DashEventHandler } from './player/dash-event-handler';
-import { ContentType, ActionType } from '@jsc/namespace';
-import {
-    Log,
-    detectGPU,
-    getBit,
-    setLocalSettings,
-    getLocalSettings,
-    getSessionID,
-    getSearchParam,
-    getCookie,
-    setCookie,
-    qualityMap,
-    browser,
-    timeParser,
-    thumbnail,
-    dateParser
-} from '@shared/utils';
-import ApiPremiereStatus, { ApiPremiereStatusInData, ApiPremiereStatusOutData } from './io/api-premiere-status';
+import { As3Danmaku } from '@jsc/as3-danmaku';
 import DashPlayer from '@jsc/dash-player';
+import flvjs from '@jsc/flv.js';
+import { ActionType, ContentType } from '@jsc/namespace';
 import { METADATA } from '@jsc/namespace/metadata';
 import PlayerAuxiliary from '@jsc/player-auxiliary';
-import { BilibiliPlayer } from '../bilibiliPlayer';
-import flvjs from '@jsc/flv.js';
-import { DolbyEffectType } from './player/controller/dolby-button';
 import Tooltip from '@jsc/player-auxiliary/js/plugins/tooltip';
-import { screenshot } from './plugins/screenshot';
+import {
+    browser, dateParser, detectGPU,
+    getBit, getCookie, getLocalSettings, getSearchParam, getSessionID, Log, qualityMap, setCookie, setLocalSettings, thumbnail, timeParser
+} from '@shared/utils';
+import { BilibiliPlayer } from '../bilibiliPlayer';
+import ApiPremiereStatus, { ApiPremiereStatusInData, ApiPremiereStatusOutData } from './io/api-premiere-status';
+import { DolbyEffectType } from './player/controller/dolby-button';
+import { DashEventHandler } from './player/dash-event-handler';
+import { FlvEventHandler } from './player/flv-event-handler';
+import { ReloadMedia } from './player/reload-media';
 import { Track } from './player/track';
+import { screenshot } from './plugins/screenshot';
 
 export interface IReceivedInterface {
     _id: number;
@@ -172,6 +161,7 @@ class Player {
     endingpanel!: EndingPanel | null;
     advDanmaku!: AdvDanmaku;
     basDanmaku!: BasDanmaku;
+    as3Danmaku!: As3Danmaku;
     baspanel!: BasPanel;
     eventLog!: EventLogger;
     user!: User;
@@ -2041,6 +2031,22 @@ class Player {
                 },
                 this,
             );
+
+            this.as3Danmaku = new As3Danmaku({
+                container: this.template.basDanmaku[0],
+                visible: this.state.danmaku,
+                timeSyncFunc: () => {
+                    if (this.video) {
+                        return this.currentTime()! * 1000;
+                    } else {
+                        return 0;
+                    }
+                },
+                blockJudge: (options: any) => {
+                    return this.block.judge(options);
+                },
+            }, this);
+
             if (
                 this.flvPlayer &&
                 this.flvPlayer['mediaInfo'] &&
@@ -2048,17 +2054,20 @@ class Player {
                 this.flvPlayer['mediaInfo']['height']
             ) {
                 this.basDanmaku.resize(this.flvPlayer['mediaInfo']['width'], this.flvPlayer['mediaInfo']['height']);
+                this.as3Danmaku.resize(this.flvPlayer['mediaInfo']['width'], this.flvPlayer['mediaInfo']['height']);
                 this.popup.resize(this.flvPlayer['mediaInfo']['width'], this.flvPlayer['mediaInfo']['height']);
             }
             this.bind(STATE.EVENT.VIDEO_METADATA_LOADED, () => {
                 if (this.flvPlayer && this.flvPlayer['mediaInfo']) {
                     this.basDanmaku.resize(this.flvPlayer['mediaInfo']['width'], this.flvPlayer['mediaInfo']['height']);
+                    this.as3Danmaku.resize(this.flvPlayer['mediaInfo']['width'], this.flvPlayer['mediaInfo']['height']);
                     this.popup.resize(this.flvPlayer['mediaInfo']['width'], this.flvPlayer['mediaInfo']['height']);
                 }
             });
             // dash tmp width height
             if (this.dashPlayer) {
                 this.basDanmaku.resize(this.video.videoWidth, this.video.videoHeight);
+                this.as3Danmaku.resize(this.video.videoWidth, this.video.videoHeight);
                 this.popup.resize(this.video.videoWidth, this.video.videoHeight);
             }
             this.bind(STATE.EVENT.VIDEO_METADATA_LOADED, () => {

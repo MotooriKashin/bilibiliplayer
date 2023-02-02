@@ -7,13 +7,9 @@ import * as WD from '../const/webpage-directive';
 import * as PD from '../const/player-directive';
 
 class BasPanel {
-    private player: Player;
-    private danmaku: BasDanmaku;
     private pathPicker!: PathPicker;
 
-    constructor(player: Player, danmaku: BasDanmaku) {
-        this.player = player;
-        this.danmaku = danmaku;
+    constructor(private player: Player, private danmaku: BasDanmaku) {
         this.registerListener();
     }
 

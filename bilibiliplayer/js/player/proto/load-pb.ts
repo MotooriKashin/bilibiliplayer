@@ -462,10 +462,11 @@ export default class LoadPb {
 
         let target: any;
         let action: any;
-        let basList: any[] = [];
-        let dmList: any[] = [];
-        let dmPk: any[] = [];
-        let dmBoom: any[] = [];
+        const basList: any[] = [];
+        const as3List: any[] = [];
+        const dmList: any[] = [];
+        const dmPk: any[] = [];
+        const dmBoom: any[] = [];
         let item: IDmData;
 
         for (let i = 0; i < danmakuArray.length; i++) {
@@ -531,6 +532,10 @@ export default class LoadPb {
                         });
                         this.dmTrack.dmadv++;
                         break;
+                    case 8:
+                        target.weight = 11;
+                        as3List.push(target);
+                        break;
                     case 9:
                         target.weight = 11;
                         basList.push(target);
@@ -557,14 +562,15 @@ export default class LoadPb {
             this.appendDmBas(basList);
             this.dmTrack.dmbas += basList.length;
         }
+        if (as3List.length) {
+            this.player.as3Danmaku?.add(as3List);
+        }
         if (dmBoom.length) {
             this.player.allPlugins?.startBoom(dmBoom);
         }
 
-        // 当view接口取不到总弹幕数，还是根据分段弹幕显示
-        if (typeof this.dmPbView?.count !== 'number') {
-            this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: this.allRawDM.length });
-        }
+        // 显示弹幕数
+        this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: this.allRawDM.length });
         // test upEgg
         // for (let i = 0; i < 7; i++) {
         //     this.player.send.dmActions({

@@ -1,0 +1,11 @@
+{
+    "name": "@jsc/as3-danmaku",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.ts",
+    "author": "bilibili",
+    "license": "MIT",
+    "scripts": {
+        "build": "node ./build.js"
+    }
+}
