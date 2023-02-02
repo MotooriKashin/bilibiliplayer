@@ -5,6 +5,7 @@ import { Tween } from './Tween/Tween';
 import { Utils } from './Utils';
 import { Player } from './Player';
 import { Global } from './Global/Global';
+import { ScriptManager } from './Runtime/ScriptManager';
 import { trace, load, clone, foreach, stopExecution } from './Function';
 
 // 建立频道
@@ -19,14 +20,14 @@ function EVAL(code: string) {
             'Tween', 'Utils', 'getTimer', 'interval',
             'timer', 'Global', '$G', 'clearTimeout',
             'clearInterval', 'trace', 'load', 'clone',
-            'foreach', 'stopExecution',
+            'foreach', 'stopExecution', 'ScriptManager',
             'importScripts', 'postMessage', 'addEventListener', 'self',
             code)(
                 Runtime, Display, Display, Player,
                 Tween, Utils, Utils.getTimer, Utils.interval,
                 Utils.timer, Global, Global, Utils.clearTimeout,
                 Utils.clearInterval, trace, load, clone,
-                foreach, stopExecution,
+                foreach, stopExecution, ScriptManager,
                 undefined, undefined, undefined, undefined
             );
     } catch (e) {
