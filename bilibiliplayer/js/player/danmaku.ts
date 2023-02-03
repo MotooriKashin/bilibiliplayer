@@ -520,6 +520,8 @@ class Danmaku {
         } else {
             this.append2Dm(danmaku);
         }
+
+        this.player.as3Danmaku.sendDanmaku(danmaku);
     }
 
     append2Dm(danmaku: ITextDataInterface) {

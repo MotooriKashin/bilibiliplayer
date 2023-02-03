@@ -113,6 +113,13 @@ export class As3Danmaku {
                     }
                 }
             });
+
+            document.addEventListener('keydown', e => {
+                this.sendWorkerMessage('keydown', { key: e.key })
+            });
+            document.addEventListener('keyup', e => {
+                this.sendWorkerMessage('keyup', { key: e.key })
+            });
         }
     }
     /** 添加弹幕 */
@@ -177,8 +184,9 @@ export class As3Danmaku {
                 case "play": this.player?.play(); break;
                 case "pause": this.player?.pause(); break;
                 case "seek": this.player?.seek(msg.params); break;
-                // TODO: 打开新视频
-                // case "jump": this.player?.jump(msg.params); break;
+                case "jump":
+                    window.open(`https://www.bilibili.com/video/av${msg.params.vid}?p=${msg.params.page}`, msg.params.window ? '_self' : '_blank');
+                    break;
                 default: break;
             }
         });
@@ -364,10 +372,15 @@ export class As3Danmaku {
             this.wrap.innerHTML = '';
         }
     }
+    /** 销毁实例 */
     destroy() {
         if (this.worker) {
             this.worker.terminate();
             delete this.worker;
         }
+    }
+    /** 监听发送弹幕 */
+    sendDanmaku(dm: IDanmaku) {
+        this.sendWorkerMessage('comment', dm);
     }
 }
