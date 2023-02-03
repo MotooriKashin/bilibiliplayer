@@ -46,9 +46,6 @@ class OOAPI {
                     }
                 }
             });
-        } else {
-            __trace('Got message on channel "' + msg.channel +
-                '" but channel does not exist.', 'warn');
         }
     };
     /** 读取所有频道 */
