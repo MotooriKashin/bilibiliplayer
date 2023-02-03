@@ -113,8 +113,6 @@ export class As3Danmaku {
                     }
                 }
             });
-
-            debug(this);
         }
     }
     /** 添加弹幕 */
@@ -212,7 +210,7 @@ export class As3Danmaku {
         if (this.channels[data.channel]) {
             this.channels[data.channel].forEach(d => { d(data.payload) });
         } else {
-            debug.warn( '未捕获沙箱信息', data);
+            debug.warn('未捕获沙箱信息', data);
         }
     }
     /** 更新分辨率信息 */

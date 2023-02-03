@@ -38,9 +38,10 @@ export default class PanoramicManager {
             return;
         }
         this.initialized = true;
-        this.renderWidth = this.container.find('video').width()!;
-        this.renderHeight = this.container.find('video').height()!;
-        this.padding = this.container.find('video')[0].style.padding;
+        const video = this.container.find('video')[0];
+        this.renderWidth = video.parentElement?.offsetWidth || video.offsetWidth;
+        this.renderHeight = video.parentElement?.offsetHeight || video.offsetHeight;
+        this.padding = video.style.padding;
         this.webglWrp = $(`<div class="${this.player.prefix}-webgl"></div>`).appendTo(this.container);
         this.initRenderConfig();
         this.globalEvents();
@@ -145,9 +146,14 @@ export default class PanoramicManager {
     }
 
     private resize() {
-        this.renderWidth = this.container.find('video').width()!;
-        this.renderHeight = this.container.find('video').height()!;
-        this.padding = this.container.find('video')[0].style.padding;
+        const video = this.container.find('video')[0];
+        this.renderWidth = video.parentElement?.offsetWidth || video.offsetWidth;
+        this.renderHeight = video.parentElement?.offsetHeight || video.offsetHeight;
+        this.padding = video.style.padding;
+        // 更新相机
+        this.camera.aspect = this.renderWidth / this.renderHeight;
+        this.camera.updateProjectionMatrix();
+        // 更新画布
         this.renderer.setSize(this.renderWidth, this.renderHeight);
         $(this.renderer.domElement).css({
             padding: this.padding,
