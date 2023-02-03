@@ -542,7 +542,7 @@ class Controller {
                         );
                     } else if (code === 68) {
                         //【D】- 开启/关闭弹幕，功能同点击弹幕开关设置按钮
-                        if (!this.panoramicShortcut && !this.keydownStatus[code]) {
+                        if (!this.panoramicFocus && !this.panoramicShortcut && !this.keydownStatus[code]) {
                             this.keydownStatus[code] = true;
                             player.state.danmaku = !player.state.danmaku;
                             this.danmakuLite.change(!player.state.danmaku);
@@ -550,7 +550,7 @@ class Controller {
                         return false;
                     } else if (code === 77) {
                         //【M】- 开启/关闭静音模式，功能同点击音量按钮
-                        if (!this.keydownStatus[code]) {
+                        if (!this.panoramicFocus && !this.keydownStatus[code]) {
                             this.keydownStatus[code] = true;
                             const toMuted = player.video.volume === 0 ? false : true;
                             this.volumeBar.toggleMutedMode(toMuted);

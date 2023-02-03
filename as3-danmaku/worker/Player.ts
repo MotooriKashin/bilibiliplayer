@@ -4,6 +4,7 @@ import { Filter } from "./Display/Filter";
 import { __schannel, __pchannel, __trace } from "./OOAPI";
 import { Runtime } from "./Runtime/Runtime";
 import { TimeKeeper } from "./Runtime/Timer";
+import { Utils } from "./Utils";
 
 export interface IComment {
     dbid: number;
@@ -175,7 +176,7 @@ export class Player {
      * @param callback 监听回调
      * @param timeout 延时
      */
-    static commentTrigger(callback: (comment: CommentData) => void, timeout: number) {
+    static commentTrigger(callback: (comment: CommentData) => void, timeout = 1000) {
         if (!Runtime.hasObject('__player')) {
             __trace('Your environment does not support player triggers.', 'err');
             return;
@@ -184,9 +185,11 @@ export class Player {
             return;
         }
         const player = Runtime.getObject('__player');
-        (<any>player).addEventListener('comment', (v: CommentData) => callback(v));
-        //TODO: remove the listener after timeout
-        //player.removeEventListener('comment', listener);
+        function temp(v: CommentData) {
+            callback(v);
+        }
+        (<any>player).addEventListener('comment', temp);
+        Utils.timer(() => (<any>player).removeEventListener('comment', temp), timeout);
     }
     /**
      * 监听按键
@@ -195,8 +198,8 @@ export class Player {
      * @param triggerOnUp 是否松开按钮再回调（默认 否）
      */
     static keyTrigger(callback: (key: string) => void,
-        timeout: number = 1000,
-        triggerOnUp: boolean = false) {
+        timeout = 1000,
+        triggerOnUp = false) {
         if (!Runtime.hasObject('__player')) {
             __trace('Your environment does not support key triggers.', 'err');
             return;
@@ -204,11 +207,11 @@ export class Player {
         if (timeout < 0) {
             return;
         }
-        const eventName: string = 'key' + (triggerOnUp ? 'up' : 'down');
+        function temp(e: KeyboardEvent) { callback(e.key) }
+        const eventName = 'key' + (triggerOnUp ? 'up' : 'down');
         const player = Runtime.getObject('__player');
-        (<any>player).addEventListener(eventName, (e: KeyboardEvent) => callback(e.key));
-        //TODO: remove the listener after the timeout
-        //player.removeEventListener(eventName, listener);
+        (<any>player).addEventListener(eventName, temp);
+        Utils.timer(() => (<any>player).removeEventListener(eventName, temp), timeout);
     }
     static setMask(_mask: any) {
         __trace('Masking not supported yet', 'warn');

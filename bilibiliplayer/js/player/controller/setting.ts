@@ -589,6 +589,11 @@ class Setting {
         }
         if (!this.panoramicManager?.getCrossOrigin()) {
             this.panoramicManager?.display(visible);
+            if (visible) {
+                this.player.controller.panoramicShortcut = true;
+            } else {
+                this.player.controller.panoramicShortcut = false;
+            }
         }
     }
     TPL() {
