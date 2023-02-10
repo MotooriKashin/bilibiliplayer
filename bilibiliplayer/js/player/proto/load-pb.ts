@@ -342,7 +342,7 @@ export default class LoadPb {
     // 获取历史弹幕
     historyPb(date: string) {
         this.timestamp = date;
-        // this.allDM = [];
+        this.allRawDM = [];
         this.allDM = [...this.basList];
         const url = `${URLS.DM_PB_HISTORY}?type=1&oid=${this.player.config.cid}&date=${date}`;
         this.allHistory[date] = this.allHistory[date] || {
