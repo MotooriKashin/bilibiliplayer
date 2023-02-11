@@ -125,6 +125,7 @@ export class As3Danmaku {
     /** 添加弹幕 */
     add(dms: IDanmaku[] | IDanmaku) {
         this.dmList = this.dmList.concat(dms);
+        this.render(true);
     }
     /** 移除弹幕 */
     remove(dmid: string) {
@@ -203,6 +204,10 @@ export class As3Danmaku {
             this.scriptContext?.updateProperty(pl.id, pl.name, pl.value);
         });
         this.scriptContext?.registerObject('__root', { 'class': 'SpriteRoot' });
+        this.sendWorkerMessage('Update:TimeUpdate', {
+            state: 'pause',
+            time: this.cTime
+        });
     }
     /** 添加频道监听 */
     protected addWorkerListener(channel: string, listener: Function) {
@@ -231,12 +236,16 @@ export class As3Danmaku {
         });
     }
     /** 渲染流程 */
-    protected render() {
+    protected render(force = false) {
         if (!this.paused && this.dmList.length) {
             window['requestAnimationFrame'](() => {
                 this.render();
             });
             this.renderDanmaku();
+        } else {
+            if (force && this.dmList.length) {
+                this.renderDanmaku();
+            }
         }
     }
     /** 渲染弹幕 */
@@ -273,7 +282,10 @@ export class As3Danmaku {
         this.cdmList = [];
         if (Math.abs(this.cTime - this.pTime) < 500) {
             this.dmList.forEach(d => {
-                if (d.stime >= this.pTime / 1000 && d.stime < this.cTime / 1000) {
+                if (d.stime === 0 && this.pTime === 0 && this.cTime === 0) {
+                    // 初始弹幕例外处理
+                    this.cdmList.push(d);
+                } else if (d.stime >= this.pTime / 1000 && d.stime < this.cTime / 1000) {
                     this.cdmList.push(d);
                 }
             });
@@ -298,6 +310,10 @@ export class As3Danmaku {
                 this.init();
             }
             this.render();
+            this.sendWorkerMessage('Update:TimeUpdate', {
+                state: 'playing',
+                time: this.cTime
+            });
         }
     }
     /** 暂停 */
@@ -310,6 +326,10 @@ export class As3Danmaku {
         // 记录时间
         const currentTime = new Date().getTime();
         this.pauseTime = this.time0 + currentTime - this.startTime;
+        this.sendWorkerMessage('Update:TimeUpdate', {
+            state: 'pause',
+            time: this.cTime
+        });
     }
     /** 播放/暂停 */
     toggle() {
