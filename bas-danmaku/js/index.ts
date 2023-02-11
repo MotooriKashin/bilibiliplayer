@@ -687,6 +687,10 @@ class BasDanmaku {
         }
     }
 
+    clearList() {
+        this.dmList = [];
+    }
+
     resize(width = this.resolutionWidth, height = this.resolutionHeight) {
         this.resolutionWidth = width;
         this.resolutionHeight = height;

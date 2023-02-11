@@ -1431,6 +1431,8 @@ class Danmaku {
             this.danmaku.visualArray.length = 0;
             this.loadPb!.allDM = [];
             this.loadPb!.allRawDM = [];
+            this.player.basDanmaku?.clearList();
+            this.player.as3Danmaku?.clearList();
         }
         this.loadPb?.appendDm(danmaku);
         this.player.directiveManager.sender(PD.DL_DANMAKU_UPDATE, {
