@@ -44,7 +44,7 @@ class CommentButton extends UIComponent {
             this.label = style["text"];
         }
         if (style.hasOwnProperty("motionGroup")) {
-            this.mM.initTweenGroup(style["motionGroup"]!, this.mM.dur);
+            this.mM.initTweenGroup(style["motionGroup"] || [], this.mM.dur);
         } else if (style.hasOwnProperty("motion")) {
             this.mM.initTween(style["motion"]!, false);
         }
