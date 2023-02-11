@@ -62,3 +62,42 @@ export function foreach(enumerable: ArrayLike<any>, callback: Function) {
 export function stopExecution() {
     throw new Error('stopExecution')
 }
+/** 修正换行符 */
+export function wrap(str: string) {
+    const length = str.length;
+    const arr = str.split('');
+    let i = 0;
+    let skip = [];
+    while (i < length) {
+        switch (arr[i]) {
+            case '/': {
+                if (!skip.length && arr[i + 1] && arr[i + 1] === 'n') {
+                    arr[i] = '\n';
+                    arr[i + 1] = '\n'
+                }
+                i++;
+                break;
+            }
+            case '"': {
+                if (skip.length && skip[0] === arr[i]) {
+                    skip.shift();
+                } else {
+                    skip.unshift('"');
+                }
+                i++;
+                break;
+            }
+            case "'": {
+                if (skip.length && skip[0] === arr[i]) {
+                    skip.shift();
+                } else {
+                    skip.unshift("'");
+                }
+                i++;
+                break;
+            }
+            default: i++; break;
+        }
+    }
+    return arr.join('');
+}

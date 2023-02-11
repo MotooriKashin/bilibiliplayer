@@ -35,7 +35,7 @@ class CommentCanvas extends Sprite {
             this.mM.dur = style["lifeTime"] * 1000;
         }
         if (style.hasOwnProperty("motionGroup")) {
-            this.mM.initTweenGroup(style["motionGroup"]!, this.mM.dur);
+            this.mM.initTweenGroup(style["motionGroup"] || [], this.mM.dur);
         } else if (style.hasOwnProperty("motion")) {
             this.mM.initTween(style["motion"]!, false);
         }

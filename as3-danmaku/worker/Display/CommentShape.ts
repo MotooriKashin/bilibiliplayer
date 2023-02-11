@@ -35,7 +35,7 @@ class CommentShape extends Shape {
             this._mM.dur = style["lifeTime"] * 1000;
         }
         if (style.hasOwnProperty("motionGroup")) {
-            this._mM.initTweenGroup(style["motionGroup"]!, this._mM.dur);
+            this._mM.initTweenGroup(style["motionGroup"] || [], this._mM.dur);
         } else if (style.hasOwnProperty("motion")) {
             this._mM.initTween(style["motion"]!, false);
         }

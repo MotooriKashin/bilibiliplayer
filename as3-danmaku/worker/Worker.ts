@@ -6,7 +6,7 @@ import { Utils } from './Utils';
 import { Player } from './Player';
 import { Global } from './Global/Global';
 import { ScriptManager } from './Runtime/ScriptManager';
-import { trace, load, clone, foreach, stopExecution } from './Function';
+import { trace, load, clone, foreach, stopExecution, wrap } from './Function';
 import { CommentBitmap } from './Display/CommentBitmap';
 
 // 建立频道
@@ -53,10 +53,7 @@ Object.defineProperties(self, {
 // 主频道
 __schannel("::eval", function (msg: any) {
     try {
-        (0, eval)('let importScripts,postMessage,addEventListener,self;\n' + msg
-            .replace(/(\/n|\\n|\n|\r\n)/g, '\n') // 处理换行变成 /n 导致代码报错
-            .replace(/`/g, '\\`') // （前置）转义模板字符串标记
-            .replace(/'|"/g, '`') // 替换引号为模板字符串以处理前面 /n 可能导致的语法错误
+        (0, eval)('let importScripts,postMessage,addEventListener,self;\n' + wrap(msg)
             .replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
                 // 处理误当成xml非法字符的转义字符
                 return <string>{
