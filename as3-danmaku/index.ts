@@ -372,6 +372,10 @@ export class As3Danmaku {
             this.wrap.innerHTML = '';
         }
     }
+    /** 清空弹幕 */
+    clearList() {
+        this.dmList = [];
+    }
     /** 销毁实例 */
     destroy() {
         if (this.worker) {
