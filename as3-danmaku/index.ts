@@ -206,7 +206,7 @@ export class As3Danmaku {
         this.scriptContext?.registerObject('__root', { 'class': 'SpriteRoot' });
         this.sendWorkerMessage('Update:TimeUpdate', {
             state: 'pause',
-            time: this.cTime
+            time: this.time0
         });
     }
     /** 添加频道监听 */
@@ -282,7 +282,7 @@ export class As3Danmaku {
         this.cdmList = [];
         if (Math.abs(this.cTime - this.pTime) < 500) {
             this.dmList.forEach(d => {
-                if (d.stime === 0 && this.pTime === 0 && this.cTime === 0) {
+                if (d.stime === 0 && Math.abs(this.pTime) < 500) {
                     // 初始弹幕例外处理
                     this.cdmList.push(d);
                 } else if (d.stime >= this.pTime / 1000 && d.stime < this.cTime / 1000) {
@@ -312,7 +312,7 @@ export class As3Danmaku {
             this.render();
             this.sendWorkerMessage('Update:TimeUpdate', {
                 state: 'playing',
-                time: this.cTime
+                time: this.time0
             });
         }
     }
@@ -328,7 +328,7 @@ export class As3Danmaku {
         this.pauseTime = this.time0 + currentTime - this.startTime;
         this.sendWorkerMessage('Update:TimeUpdate', {
             state: 'pause',
-            time: this.cTime
+            time: this.time0
         });
     }
     /** 播放/暂停 */
