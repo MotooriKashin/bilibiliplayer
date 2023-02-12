@@ -92,6 +92,26 @@ export class ITween {
             this.play();
         }
     }
+
+    // 以下未猜想补充
+    addEventListener(type: string, listener: Function) {
+        if (type === 'complete') {
+            this.timer.addEventListener('timerComplete', listener);
+            return true;
+        }
+    }
+    dispatchEvent(e: any) {
+        this.timer.dispatchEvent(e);
+        return true;
+    }
+    hasEventListener(type: string) {
+
+        return true;
+    }
+    removeEventListener(type: string, listener: Function) {
+
+        return true
+    }
 }
 
 function createStepFunction(object: any, dest: ValueMap, src: ValueMap, tween: ITween) {

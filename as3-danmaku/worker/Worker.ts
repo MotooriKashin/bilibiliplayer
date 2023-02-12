@@ -30,11 +30,11 @@ Object.defineProperties(self, {
     foreach: { value: foreach },
     stopExecution: { value: stopExecution },
     ScriptManager: { value: ScriptManager },
-    getTimer: { value: Utils.getTimer },
-    interval: { value: Utils.interval },
-    timer: { value: Utils.timer },
-    clearTimeout: { value: Utils.clearTimeout },
-    clearInterval: { value: Utils.clearInterval },
+    getTimer: { value: Utils.getTimer.bind(Utils) },
+    interval: { value: Utils.interval.bind(Utils) },
+    timer: { value: Utils.timer.bind(Utils) },
+    clearTimeout: { value: Utils.clearTimeout.bind(Utils) },
+    clearInterval: { value: Utils.clearInterval.bind(Utils) },
     none: { value: null },
     // 以下是兼容数据
     // 似乎很多作品将true拼错了？

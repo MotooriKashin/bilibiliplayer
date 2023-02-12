@@ -703,4 +703,17 @@ export class DisplayObject {
     getId() {
         return this.id;
     }
+
+    getRect() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            left: 0,
+            right: 0,
+            top: 0,
+            buttom: 0
+        }
+    }
 }
