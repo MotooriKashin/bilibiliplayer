@@ -4,13 +4,13 @@ on: pull_request
 
 jobs:
   merge:
-    if: github.event.label.name == 'dependencies'
+    if: github.event.pull_request.user.type == 'Bot'
     name: Dependabot Auto Merge
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{secrets.BOTPR}}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
