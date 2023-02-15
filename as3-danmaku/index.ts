@@ -70,7 +70,7 @@ export class As3Danmaku {
     protected startTime: number;
     protected testId = 0;
     /** 弹幕节点 */
-    protected wrap?: HTMLDivElement;
+    wrap?: HTMLDivElement;
     protected resolutionWidth!: number;
     protected resolutionHeight!: number;
     /** 沙箱 */
@@ -98,7 +98,7 @@ export class As3Danmaku {
             this.wrap = document.createElement('div');
             this.wrap.classList.add('as3-danmaku');
             this.container.appendChild(this.wrap);
-            this.scriptContext = new ScriptingContext(this.wrap);
+            this.scriptContext = new ScriptingContext(this);
 
             if (this.resolutionWidth && this.resolutionHeight) {
                 this.resize();
@@ -139,7 +139,6 @@ export class As3Danmaku {
     protected parse(dm: IDanmaku) {
         this.worker || this.InitWorker();
         this.sendWorkerMessage('::eval', dm.text);
-        debug(dm);
     }
     /** 初始化沙箱 */
     protected InitWorker() {
@@ -151,6 +150,7 @@ export class As3Danmaku {
         } catch { }
         this.worker = new ParserWorker();
         this.worker.addEventListener("message", this.WorkerMessage);
+        this.updateDimension();
     }
     /** 解析沙箱信息 */
     protected WorkerMessage = (msg: MessageEvent) => {
@@ -211,6 +211,9 @@ export class As3Danmaku {
         this.addWorkerListener('Runtime:UpdateProperty', (pl: any) => {
             this.scriptContext?.updateProperty(pl.id, pl.name, pl.value);
         });
+        this.addWorkerListener('Runtime:ManageEvent', (pl: any) => {
+            this.scriptContext?.manageEvent(pl.id, pl.name, pl.mode);
+        });
         this.scriptContext?.registerObject('__root', { 'class': 'SpriteRoot' });
         this.sendWorkerMessage('Update:TimeUpdate', {
             state: 'pause',
@@ -224,7 +227,7 @@ export class As3Danmaku {
         this.channels[channel].push(listener);
     }
     /** 发送消息到沙箱 */
-    protected sendWorkerMessage(channel: string, payload: any) {
+    sendWorkerMessage(channel: string, payload: any) {
         this.worker?.postMessage(JSON.stringify({ channel, payload }));
     }
     /** 分发沙箱信息 */

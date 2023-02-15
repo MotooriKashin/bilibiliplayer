@@ -39,7 +39,7 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(tagName: K 
                     (<any>elem)["style"][style] = props[key][style];
                 }
             } else if (key === "className") {
-                elem.classList.add(props[key]);
+                elem.classList.add(...props[key].split(' '));
             } else {
                 elem.setAttribute(key, props[key]);
             }
