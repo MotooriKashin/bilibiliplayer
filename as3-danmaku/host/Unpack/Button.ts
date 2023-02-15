@@ -14,7 +14,7 @@ export class Button extends DisplayObject {
                 "left": data.x ? data.x + "px" : "0px"
             }
         });
-        this.DOM.textContent = data.text;
+        this.DOM.innerText = data.text;
 
         data.scaleX = 1;
         data.scaleY = 1;

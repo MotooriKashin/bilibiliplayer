@@ -8,6 +8,7 @@ import { Global } from './Global/Global';
 import { ScriptManager } from './Runtime/ScriptManager';
 import { trace, load, clone, foreach, stopExecution, wrap } from './Function';
 import { CommentBitmap } from './Display/CommentBitmap';
+import { TweenEasing } from './Tween/Easing';
 
 // 建立频道
 __OOAPI.createChannel("::eval", 1, Math.round(Math.random() * 100000));
@@ -20,6 +21,7 @@ Object.defineProperties(self, {
     $: { value: Display },
     Player: { value: Player },
     Tween: { value: Tween },
+    TweenEasing: { value: TweenEasing },
     Utils: { value: Utils },
     Global: { value: Global },
     $G: { value: Global },
@@ -39,6 +41,8 @@ Object.defineProperties(self, {
     // 以下是兼容数据
     // 似乎很多作品将true拼错了？
     ture: { value: true },
+    // [[弹幕大赛]Q&A リサイタル! ~TV ver~](av399127)
+    Arial: { value: 'Arial' },
     // [拜年祭2012](av203614)
     ph: {
         get: () => Player.height,
@@ -51,7 +55,7 @@ Object.defineProperties(self, {
 })
 
 // 主频道
-__schannel("::eval", function (msg: any) {
+__schannel("::eval", function (msg: string) {
     try {
         (0, eval)('let importScripts,postMessage,addEventListener,self;\n' + wrap(msg)
             .replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
@@ -64,6 +68,10 @@ __schannel("::eval", function (msg: any) {
                     '&quot;': '"'
                 }[a]
             })
+            // .replace(/\/n/g, '\n') // 处理所有换行符 TODO: 类似于【除以n】的情况怎么办？
+            // .replace(/"[^"]+"/g, d => d.replace(/\n/g, '\\n')) // 双引号中的/n可能被误伤
+            // .replace(/'[^']+'/g, d => d.replace(/\n/g, '\\n')) // 单引号中的/n可能被误伤
+            // .replace(/\\\n/g, '\\/n') // 正则表达式中的\/n可能被误伤
         );
     } catch (e) {
         if ((<Error>e).message === 'stopExecution') return;
