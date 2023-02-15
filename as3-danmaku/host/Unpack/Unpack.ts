@@ -51,7 +51,7 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(tagName: K 
     }
     return <HTMLElementTagNameMap[K]>elem;
 }
-export function color(color: number | string): string {
+export function color(color: number | string = 0): string {
     if (typeof color === 'string') {
         color = parseInt(color.toString());
         if (Number.isNaN(color)) {

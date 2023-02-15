@@ -59,6 +59,8 @@ export class As3Danmaku {
     protected dmList: IDanmaku[] = [];
     /** 当前显示弹幕列表 */
     protected cdmList: IDanmaku[] = [];
+    /** 预处理弹幕 `stime===0`需要额外提前处理 */
+    protected preList: IDanmaku[] = [];
     /** 是否启用弹幕 */
     protected visibleStatus: boolean;
     protected cTime = 0;
@@ -124,8 +126,10 @@ export class As3Danmaku {
     }
     /** 添加弹幕 */
     add(dms: IDanmaku[] | IDanmaku) {
-        this.dmList = this.dmList.concat(dms);
-        this.render(true);
+        Array.isArray(dms) || (dms = [dms]);
+        dms.forEach(d => {
+            d.stime === 0 ? this.preList.push(d) : this.dmList.push(d);
+        });
     }
     /** 移除弹幕 */
     remove(dmid: string) {
@@ -135,11 +139,15 @@ export class As3Danmaku {
     protected parse(dm: IDanmaku) {
         this.worker || this.InitWorker();
         this.sendWorkerMessage('::eval', dm.text);
+        debug(dm);
     }
     /** 初始化沙箱 */
     protected InitWorker() {
         try {
-            this.worker && this.worker.terminate();
+            if (this.worker) {
+                this.worker.terminate();
+                debug('engine exsit already.', 'Terminate and reload.');
+            }
         } catch { }
         this.worker = new ParserWorker();
         this.worker.addEventListener("message", this.WorkerMessage);
@@ -208,6 +216,7 @@ export class As3Danmaku {
             state: 'pause',
             time: this.time0
         });
+        debug('engine load success!', 'Enjoy youself!');
     }
     /** 添加频道监听 */
     protected addWorkerListener(channel: string, listener: Function) {
@@ -236,16 +245,12 @@ export class As3Danmaku {
         });
     }
     /** 渲染流程 */
-    protected render(force = false) {
-        if (!this.paused && this.dmList.length) {
+    protected render() {
+        if (!this.paused && (this.dmList.length || this.preList.length)) {
             window['requestAnimationFrame'](() => {
                 this.render();
             });
             this.renderDanmaku();
-        } else {
-            if (force && this.dmList.length) {
-                this.renderDanmaku();
-            }
         }
     }
     /** 渲染弹幕 */
@@ -280,12 +285,13 @@ export class As3Danmaku {
             return;
         }
         this.cdmList = [];
+        while (this.preList.length) {
+            // `d.stime === 0`的弹幕额外处理
+            this.cdmList.push(this.preList.shift()!);
+        }
         if (Math.abs(this.cTime - this.pTime) < 500) {
             this.dmList.forEach(d => {
-                if (d.stime === 0 && Math.abs(this.pTime) < 500) {
-                    // 初始弹幕例外处理
-                    this.cdmList.push(d);
-                } else if (d.stime >= this.pTime / 1000 && d.stime < this.cTime / 1000) {
+                if (d.stime >= this.pTime / 1000 && d.stime < this.cTime / 1000) {
                     this.cdmList.push(d);
                 }
             });
@@ -305,7 +311,7 @@ export class As3Danmaku {
         this.pauseTime = 0;
         this.paused = false;
         this.wrap && this.wrap.classList.remove('as3-danmaku-pause');
-        if (this.dmList.length) {
+        if (this.dmList.length || this.preList.length) {
             if (!this.inited) {
                 this.init();
             }

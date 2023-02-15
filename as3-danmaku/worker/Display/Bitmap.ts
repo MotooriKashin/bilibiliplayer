@@ -22,10 +22,10 @@ class DirtyArea {
         if (this.isEmpty()) {
             return new Rectangle(0, 0, 0, 0);
         }
-        return new Rectangle(this.xBegin,
-            this.yBegin,
-            this.xEnd! - this.xBegin!,
-            this.yEnd! - this.yBegin!);
+        return new Rectangle(this.xBegin ?? 0,
+            this.yBegin ?? 0,
+            (this.xEnd! - this.xBegin!) ?? 0,
+            (this.yEnd! - this.yBegin!) ?? 0);
     }
 
     isEmpty() {

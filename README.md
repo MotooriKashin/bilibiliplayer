@@ -40,11 +40,11 @@
 
 #### Bilibili-Old
 使用基于本项目的[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)扩展或用户脚本。  
-开发者可将本项目`dist`目录下的生成文件复制到[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)项目的`extension/player`目录下，然后执行[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)项目的编译命令生成对应的扩展或用户脚本即可进行测试。  
-也可使用操作系统提供的符号链接功能将本项目的`dist`目录链接到[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)项目的`extension/player`目录，直接将本项目编译的文件输出到[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)项目，免去复制步骤。  
+开发者可将本项目`dist`目录下的生成文件复制到[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)项目的`chrome/player`目录下，然后执行[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)项目的编译命令生成对应的扩展或用户脚本即可进行测试。  
+也可使用操作系统提供的符号链接功能将本项目的`dist`目录链接到[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)项目的`chrome/player`目录，直接将本项目编译的文件输出到[Bilibili-Old](https://github.com/MotooriKashin/Bilibili-Old)项目，免去复制步骤。  
 如果使用Windows操作系统并且两个项目位于磁盘的同一级目录中，那么可以使用**管理员**命令提示符输入：
 ```
-mklink /D dist ..\Bilibili-Old\extension\player
+mklink /D dist ..\Bilibili-Old\chrome\player
 ```
 *如果提示【当文件已存在时，无法创建该文件。】，请先删除`dist`目录后操作。*
 

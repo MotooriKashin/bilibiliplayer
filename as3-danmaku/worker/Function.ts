@@ -64,40 +64,68 @@ export function stopExecution() {
 }
 /** 修正换行符 */
 export function wrap(str: string) {
-    const length = str.length;
+    const comma: string[] = [];
     const arr = str.split('');
-    let i = 0;
-    let skip = [];
-    while (i < length) {
-        switch (arr[i]) {
+    let node = false;
+    let nodex = false; // 多行注释
+    arr.forEach((d, i, s) => {
+        switch (d) {
             case '/': {
-                if (!skip.length && arr[i + 1] && arr[i + 1] === 'n') {
-                    arr[i] = '\n';
-                    arr[i + 1] = '\n'
+                if (!comma.length && s[i + 1] && s[i + 1] === '*') {
+                    nodex = true;
                 }
-                i++;
+                if (!comma.length && s[i + 1] && s[i + 1] === '/') {
+                    node = true;
+                }
+                if (s[i - 1] === '\\') break;
+                // /n -> \n
+                if (s[i + 1] && s[i + 1] === 'n') {
+                    s[i] = '';
+                    s[i + 1] = comma.length ? '\\n' : '\n';
+                }
+                break;
+            }
+            case '*': {
+                if (nodex && s[i + 1] && s[i + 1] === '/') {
+                    nodex = false;
+                }
+                break;
+            }
+            case '\n': {
+                if (nodex) break;
+                if (node) {
+                    node = false;
+                    break;
+                }
+                // 引号内 \n => \\n
+                if (comma.length) {
+                    s[i] = '\\n';
+                }
                 break;
             }
             case '"': {
-                if (skip.length && skip[0] === arr[i]) {
-                    skip.shift();
+                if (nodex || node) break;
+                if (s[i - 1] === '\\') break;
+                if (comma.length && comma[0] === d) {
+                    comma.shift(); // 抛出后引号
                 } else {
-                    skip.unshift('"');
+                    comma.unshift('"'); // 记录前引号
                 }
-                i++;
                 break;
             }
             case "'": {
-                if (skip.length && skip[0] === arr[i]) {
-                    skip.shift();
+                if (nodex || node) break;
+                if (s[i - 1] === '\\') break;
+                if (comma.length && comma[0] === d) {
+                    comma.shift(); // 抛出后引号
                 } else {
-                    skip.unshift("'");
+                    if (s[i - 1] && /[A-Za-z]/.test(s[i - 1]) && s[i + 1] && /[A-Za-z]/.test(s[i + 1])) break; // 忽略英文缩写
+                    comma.unshift("'"); // 记录前引号
                 }
-                i++;
                 break;
             }
-            default: i++; break;
+            default: break;
         }
-    }
+    });
     return arr.join('');
 }
