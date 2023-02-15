@@ -1,3 +1,4 @@
+import { As3Danmaku } from "..";
 import { debug } from "../debug";
 import { DisplayObject } from "./Unpack/DisplayObject";
 import { Unpack } from "./Unpack/Unpack";
@@ -7,10 +8,10 @@ interface ISerializedData {
 }
 export class ScriptingContext {
     protected objects: Record<string, DisplayObject> = {};
-    constructor(private wrap: HTMLElement) { }
+    constructor(private manage: As3Danmaku) { }
     registerObject(objectId: string, serialized: ISerializedData) {
         if (typeof Unpack[<'Button'>serialized["class"]] === "function") {
-            this.objects[objectId] = new Unpack[<'Button'>serialized["class"]](this.wrap,
+            this.objects[objectId] = new Unpack[<'Button'>serialized["class"]](this.manage.wrap!,
                 serialized, this);
         } else {
             debug.error("Cannot unpack class \"" +
@@ -78,10 +79,19 @@ export class ScriptingContext {
     clear() { }
     getDimensions() {
         return {
-            "stageWidth": this.wrap.offsetWidth,
-            "stageHeight": this.wrap.offsetHeight,
+            "stageWidth": this.manage.wrap!.offsetWidth,
+            "stageHeight": this.manage.wrap!.offsetHeight,
             "screenWidth": window.screen.width,
             "screenHeight": window.screen.height
         };
     };
+    manageEvent(id: string, name: string, mode: string) {
+        this.objects[id].DOM.addEventListener(name, e => {
+            e.stopPropagation();
+            this.manage.sendWorkerMessage(`object::(${id})`, {
+                type: 'event',
+                event: name
+            })
+        });
+    }
 }

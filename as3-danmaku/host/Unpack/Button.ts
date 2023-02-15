@@ -7,11 +7,12 @@ export class Button extends DisplayObject {
     constructor(stage: HTMLElement, data: Record<string, any>, context: ScriptingContext) {
         super(stage, data, context);
         this.DOM = createElement("div", {
-            "className": "button",
+            "className": "bpui-button bpui-button-type-small",
             "style": {
                 "position": "absolute",
                 "top": data.y ? data.y + "px" : "0px",
-                "left": data.x ? data.x + "px" : "0px"
+                "left": data.x ? data.x + "px" : "0px",
+                "pointer-events": "auto"
             }
         });
         this.DOM.innerText = data.text;
