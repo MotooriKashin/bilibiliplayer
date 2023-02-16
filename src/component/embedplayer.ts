@@ -41,7 +41,7 @@ async function EmbedPlayer(
         }
         if (!config.playlistId) {
             const list = window.getPlayList();
-            if (config.playlist && list) {
+            if ((config.playlist || config.pl) && list) {
                 const data = list && list.data;
                 const text = JSON.stringify(list);
                 config.aid = config.aid || (data && data.list && data.list[0].aid);
