@@ -158,7 +158,7 @@ export class Tween {
         easing?: Function) {
 
         const t = new ITween(object, duration * 1000);
-        t.step = createStepFunction(object, dest, src, t);
+        t.step = createStepFunction(object, dest ?? {}, src ?? {}, t);
         if (easing) {
             t.easing = easing;
         }

@@ -139,6 +139,8 @@ export class As3Danmaku {
     protected parse(dm: IDanmaku) {
         this.worker || this.InitWorker();
         this.sendWorkerMessage('::eval', dm.text);
+        // 调试具体报错弹幕时用
+        // debug(dm);
     }
     /** 初始化沙箱 */
     protected InitWorker() {
