@@ -222,6 +222,13 @@ export class As3Danmaku {
             time: this.time0
         });
         debug('engine load success!', 'Enjoy youself!');
+
+        if ('UserStatus' in window) {
+            // 暴露用户信息给沙箱
+            const meta = window.UserStatus?.userInfo || {};
+            meta.Xname = meta.uname || '';
+            this.sendWorkerMessage('__root', meta)
+        }
     }
     /** 添加频道监听 */
     protected addWorkerListener(channel: string, listener: Function) {

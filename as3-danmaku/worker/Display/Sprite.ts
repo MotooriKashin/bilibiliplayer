@@ -1,4 +1,5 @@
-import { __trace } from "../OOAPI";
+import { debug } from "../../debug";
+import { __schannel, __trace } from "../OOAPI";
 import { Runtime } from "../Runtime/Runtime";
 import { DisplayObject } from "./DisplayObject";
 import { Graphics } from "./Graphics";
@@ -50,14 +51,19 @@ export class Sprite extends DisplayObject {
 
 export class RootSprite extends Sprite {
     private _metaRoot: any;
+    private meta: any = {};
     constructor() {
         super('__root');
         this._metaRoot = Runtime.getObject('__root');
+
+        __schannel('__root', (obj: any) => {
+            Object.assign(this.meta, obj);
+        })
     }
 
     get parent() {
-        __trace('SecurityError: No access above root sprite.', 'err');
-        return null!;
+        debug.warn('root sprite is faultiness!')
+        return this.meta;
     }
 
     addEventListener(eventName: string, listener: Function) {
