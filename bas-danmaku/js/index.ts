@@ -707,6 +707,13 @@ class BasDanmaku {
         }
         this.refresh();
     }
+
+    /** 销毁实例 */
+    destroy() {
+        this.worker.forEach(d => {
+            d.terminate();
+        })
+    }
 }
 
 export default BasDanmaku;
