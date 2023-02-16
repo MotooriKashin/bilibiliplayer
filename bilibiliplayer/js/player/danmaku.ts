@@ -1365,6 +1365,7 @@ class Danmaku {
         this.resizeTimer && clearTimeout(this.resizeTimer);
         this.danmaku.destroy();
         this.loadPb?.destroy();
+        this.player.basDanmaku?.destroy();
         this.player.as3Danmaku?.destroy();
     }
 

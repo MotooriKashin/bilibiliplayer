@@ -219,6 +219,9 @@ declare global {
             status?: {
                 (...v: any[]): any;
                 isLogin: boolean;
+            };
+            userInfo: {
+                [key: string]: any;
             }
         };
         BILIMessage?: Function;

@@ -139,6 +139,8 @@ export class As3Danmaku {
     protected parse(dm: IDanmaku) {
         this.worker || this.InitWorker();
         this.sendWorkerMessage('::eval', dm.text);
+        // 调试具体报错弹幕时用
+        // debug(dm);
     }
     /** 初始化沙箱 */
     protected InitWorker() {
@@ -220,6 +222,13 @@ export class As3Danmaku {
             time: this.time0
         });
         debug('engine load success!', 'Enjoy youself!');
+
+        if ('UserStatus' in window) {
+            // 暴露用户信息给沙箱
+            const meta = window.UserStatus?.userInfo || {};
+            meta.Xname = meta.uname || '';
+            this.sendWorkerMessage('__root', meta)
+        }
     }
     /** 添加频道监听 */
     protected addWorkerListener(channel: string, listener: Function) {
