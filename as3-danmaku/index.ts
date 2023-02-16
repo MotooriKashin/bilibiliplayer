@@ -140,7 +140,7 @@ export class As3Danmaku {
         this.worker || this.InitWorker();
         this.sendWorkerMessage('::eval', dm.text);
         // 调试具体报错弹幕时用
-        debug(dm);
+        // debug(dm);
     }
     /** 初始化沙箱 */
     protected InitWorker() {
