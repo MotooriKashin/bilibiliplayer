@@ -324,6 +324,7 @@ abstract class Manager {
         let mode = dm.manager;
         let recyclingDiv: HTMLElement | void = mode!.onEnd(dm);
 
+
         // 将回收DIV元素放到集合中缓存
         // @ts-ignore
         if (this.config.isRecycling && recyclingDiv) {

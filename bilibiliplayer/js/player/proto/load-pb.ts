@@ -449,7 +449,7 @@ export default class LoadPb {
             uhash: dm.midHash || '',
             uid: dm.midHash || '',
             dmid: dm.idStr || '',
-            text: (dm.content && dm.mode != 8 && dm.mode != 9) ? dm.content.replace(/(\/n|\\n|\n|\r\n)/g, '\n') : dm.content, // 正确处理弹幕换行
+            text: dm.content || '', // 正确处理弹幕换行
             weight: dm.weight,
             attr: dm.attr,
         };
@@ -940,7 +940,7 @@ export default class LoadPb {
             uid: '',
             mid: dm.mid,
             dmid: dm.idStr || '',
-            text: (dm.content && dm.mode != 8 && dm.mode != 9) ? dm.content.replace(/(\/n|\\n|\n|\r\n)/g, '\n') : dm.content, // 正确处理弹幕换行
+            text: dm.content || '', // 正确处理弹幕换行
             weight: 10,
             ...opt,
         };

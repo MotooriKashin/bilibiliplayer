@@ -56,7 +56,7 @@ class CanvasRender extends Render {
         if (textData.text && !textData.canvas) {
             const size = textData.size * scaleRate * this.fontSizeScale(config);
             this.font = context.font = (config.bold ? 'bold' : 'normal') + ' ' + size + 'px ' + config.fontFamily;
-            this.text = textData.text.replace('\r', '\n');
+            this.text = textData.text.replace(/(\/n|\\n|\n|\r\n)/g, '\n');
             const lines = this.text.split('\n');
             if (textData.vDanmaku) {
                 chr = this.stringToArray(textData.text);
