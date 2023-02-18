@@ -17,7 +17,17 @@
 			},
 			"problemMatcher": [],
 			"label": "编译打包",
-			"detail": "运行esbuild编译打包源码"
+			"detail": "释放发行版到dist目录",
+			"dependsOn": [
+				"As3-danmaku"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "build-as3-danmaku",
+			"problemMatcher": [],
+			"label": "As3-danmaku",
+			"detail": "编译代码弹幕沙箱"
 		}
 	]
 }
