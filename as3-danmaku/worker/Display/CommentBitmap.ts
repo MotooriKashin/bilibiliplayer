@@ -27,7 +27,7 @@ export class CommentBitmap extends Bitmap {
 
     private bindParent(params: IComment) {
         if ("parent" in params) {
-            params["parent"]?.addChild(this);
+            params["parent"]?.addChild?.(this);
         }
     }
 

@@ -24,6 +24,8 @@ class CSS3Render extends Render {
     font!: string; // 字体
     text!: string;
     hided: boolean = false; // 已经隐藏（正在执行消失动画
+    /** 使用换行符排版的mode */
+    private special = 0;
 
     constructor(textData: ITextDataInterface, config: IDanmakuConfigExtInterface, precise = 0, recyclingDiv?: ICycDiv) {
         super(textData, config, precise, recyclingDiv);
@@ -56,11 +58,13 @@ class CSS3Render extends Render {
         let div: HTMLElement; // 已回收DIV元素 或 新建DIV元素
         let divAppendStatus = true; // 是否需要append状态
         let fontSize = 0;
-        let text = this.text = textData.text.replace(/\r/g, '\r\n');
+        let text = this.text = textData.text.replace(/(\/n|\\n|\n|\r\n)/g, '\n');
+        text.includes('\n') && (this.special = textData.mode);
 
         if (this.recyclingDiv) {
             div = this.recyclingDiv.div;
-            divAppendStatus = false;
+            // 对于使用换行符排版的弹幕，重新添加回父节点
+            this.special || (divAppendStatus = false);
             div.innerHTML = '';
 
             this.index2hover = this.recyclingDiv.index;
@@ -262,6 +266,7 @@ class CSS3Render extends Render {
     }
 
     reset(x: number, y: number) {
+        this.special === 5 && (y = 0);
         if (this.textData!.vDanmaku) {
             this.element!.style.right = y + 'px';
         } else {
@@ -270,6 +275,7 @@ class CSS3Render extends Render {
     }
     // 首帧渲染位置
     firstFrame(y: number) {
+        this.special === 5 && (y = 0);
         this.paused = true;
         if (this.textData!.vDanmaku) {
             this.element!.style.right = y + 'px';

@@ -51,19 +51,18 @@ export class Sprite extends DisplayObject {
 
 export class RootSprite extends Sprite {
     private _metaRoot: any;
-    private meta: any = {};
     constructor() {
         super('__root');
         this._metaRoot = Runtime.getObject('__root');
 
         __schannel('__root', (obj: any) => {
-            Object.assign(this.meta, obj);
+            Object.assign(this._metaRoot, obj);
         })
     }
 
     get parent() {
         debug.warn('root sprite is faultiness!')
-        return this.meta;
+        return this._metaRoot;
     }
 
     addEventListener(eventName: string, listener: Function) {

@@ -242,7 +242,7 @@ class Danmaku {
     private _globalEvents() {
         const player = this.player;
         player.bind(STATE.EVENT.VIDEO_MEDIA_SEEK, (e: JQuery.Event, obj: any) => {
-            this.danmaku.seek(obj.time, true);
+            this.danmaku.seek(obj.time);
             this.player.basDanmaku?.seek(obj.time, true);
             this.player.as3Danmaku?.seek(obj.time);
         });

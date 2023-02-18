@@ -26,7 +26,7 @@ class CommentShape extends Shape {
 
     protected bindParent(params: IComment) {
         if (params.hasOwnProperty("parent")) {
-            params["parent"]?.addChild(this);
+            params["parent"]?.addChild?.(this);
         }
     }
 

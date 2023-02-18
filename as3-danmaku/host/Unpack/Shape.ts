@@ -342,8 +342,8 @@ export class Shape extends DisplayObject {
         }
     };
     drawPath(params: any[]) {
-        const commands = params[0];
-        const data = params[1];
+        const commands = params[0] ?? [];
+        const data = params[1] ?? [];
         this.fill.fillRule = (params[2] === "nonZero" ? "nonzero" : "evenodd");
         let d = "M0 0";
         for (let i = 0; i < commands.length; i++) {

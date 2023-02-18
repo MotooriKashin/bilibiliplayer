@@ -144,7 +144,7 @@ export function __trace(obj: any, traceMode?: 'log' | 'warn' | 'err' | 'fatal') 
             }));
             break;
         default:
-            debug(obj);
+            debug.log(obj);
             break;
     }
 };
