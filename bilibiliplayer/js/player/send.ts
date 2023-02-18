@@ -396,6 +396,7 @@ class Send {
         }
         if (typeof obj.person !== 'undefined') {
             this.template.infoWatching.text(obj.person);
+            this.template.infoWatching[0].parentElement.title = `当前在线：${obj.person}\n总共在线人数：${obj.all}`;
         }
     }
     private _setDisable($el: JQuery) {
