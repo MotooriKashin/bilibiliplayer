@@ -27,7 +27,21 @@
 			"script": "build-as3-danmaku",
 			"problemMatcher": [],
 			"label": "As3-danmaku",
-			"detail": "编译代码弹幕沙箱"
+			"detail": "编译代码弹幕沙箱",
+			"dependsOn": [
+				"merge"
+			]
+		},
+		{
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"merge",
+				"master"
+			],
+			"problemMatcher": [],
+			"label": "merge",
+			"detail": "同步主分支更改"
 		}
 	]
 }

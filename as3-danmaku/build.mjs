@@ -23,7 +23,7 @@ esbuild.build({
     entryPoints: [
         'as3-danmaku/worker/Worker.ts'
     ],
-    target: "chrome76",
+    // target: "chrome76",
     bundle: true,
     format: 'iife',
     minify: true,

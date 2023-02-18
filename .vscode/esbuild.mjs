@@ -5,7 +5,7 @@ esbuild.build({
     entryPoints: [ // 入口脚本
         'src/video.ts'
     ],
-    target: "chrome76", // 目标标准
+    // target: "chrome76", // 目标标准
     bundle: true, // 是否打包
     // sourcemap: true, // map文件
     minify: true, // 是否压缩
