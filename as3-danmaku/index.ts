@@ -138,9 +138,9 @@ export class As3Danmaku {
     /** 解析弹幕 */
     protected parse(dm: IDanmaku) {
         this.worker || this.InitWorker();
-        this.sendWorkerMessage('::eval', dm.text);
         // 调试具体报错弹幕时用
         // debug(dm);
+        this.sendWorkerMessage('::eval', dm.text);
     }
     /** 初始化沙箱 */
     protected InitWorker() {
@@ -196,7 +196,7 @@ export class As3Danmaku {
                 case "pause": this.player?.pause(); break;
                 case "seek": this.player?.seek(msg.params); break;
                 case "jump":
-                    window.open(`https://www.bilibili.com/video/av${msg.params.vid}?p=${msg.params.page}`, msg.params.window ? '_self' : '_blank');
+                    window.open(`https://www.bilibili.com/video/${msg.params.vid}?p=${msg.params.page}`, msg.params.window ? '_self' : '_blank');
                     break;
                 default: break;
             }

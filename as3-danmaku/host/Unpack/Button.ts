@@ -15,7 +15,7 @@ export class Button extends DisplayObject {
                 "pointer-events": "auto"
             }
         });
-        this.DOM.innerText = data.text;
+        this.DOM.innerText = data.text.replace(/\/n/g, '\n');
 
         data.scaleX = 1;
         data.scaleY = 1;

@@ -29,7 +29,7 @@ export class TextField extends DisplayObject {
         /** Load x,y **/
         this.setX(data.x);
         this.setY(data.y);
-        this.DOM.innerText = data['text'];
+        this.DOM.innerText = data['text'].replace(/\/n/g, '\n');
         // Hook child
         stage.appendChild(this.DOM);
     }
@@ -62,7 +62,7 @@ export class TextField extends DisplayObject {
     }
     protected setText(text: string) {
         this.DOM.innerHTML = "";
-        this.DOM.innerText = text;
+        this.DOM.innerText = text.replace(/\/n/g, '\n');
     }
     protected setFilters(params: any[]) {
         const shadows: any[] = [];

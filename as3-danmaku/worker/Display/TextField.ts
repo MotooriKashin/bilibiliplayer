@@ -52,7 +52,7 @@ export class TextField extends DisplayObject {
     }
 
     set text(t: string) {
-        this._text = t;
+        this._text = t ?? '';
         this.boundingBox.width = this.textWidth;
         this.boundingBox.height = this.textHeight;
         this.propertyUpdate("text", this._text);

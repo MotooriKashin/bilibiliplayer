@@ -27,7 +27,7 @@ class CommentButton extends UIComponent {
 
     protected bindParent(params: IComment) {
         if (params.hasOwnProperty("parent")) {
-            params["parent"]?.addChild(this);
+            params["parent"]?.addChild?.(this);
         }
         if ('onclick' in params && typeof params.onclick === 'function') {
             this.addEventListener('click', params.onclick);
