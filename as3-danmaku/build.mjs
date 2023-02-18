@@ -1,5 +1,5 @@
-const esbuild = require('esbuild');
-const fs = require('fs');
+import esbuild from 'esbuild';
+import fs from 'fs-extra';
 
 const banner = `import worker from '@jsc/danmaku/worker-loader/inline';
 
@@ -21,8 +21,9 @@ const plugin = {
 };
 esbuild.build({
     entryPoints: [
-        'worker/Worker.ts'
+        'as3-danmaku/worker/Worker.ts'
     ],
+    target: "chrome76",
     bundle: true,
     format: 'iife',
     minify: true,
@@ -33,10 +34,5 @@ esbuild.build({
     ],
     keepNames: true,
     write: false,
-    outfile: 'host/worker.js'
-}).catch(e => {
-    console.error('脚本编译出错！', e);
-    process.exit(1);
-}).finally(() => {
-    console.log('脚本编译完成！');
-});
+    outfile: 'as3-danmaku/host/worker.js'
+})
