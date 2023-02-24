@@ -194,7 +194,7 @@ export class As3Danmaku {
             switch (msg.action) {
                 case "play": this.player?.play(); break;
                 case "pause": this.player?.pause(); break;
-                case "seek": this.player?.seek(msg.params); break;
+                case "seek": this.player?.seek(msg.params / 1000); break;
                 case "jump":
                     window.open(`https://www.bilibili.com/video/${msg.params.vid}?p=${msg.params.page}`, msg.params.window ? '_self' : '_blank');
                     break;
