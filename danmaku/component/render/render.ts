@@ -46,6 +46,9 @@ export abstract class Render {
     index2hover!: number; // 节点插入到页面的顺序
     stime!: number;
 
+    /** 使用换行符排版的mode */
+    protected special = false;
+
     constructor(textData: ITextDataInterface, config: IDanmakuConfigExtInterface, precise = 0, recyclingDiv?: ICycDiv) {
         this.textData = textData;
         this.config = config;
