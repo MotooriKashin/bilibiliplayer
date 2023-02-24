@@ -521,7 +521,11 @@ class Manager {
     }
 
     private escapeXssChars(text: string): string {
-        return text.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/>/g, '&gt;')
+            .replace(/</g, '&lt;')
+            .replace(/(\/n|\\n|\n|\r\n)/g, '\n');
     }
 
     private escapeSpecialChars(text: string): string {
@@ -529,7 +533,7 @@ class Manager {
             .replace(/&/g, '&amp;')
             .replace(/>/g, '&gt;')
             .replace(/</g, '&lt;')
-            .replace(/\n/g, '\\n')
+            .replace(/\/n|\n/g, '\\n')
             .replace(/\r/g, '\\r')
             .replace(/\t/g, '\\t')
             .replace(/\f/g, '\\f');
