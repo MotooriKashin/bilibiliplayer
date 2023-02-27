@@ -42,7 +42,7 @@ class ColorPicker {
         this.container = container;
         this.triggerBtn = this.config.triggerBtn || this.container;
         this.prefix = player.prefix;
-        this.config.triggerBtn.on('click', this.toggle.bind(this));
+        this.config.triggerBtn.on('click', this.enopen.bind(this));
         // this.globalEvents();
     }
     private globalEvents() {
@@ -274,16 +274,17 @@ class ColorPicker {
         }
     }
 
-    toggle() {
+    enopen() {
         if (!this.inited) {
             this._initialize();
         }
 
         if (!this.$container.hasClass('active')) {
             this.open();
-        } else {
-            this.close();
         }
+        // else {
+        //     this.close();
+        // }
     }
 
     open() {
