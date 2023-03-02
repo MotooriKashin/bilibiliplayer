@@ -152,7 +152,6 @@ class Setting {
             });;
         });
         this.set($.extend({}, this.config['setting_config'], this.config['video_status'], this.config['block']));
-        this.settingItem['preventshade'].value(this.player.get('setting_config', 'preventshade'));
     }
     private init() {
         if (this.initalized) {
