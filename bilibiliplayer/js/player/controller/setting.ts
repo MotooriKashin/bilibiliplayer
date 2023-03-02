@@ -433,7 +433,11 @@ class Setting {
             formatTooltip: b => { b = Math.round(b * 104 + 1); return b <= 100 ? b : b <= 104 ? (b - 100 + 1) * 100 : "无限制"; },
             change: (e: IEvent) => {
                 player.set('setting_config', 'danmakunumber', e.value === 0 ? -1 : e.value);
+                player.controller.danmakuLite.danmakunumber.value(e.value, false);
             }
+        });
+        player.controller.danmakuLite.danmakunumber.on("change", (e: IEvent) => {
+            this.settingItem.danmakunumber!.value(e.value, false);
         });
         this.settingItem.reset = new Button(setting.find(`${prefix}reset`), {
             type: "small",
@@ -509,7 +513,7 @@ class Setting {
                 }
             });
         });
-        this.settingItem.danmakuArea = new Slider(setting.find(`${prefix}danmakuArea`), {
+        this.settingItem.danmakuArea = new Slider(setting.find(`${prefix}danmakuarea`), {
             precision: 10,
             hint: true,
             width: 175,
@@ -541,7 +545,11 @@ class Setting {
             },
             change: (e: IEvent) => {
                 player.set('setting_config', 'danmakuArea', e.value);
+                player.controller.danmakuLite.danmakuArea.value(e.value, false);
             }
+        });
+        player.controller.danmakuLite.danmakuArea.on("change", (e: IEvent) => {
+            this.settingItem.danmakuArea!.value(e.value, false);
         });
 
         // 全景模式
@@ -619,9 +627,9 @@ class Setting {
 			</div>
 		</div>
         <div class="${this.prefix}-panel-content">
-			<div class="${this.prefix}-panel-label">弹幕显示区域</div>
+			<div class="${this.prefix}-panel-label" data-tooltip="1" data-text="无限时滚动弹幕可以重合叠加" data-position="bottom-left" data-change-mode="1">弹幕显示区域</div>
 			<div class="${this.prefix}-panel-setting">
-				<div class="${this.prefix}-setting-danmakuArea"></div>
+				<div class="${this.prefix}-setting-danmakuarea"></div>
 			</div>
 		</div>
 		<div class="${this.prefix}-panel-content">
