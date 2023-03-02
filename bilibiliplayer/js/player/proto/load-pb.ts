@@ -300,9 +300,10 @@ export default class LoadPb {
         }
         // 此处弹幕数是错误的
         // this.player.trigger(STATE.EVENT.PLAYER_SEND, { dmAllNum: data.count || 0 });
-        // 更新弹幕设置信息
-        const login = this.player.user.status().login;
-        this.setLocal(data.dmSetting, login!);
+        // ~~更新弹幕设置信息~~
+        // 使用本地保存的设置
+        // const login = this.player.user.status().login;
+        // this.setLocal(data.dmSetting, login!);
 
         this.appendDmImg(data.commandDms);
         // 弹幕关闭 不去加载弹幕
