@@ -876,7 +876,7 @@ class Player {
         if (danmakuConfig['fontfamily'] === 'custom') {
             danmakuConfig['fontfamily'] = danmakuConfig['fontfamilycustom'];
         }
-        danmakuConfig['preventshade'] = false;
+        // danmakuConfig['preventshade'] = false;
 
         this.multipleDanmakuDebug = {
             cid: this.config.cid,

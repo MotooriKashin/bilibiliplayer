@@ -37,6 +37,8 @@ export class DanmakuSettingLite {
     dropFrames: any;
     dropFramesTime?: number;
     dropFramesTimer?: number;
+    danmakunumber!: Slider;
+    danmakuArea!: Slider;
     constructor(public controller: Controller) {
         this.prefix = controller.prefix;
         this.player = controller.player;
@@ -64,7 +66,60 @@ export class DanmakuSettingLite {
                 this.player.set('setting_config', 'opacity', e.value.toFixed(2));
             }
         });
-        this.opacityBar.value(this.controller.config['setting_config']['opacity'])
+        this.opacityBar.value(this.controller.config['setting_config']['opacity']);
+
+        this.danmakunumber = new Slider(this.container.find(`.${this.prefix}-danmaku-setting-lite-danmakunumber`), {
+            name: "ctlbar_danmuku_number",
+            precision: 104,
+            hint: true,
+            width: 120,
+            height: 13,
+
+            valueSetAnalyze: b => (Number(b) === 0 || Number(b) === -1) ? 1 : b <= 100 ? (b - 1) / 104 : (b / 100 - 1 + 100 - 1) / 104,
+            valueGetAnalyze: b => { b = b * 104 + 1; return b <= 100 ? b : b <= 104 ? (b - 100 + 1) * 100 : 0; },
+            formatTooltip: b => { b = Math.round(b * 104 + 1); return b <= 100 ? b : b <= 104 ? (b - 100 + 1) * 100 : "无限制"; },
+            change: (e: IEvent) => {
+                player.set('setting_config', 'danmakunumber', e.value === 0 ? -1 : e.value);
+            }
+        });
+        this.danmakunumber.value(this.controller.config['setting_config']['danmakunumber']);
+
+        this.danmakuArea = new Slider(this.container.find(`.${this.prefix}-danmaku-setting-lite-danmakuarea`), {
+            name: "ctlbar_danmuku_area",
+            precision: 10,
+            hint: true,
+            width: 120,
+            height: 13,
+
+            valueSetAnalyze: b => {
+                b = b / 100;
+                b = Math.max(b, 0);
+                b = Math.min(b, 1);
+                return b;
+            },
+            valueGetAnalyze: b => {
+                b = b * 100;
+                b = Math.max(b, 0);
+                b = Math.min(b, 100);
+                return b;
+            },
+            formatTooltip: b => {
+                switch (b) {
+                    case 0:
+                        return "无限";
+                    case 0.5:
+                        return "半屏";
+                    case 1:
+                        return "满屏";
+                    default:
+                        return `${b * 100}%`;
+                }
+            },
+            change: (e: IEvent) => {
+                player.set('setting_config', 'danmakuArea', e.value);
+            }
+        });
+        this.danmakuArea.value(this.controller.config['setting_config']['danmakuArea']);
 
         this.preventshade = new Checkbox(this.container.find(`.${this.prefix}-setting-preventshade`), {
             label: "防挡字幕",
@@ -99,7 +154,7 @@ export class DanmakuSettingLite {
             }
         });
 
-        /** 暂存以相应来自别处的屏蔽消息 */
+        /** 暂存以响应来自别处的屏蔽消息 */
         const blockElem: Record<string, any> = {};
         this.type.forEach((d, i) => {
             const domName = <keyof BILIBILI_PLAYER_SETTINGS['block']>`type_${d[0].toLowerCase()}`;
@@ -277,6 +332,14 @@ export class DanmakuSettingLite {
 		                    <div class="${this.prefix}-danmaku-setting-lite-row">
 	                    		<div class="${this.prefix}-danmaku-setting-lite-title">不透明度</div>
 	                    		<div class="${this.prefix}-danmaku-setting-lite-opacitybar"></div>
+	                    	</div>
+                            <div class="${this.prefix}-danmaku-setting-lite-row">
+	                    		<div class="${this.prefix}-danmaku-setting-lite-title">弹幕密度</div>
+	                    		<div class="${this.prefix}-danmaku-setting-lite-danmakunumber"></div>
+	                    	</div>
+                            <div class="${this.prefix}-danmaku-setting-lite-row">
+	                    		<div class="${this.prefix}-danmaku-setting-lite-title">显示区域</div>
+	                    		<div class="${this.prefix}-danmaku-setting-lite-danmakuarea"></div>
 	                    	</div>
 	                    	<div class="${this.prefix}-danmaku-setting-lite-discipline"></div>
 	                    	<div class="${this.prefix}-danmaku-setting-lite-row">
