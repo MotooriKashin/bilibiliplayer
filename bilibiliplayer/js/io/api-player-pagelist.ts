@@ -105,7 +105,9 @@ class ApiPlayerPagelistModify extends Api {
     getData(config: IApiConfig) {
         let url = '';
         if (this.data.seasonType > 0) {
-            url = Interface.WEBAPI_GETEPLIST + this.data.url;
+            // 使用bangumi接口，不获取sp列表信息
+            url = Interface.BANGUMI_GETEPLIST + this.data.url;
+            // url = Interface.WEBAPI_GETEPLIST + this.data.url;
         } else {
             url = Interface.X_PLAYER_PAGELIST + this.data.url;
         }
