@@ -3109,14 +3109,13 @@ class Player {
                 break;
             case ContentType.OgvExtraParams:
             case ActionType.extra:
-                // 进度控制条太挤了，暂时不添加片头片尾跳过功能
-                // const headTail = this.extraParams?.headTail;
-                // if (headTail?.hasData) {
-                //     this.controller.progressBar.newSkip(headTail);
-                // }
-                // if (headTail?.hasSkip) {
-                //     this.controller.settingButton.initSkipHeadTail();
-                // }
+                const headTail = this.extraParams?.headTail;
+                if (headTail?.hasData) {
+                    this.controller.progressBar.newSkip(headTail);
+                }
+                if (headTail?.hasSkip) {
+                    this.settingPanel.initSkipHeadTail();
+                }
                 break;
 
             default:

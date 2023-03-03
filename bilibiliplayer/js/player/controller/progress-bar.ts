@@ -2,9 +2,11 @@ import { IEvent } from "@jsc/player-auxiliary/js/ui/base";
 import { Slider } from "@jsc/player-auxiliary/js/ui/slider";
 import { fmSeconds } from "@shared/utils";
 import ApiPlayerVideoShot, { ApiPlayerVideoShotInData, ApiPlayerVideoShotOutData } from "../../io/api-x-player-videoshot";
+import { IHeadTail } from "../../io/rebuild-player-extra-params";
 import Player from "../../player";
 import Controller from "../controller";
 import STATE from "../state";
+import SkipHeadTail from "./skip-head-tail";
 
 export class ProgressBar {
     private prefix: string;
@@ -26,6 +28,7 @@ export class ProgressBar {
     private time!: JQuery<HTMLElement>;
     private imgShow!: number;
     private HOVER_FIX = 2;
+    private skipHeadTail?: SkipHeadTail;
     constructor(controller: Controller) {
         this.prefix = controller.prefix;
         this.player = controller.player;
@@ -262,7 +265,14 @@ export class ProgressBar {
             if (duration !== this.lastPlayTotalTime && !this.player.getTimeOffset()) {
                 this.updateVideoTime(currentTime, duration || 0);
             }
+
+            // 互动视频特殊处理（不走以下逻辑
+            this.skipHeadTail?.autoSkipHeadTail(currentTime);
         }
+    }
+    newSkip(headTail: IHeadTail) {
+        if (this.skipHeadTail) return;
+        this.skipHeadTail = new SkipHeadTail(this.player, headTail);
     }
     updateVideoTime(current: number, total?: number) {
         const player = this.player;
