@@ -58,6 +58,7 @@ export default class URLS {
     static readonly X_PLAYER_PAGELIST = URLS.P_AUTO + URLS.D_API + '/x/player/pagelist'; // 连播视频信息
     static readonly SPONSOR_RANKWEB_RANKLIST = URLS.P_AUTO + URLS.D_BANGUMI + '/sponsor/rankweb/rank_list'; // bangumi承包排行
     static readonly WEBAPI_GETEPLIST = URLS.P_AUTO + URLS.D_API + '/pgc/web/season/section'; // bangumi连播
+    static readonly BANGUMI_GETEPLIST = URLS.P_AUTO + URLS.D_BANGUMI + '/web_api/get_ep_list'; // bangumi列表
     static readonly PLUS_COMMENT = URLS.P_AUTO + URLS.D_WWW + '/plus/comment.php'; // 评分操作
     static readonly X_RELATION_MODIFY = URLS.P_AUTO + URLS.D_API + '/x/relation/modify'; // 关注
     static readonly PREMIERE_STATUS = URLS.P_AUTO + URLS.D_API + '/pgc/premiere/status'; // 首播EP状态
