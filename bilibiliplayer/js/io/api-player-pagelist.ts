@@ -130,9 +130,9 @@ class ApiPlayerPagelistModify extends Api {
     }
 
     private convertResult(data: IResponseData): IOutData {
-        if (this.data.seasonType > 0) {
-            return ApiPlayerPagelistModify.parseResult(data);
-        }
+        // if (this.data.seasonType > 0) {
+        //     return ApiPlayerPagelistModify.parseResult(data);
+        // }
         return {
             code: data['code'],
             message: data['message'],
