@@ -173,9 +173,9 @@ class Toast {
         return { item: item };
     }
 
-    addBottomHinter(obj: any): IItemExtInterface | false {
+    addBottomHinter(obj: any): IItemExtInterface | undefined {
         if (this.isPay) {
-            return false;
+            return;
         }
         let rest: JQuery | null = null;
         const that = this;
