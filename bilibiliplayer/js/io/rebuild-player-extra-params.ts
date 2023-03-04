@@ -41,8 +41,8 @@ export interface IHeadTail {
     hasSkip: boolean; // 是否在设置面板中显示
     hasData: boolean; // 是否有首尾数据
     first: boolean;
-    head: number[] | null;
-    tail: number[] | null;
+    head?: number[];
+    tail?: number[];
 }
 
 // [*] 表示此字段数据有延迟，使用此字段前需要重新获取数据
@@ -137,8 +137,8 @@ function rebuildPlayerExtraParams(player: Player): IPlayerExtraParams | null | a
                     hasData: false,
                     hasSkip: params.headTail.hasSkip,
                     first: false,
-                    head: null,
-                    tail: null,
+                    head: [],
+                    tail: [],
                 };
                 const op = params.headTail.op;
                 const ed = params.headTail.ed;

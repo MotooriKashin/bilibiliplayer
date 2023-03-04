@@ -2,9 +2,11 @@ import { IEvent } from "@jsc/player-auxiliary/js/ui/base";
 import { Slider } from "@jsc/player-auxiliary/js/ui/slider";
 import { fmSeconds } from "@shared/utils";
 import ApiPlayerVideoShot, { ApiPlayerVideoShotInData, ApiPlayerVideoShotOutData } from "../../io/api-x-player-videoshot";
+import { IHeadTail } from "../../io/rebuild-player-extra-params";
 import Player from "../../player";
 import Controller from "../controller";
 import STATE from "../state";
+import SkipHeadTail from "./skip-head-tail";
 
 export class ProgressBar {
     private prefix: string;
@@ -26,11 +28,13 @@ export class ProgressBar {
     private time!: JQuery<HTMLElement>;
     private imgShow!: number;
     private HOVER_FIX = 2;
+    private skipHeadTail?: SkipHeadTail;
     constructor(controller: Controller) {
         this.prefix = controller.prefix;
         this.player = controller.player;
         this.controller = controller;
         this.init();
+        this.globalEvents();
     }
     private init() {
         const that = this;
@@ -116,6 +120,14 @@ export class ProgressBar {
         }, 200);
 
         this.slider.bufferValue(this.slider.getBufferValue());
+    }
+    private globalEvents() {
+        this.player.bind(STATE.EVENT.VIDEO_DESTROY, () => {
+            this.destroy();
+        });
+        this.player.bind(STATE.EVENT.PLAYER_RELOADED, () => {
+            this.progressDetailImgInitialized = false;
+        });
     }
     private setProgressDetailImg(element: JQuery<HTMLElement>, value: number) {
         let timeArr = $(element).data('pv_index');
@@ -262,7 +274,14 @@ export class ProgressBar {
             if (duration !== this.lastPlayTotalTime && !this.player.getTimeOffset()) {
                 this.updateVideoTime(currentTime, duration || 0);
             }
+
+            // 互动视频特殊处理（不走以下逻辑
+            this.skipHeadTail?.autoSkipHeadTail(currentTime);
         }
+    }
+    newSkip(headTail: IHeadTail) {
+        if (this.skipHeadTail) return;
+        this.skipHeadTail = new SkipHeadTail(this.player, headTail);
     }
     updateVideoTime(current: number, total?: number) {
         const player = this.player;
@@ -312,5 +331,9 @@ export class ProgressBar {
     }
     getDuration(): number {
         return this.safariVideoDuration || this.player.duration(this.player.video, true)!;
+    }
+    private destroy() {
+        this.timer && clearInterval(this.timer);
+        delete this.skipHeadTail;
     }
 }

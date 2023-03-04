@@ -49,6 +49,7 @@ type SettingItemKeysInterface =
 type SettingKey = keyof ISettingType;
 type FilterType = 'filterTypeTop' | 'filterTypeBottom' | 'filterTypeScroll' | 'filterTypeColor' | 'filterTypeSpecial';
 interface ISettingItemInterface {
+    skipheadtail?: Checkbox;
     danmakuplugins?: Checkbox;
     danmakunumber?: Slider;
     videospeed?: Selectmenu;
@@ -568,6 +569,22 @@ class Setting {
         this.initalized = true;
     }
 
+    /** 跳过片头片尾 */
+    initSkipHeadTail() {
+        if (this.settingItem.skipheadtail) return;
+        const skipheadtail = this.player.template.setting.find(`.${this.prefix}-setting-skipheadtail`)
+        this.settingItem.skipheadtail = new Checkbox(skipheadtail, {
+            label: "跳过片头片尾",
+            tristate: true,
+            change: (e: IEvent) => {
+                this.player.set("video_status", "skipheadtail", e.value);
+                this.player.controller?.resize();
+            }
+        });
+        this.settingItem.skipheadtail.value(<any>this.player.videoSettings.video_status.skipheadtail)
+        skipheadtail.parent().show();
+    }
+
     initPanoramamode() {
         const panoramamode = this.player.template.setting.find(`.${this.prefix}-setting-panoramamode`);
         this.player.container.addClass(`${this.prefix}-panoramic-video`);
@@ -727,6 +744,9 @@ class Setting {
 					</div>
                     <div class="${this.prefix}-fl ${this.prefix}-setting-wrap-danmakuplugins" data-tooltip="1" data-text="含高赞弹幕，刷新页面才可以生效" data-position="bottom-center" data-change-mode="1">
 						<input type="checkbox" class="${this.prefix}-setting-danmakuplugins" />
+					</div>
+                    <div class="${this.prefix}-fl" data-tooltip="1" data-text="打勾视频将自动跳转，方块将提示是否跳转" data-position="bottom-center" data-change-mode="1" style="display: none;">
+						<input type="checkbox" class="${this.prefix}-setting-skipheadtail" />
 					</div>
 				</div>
 			</div>

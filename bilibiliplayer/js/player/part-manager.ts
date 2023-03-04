@@ -42,7 +42,7 @@ class PartManager {
     private player: Player;
     private prefix: string;
     private isPugv = false;
-    private nextObj!: false | IItemExtInterface | null;
+    private nextObj?: IItemExtInterface;
     parts: any[] | null = null;
     partsInfo: IPartsInfo[] | null = null;
     loadingParts: any;
@@ -508,7 +508,7 @@ class PartManager {
         this.player.bind(STATE.EVENT.VIDEO_MEDIA_PLAYING, () => {
             if (this.nextObj) {
                 this.nextObj.stop();
-                this.nextObj = null;
+                delete this.nextObj;
             }
         });
     }
@@ -652,7 +652,7 @@ class PartManager {
     destroy() {
         if (this.nextObj) {
             this.nextObj.stop();
-            this.nextObj = null;
+            delete this.nextObj;
         }
     }
 }

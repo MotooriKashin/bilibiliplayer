@@ -178,7 +178,7 @@ export class ReloadMedia {
                     }
                     that.player.trigger(STATE.EVENT.VIDEO_PLAYURL_LOADED);
                     that.player.currentStreamType = result.streamType;
-                    that.player.flushExtraParams();
+                    that.player.flushExtraParams(result.headTail);
                     const unpaid = that.player.unpaid(result.isPreview);
                     const noauth =
                         (Number(result.vipType) === 0 || Number(result.vipStatus) !== 1) &&
