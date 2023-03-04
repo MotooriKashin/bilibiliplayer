@@ -427,7 +427,7 @@ class Player {
         this.errorPlayurl = false;
         this.mediaDataSource = result.mediaDataSource;
         this.currentStreamType = result.streamType;
-        this.flushExtraParams();
+        this.flushExtraParams(result.headTail);
         const notStart =
             this.extraParams &&
             typeof this.extraParams.isStart === 'boolean' &&
@@ -541,8 +541,8 @@ class Player {
         return new ScreenSHOT(config, this);
     }
 
-    flushExtraParams() {
-        $.extend(true, this.extraParams, rebuildPlayerExtraParams(this));
+    flushExtraParams(obj = {}) {
+        $.extend(true, this.extraParams, rebuildPlayerExtraParams(this), obj);
     }
 
     duration(video?: HTMLVideoElement, isReal?: boolean, isAbsolute?: boolean) {
@@ -1982,6 +1982,15 @@ class Player {
 
         this.endingpanelInitialized = false;
 
+        // 初始化跳过片头片尾
+        const headTail = this.extraParams?.headTail;
+        if (headTail?.hasData) {
+            this.controller.progressBar.newSkip(headTail);
+        }
+        if (headTail?.hasSkip) {
+            this.settingPanel.initSkipHeadTail();
+        }
+
         // initialize tooltips
         this.template.container.find('[data-tooltip="1"]').each((i, e) => {
             new Tooltip({
@@ -2231,7 +2240,7 @@ class Player {
                     that.trigger(STATE.EVENT.VIDEO_PLAYURL_LOADED);
                     that.mediaDataSource = result.mediaDataSource;
                     that.currentStreamType = result.streamType;
-                    that.flushExtraParams();
+                    that.flushExtraParams(result.headTail);
                     const noauth =
                         (Number(result.vipType) === 0 || Number(result.vipStatus) !== 1) &&
                         Number(result.bp) !== 1 &&
@@ -3108,7 +3117,7 @@ class Player {
                 this.initPartmanager().getFromPage();
                 break;
             case ContentType.OgvExtraParams:
-            case ActionType.extra:
+            case ActionType.extra: {
                 const headTail = this.extraParams?.headTail;
                 if (headTail?.hasData) {
                     this.controller.progressBar.newSkip(headTail);
@@ -3117,7 +3126,7 @@ class Player {
                     this.settingPanel.initSkipHeadTail();
                 }
                 break;
-
+            }
             default:
                 break;
         }

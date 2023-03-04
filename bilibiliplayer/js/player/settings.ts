@@ -37,6 +37,7 @@ export interface BILIBILI_PLAYER_SETTINGS {
         panoramamode_reddot_status: boolean;
         videospeed: number;
         volume: number;
+        skipheadtail: number;
     };
     block: {
         status: boolean;

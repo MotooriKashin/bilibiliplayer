@@ -571,6 +571,7 @@ class Setting {
 
     /** 跳过片头片尾 */
     initSkipHeadTail() {
+        if (this.settingItem.skipheadtail) return;
         const skipheadtail = this.player.template.setting.find(`.${this.prefix}-setting-skipheadtail`)
         this.settingItem.skipheadtail = new Checkbox(skipheadtail, {
             label: "跳过片头片尾",
@@ -580,6 +581,7 @@ class Setting {
                 this.player.controller?.resize();
             }
         });
+        this.settingItem.skipheadtail.value(<any>this.player.videoSettings.video_status.skipheadtail)
         skipheadtail.parent().show();
     }
 

@@ -34,6 +34,7 @@ export class ProgressBar {
         this.player = controller.player;
         this.controller = controller;
         this.init();
+        this.globalEvents();
     }
     private init() {
         const that = this;
@@ -119,6 +120,14 @@ export class ProgressBar {
         }, 200);
 
         this.slider.bufferValue(this.slider.getBufferValue());
+    }
+    private globalEvents() {
+        this.player.bind(STATE.EVENT.VIDEO_DESTROY, () => {
+            this.destroy();
+        });
+        this.player.bind(STATE.EVENT.PLAYER_RELOADED, () => {
+            this.progressDetailImgInitialized = false;
+        });
     }
     private setProgressDetailImg(element: JQuery<HTMLElement>, value: number) {
         let timeArr = $(element).data('pv_index');
@@ -322,5 +331,9 @@ export class ProgressBar {
     }
     getDuration(): number {
         return this.safariVideoDuration || this.player.duration(this.player.video, true)!;
+    }
+    private destroy() {
+        this.timer && clearInterval(this.timer);
+        delete this.skipHeadTail;
     }
 }

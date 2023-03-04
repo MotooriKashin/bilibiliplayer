@@ -40,6 +40,9 @@ class SkipHeadTail {
     }
     private create() {
 
+        this.head = this.headTail.head ?? [];
+        this.tail = this.headTail.tail ?? [];
+
         // -1代表跳到片尾
         if (this.tail && this.tail[1] < 0) {
             this.tail[1] = this.duration;
@@ -56,13 +59,13 @@ class SkipHeadTail {
     // 判断是否要自动跳过首尾
     autoSkipHeadTail(currentTime: number, isRange = false) {
         if (this.player.errorPlayurl) return;
-        if (!this.player.get('video_status', 'skip')) return;
+        if (!this.player.get('video_status', 'skipheadtail')) return;
         if (!this.player.video || this.player.video.paused) return;
 
         this.autoSeekTail(currentTime, isRange);
     }
     private autoSeekTail(currentTime: number, isRange = false) {
-        const skip = this.player.get('video_status', 'skip');
+        const skip = this.player.get('video_status', 'skipheadtail');
         const duration = this.player.duration() || 0;
         const head = this.head;
         const tail = this.tail;
