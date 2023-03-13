@@ -85,19 +85,19 @@ export class TextField extends DisplayObject {
     set alpha(a) {
         this.setAlpha(a);
     }
-    get alpha(): string {
+    get alpha() {
         return this.data.alpha;
     }
     set x(x) {
         this.setX(x);
     }
-    get x(): number {
+    get x() {
         return this.data.x;
     }
     set y(y) {
         this.setY(y);
     }
-    get y(): number {
+    get y() {
         return this.data.y;
     }
     set text(text) {
