@@ -1,3 +1,4 @@
+import { debug } from "../../debug";
 import { __pchannel, __trace } from "../OOAPI";
 import { IComment, Player } from "../Player/player";
 import { Runtime } from "../Runtime/Runtime";
@@ -313,11 +314,7 @@ export class DisplayObject {
                     try {
                         this._listeners[event][i](data);
                     } catch (e) {
-                        if ((<Error>e).hasOwnProperty('stack')) {
-                            __trace((<Error>e).stack?.toString(), 'err');
-                        } else {
-                            __trace((<Error>e).toString(), 'err');
-                        }
+                        debug.error(e);
                     }
                 }
             }

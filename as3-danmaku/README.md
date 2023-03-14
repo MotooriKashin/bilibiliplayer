@@ -52,6 +52,5 @@
 - [【CLANNAD】谢谢 一直以来都最喜欢你~](https://www.bilibili.com/video/av856822)
 - [「无可救药」神明治疗 (洛天依)](https://www.bilibili.com/video/av945882)
 - [【黑屏弹幕】人造ENE](https://www.bilibili.com/video/av980264)
-- [【黑屏弹幕】DayXDay](https://www.bilibili.com/video/av2642876)
-- [【黑屏弹幕】旅（完成）](https://www.bilibili.com/video/av2735163)：弹幕君好像误将`if`写成了`If`？
+- [【黑屏弹幕】旅（完成）](https://www.bilibili.com/video/av2735163)
 - [【弹幕PV】世界终结舞厅](https://www.bilibili.com/video/av2775802)

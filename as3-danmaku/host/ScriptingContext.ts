@@ -49,11 +49,7 @@ export class ScriptingContext {
         try {
             (<any>this).objects[objectId][methodName](params);
         } catch (e) {
-            if ((<Error>e).stack) {
-                debug.error((<Error>e).stack);
-            } else {
-                debug.error((<Error>e).toString());
-            };
+            debug.error(e);
         }
     };
     getObject<T extends DisplayObject>(objectId: string): T {

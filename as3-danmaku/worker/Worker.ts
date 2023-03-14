@@ -122,27 +122,34 @@ __schannel('::clear', function () {
 // 解析弹幕
 __schannel('::parse', function (dms: IDanmaku[]) {
     dms.forEach(async dm => {
-        const vm = new VirtualMachine(GLOBAL);
-        const s = new Scanner(dm.text.replace(/(\/n|\\n|\n|\r\n)/g, "\r").replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
-            // 处理误当成xml非法字符的转义字符
-            return <string>{
-                '&amp;': '&',
-                '&lt;': '<',
-                '&gt;': '>',
-                '&apos;': '\'',
-                '&quot;': '"'
-            }[a]
-        }));
-        const p = new Parser(s);
-        vm.rewind();
-        vm.setByteCode(p.parse(vm));
-        Parse[dm.dmid] = vm;
+        try {
+            const vm = new VirtualMachine(GLOBAL);
+            const s = new Scanner(dm.text.replace(/(\/n|\\n|\n|\r\n)/g, "\n").replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
+                // 处理误当成xml非法字符的转义字符
+                return <string>{
+                    '&amp;': '&',
+                    '&lt;': '<',
+                    '&gt;': '>',
+                    '&apos;': '\'',
+                    '&quot;': '"'
+                }[a]
+            }));
+            const p = new Parser(s);
+            vm.rewind();
+            vm.setByteCode(p.parse(vm));
+            Parse[dm.dmid] = vm;
+        } catch (e) {
+            debug.error(e);
+        }
     });
 });
 // 运行弹幕
 __schannel("::eval", function (dmid: string) {
     const vm = Parse[dmid];
-    vm?.execute();
+    if (vm) {
+        vm.execute();
+        vm.rewind();
+    }
 });
 // 调试频道
 __schannel("::debug", function (msg: any) {

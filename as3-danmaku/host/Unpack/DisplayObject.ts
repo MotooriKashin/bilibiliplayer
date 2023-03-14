@@ -1,3 +1,4 @@
+import { debug } from "../../debug";
 import { numberColor } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
 
@@ -160,7 +161,7 @@ export abstract class DisplayObject {
         try {
             child.DOM?.remove();
         } catch (e) {
-            this.context.invokeError((<Error>e).stack, "err");
+            debug.error(e);
         }
     };
     protected removeChildren(ids: string[]) {

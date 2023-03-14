@@ -40,11 +40,7 @@ export const __OOAPI = new (class OOAPI {
                 try {
                     d(msg.payload);
                 } catch (e) {
-                    if ((<Error>e).stack) {
-                        __trace((<Error>e).stack?.toString(), 'err');
-                    } else {
-                        __trace((<Error>e).toString(), 'err');
-                    }
+                    debug.error(e);
                 }
             });
         }

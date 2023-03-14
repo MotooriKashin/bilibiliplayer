@@ -404,9 +404,9 @@ export class Shape extends DisplayObject {
         const gradId = 'gradient-' + params[0] + '-' + this.globalDefs.childNodes.length;
         let grad;
         if (params[0] === 'linear') {
-            grad = Shape._svg('linearGradient', { 'id': gradId, 'spreadMethod': params[5] });
+            grad = Shape._svg('linearGradient', { 'id': gradId, 'spreadMethod': (<string>params[5]).trim() });
         } else {
-            grad = Shape._svg('radialGradient', { 'id': gradId, 'spreadMethod': params[5] });
+            grad = Shape._svg('radialGradient', { 'id': gradId, 'spreadMethod': (<string>params[5]).trim() });
         }
         // Figure out all the stops
         const colors = params[1];

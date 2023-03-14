@@ -54,7 +54,7 @@ export class Parser {
         return this.generator.getCode();
     }
     private causeSyntaxError(param1: string) {
-        throw new VMSyntaxError("Parser [causeSyntaxError] on line " + this.scanner.getLineNumber() + " " + param1 + " (" + this.getToken().type + ")" + " " + this.scanner.getLine());
+        throw new VMSyntaxError("Parser [causeSyntaxError] on line " + this.scanner.getLineNumber() + " " + param1 + " (" + this.getToken()?.type + ")" + " " + this.scanner.getLine());
     }
     private pushBreakLabel(param1: Label) {
         this.breakLabelList.unshift(param1);

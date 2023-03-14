@@ -8,7 +8,7 @@ debug.debug = function (...arg: any[]) {
     console.debug(`[AS3 parser]`, ...arg)
 }
 debug.warn = function (...arg: any[]) {
-    console.warn.bind(`[AS3 parser]`, ...arg)
+    console.warn(`[AS3 parser]`, ...arg)
 }
 debug.error = function (...arg: any[]) {
     console.error(`[AS3 parser]`, ...arg)
