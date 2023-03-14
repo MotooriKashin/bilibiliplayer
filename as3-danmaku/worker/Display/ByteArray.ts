@@ -1,55 +1,44 @@
-import { __trace } from "../OOAPI";
+import { debug } from "../../debug";
 
 export class ByteArray extends Array<number> {
     private _readPosition: number = 0;
-
     constructor(...params: any[]) {
         super(...params);
         try {
             Object['setPrototypeOf'](this, ByteArray.prototype);
         } catch (e) { }
     }
-
     get bytesAvailable() {
         return this.length - this._readPosition;
     }
-
     set bytesAvailable(_n: number) {
-        __trace('ByteArray.bytesAvailable is read-only', 'warn');
+        debug.warn('ByteArray.bytesAvailable is read-only');
     }
-
     get position() {
         return this._readPosition;
     }
-
     set position(p: number) {
         this._readPosition = p;
     }
-
     clear() {
         this.length = 0;
         this._readPosition = 0;
     }
-
     compress(algorithm = 'zlib') {
-        __trace('ByteArray.compress[' + algorithm + '] not implemented', 'warn');
+        debug.warn('ByteArray.compress[' + algorithm + '] not implemented');
         this._readPosition = 0;
     }
-
     uncompress(algorithm = 'zlib') {
-        __trace('ByteArray.uncompress[' + algorithm +
-            '] not implemented', 'warn');
+        debug.warn('ByteArray.uncompress[' + algorithm +
+            '] not implemented');
         this._readPosition = 0;
     }
-
     deflate() {
-        __trace('ByteArray.deflate not implemented', 'warn');
+        debug.warn('ByteArray.deflate not implemented');
     }
-
     inflate() {
-        __trace('ByteArray.inflate not implemented', 'warn');
+        debug.warn('ByteArray.inflate not implemented');
     }
-
     readUTFBytes(length: number) {
         // Get length
         const subArray: Array<number> = this.slice(this._readPosition, length);
@@ -60,7 +49,6 @@ export class ByteArray extends Array<number> {
             return s;
         }, '');
     }
-
     readUnsignedByte() {
         return this[this._readPosition] & 0xff;
     }
@@ -70,7 +58,6 @@ export class ByteArray extends Array<number> {
             bottom = this.readUnsignedByte();
         return ((top << 8) + bottom) & 0xffff;
     }
-
     readUnsignedInt() {
         const a = this.readUnsignedByte(),
             b = this.readUnsignedByte(),
@@ -78,19 +65,15 @@ export class ByteArray extends Array<number> {
             d = this.readUnsignedByte();
         return ((a << 24) + (b << 16) + (c << 8) + d) & 0xffffffff;
     }
-
     readByte() {
         return this.readUnsignedByte() - 128;
     }
-
     readShort() {
         return this.readUnsignedShort() - 0x7fff;
     }
-
     readBoolean() {
         return this.readUnsignedByte() !== 0;
     }
-
     readFloat() {
         const source = this.readUnsignedInt();
         let x = (source & 0x80000000) ? -1 : 1;
@@ -113,24 +96,20 @@ export class ByteArray extends Array<number> {
                 return s * (m / 8388608.0) * Math.pow(2, x);
         }
     }
-
     writeByte(value: number) {
         this.push(value & 0xff);
     }
-
     writeBytes(bytes: number[], offset = 0, length = 0) {
         for (let i = offset; i < Math.min(bytes.length - offset, length); i++) {
             this.writeByte(bytes[i]);
         }
     }
-
     writeUTFBytes(value: string) {
         const bytesString: string = unescape(encodeURIComponent(value));
         for (let i = 0; i < value.length; i++) {
             this.push(bytesString.charCodeAt(i));
         }
     }
-
     clone() {
         const cloned = new ByteArray();
         this.forEach(function (item) { cloned.push(item) });

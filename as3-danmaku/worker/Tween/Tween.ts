@@ -1,4 +1,3 @@
-import { __trace } from "../OOAPI";
 import { TimeKeeper, Timer } from "../Runtime/Timer";
 import { circular, cubic, exponential, extendWithEasingFunctions, getEasingFuncByName, linear, quadratic, quartic, quintic, sine } from "./Easing";
 
@@ -349,6 +348,3 @@ export class Tween {
         return newTween;
     }
 }
-
-/** TODO: Remove when unnecessary **/
-extendWithEasingFunctions(self);
