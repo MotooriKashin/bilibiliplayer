@@ -1,5 +1,5 @@
-import { createElement, extend, numberColor } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
+import { createElement, extend, numberColor } from "../Utils";
 import { DisplayObject } from "./DisplayObject";
 
 export class TextField extends DisplayObject {

@@ -1,5 +1,5 @@
-import { createElement } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
+import { createElement } from "../Utils";
 import { BitmapData } from "./BitmapData";
 import { DisplayObject } from "./DisplayObject";
 

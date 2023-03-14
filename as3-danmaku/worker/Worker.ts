@@ -142,6 +142,7 @@ __schannel('::parse', function (dms: IDanmaku[]) {
             debug.error(e);
         }
     });
+    dms.length && debug(`已解析${dms.length}条弹幕~`);
 });
 // 运行弹幕
 __schannel("::eval", function (dmid: string) {

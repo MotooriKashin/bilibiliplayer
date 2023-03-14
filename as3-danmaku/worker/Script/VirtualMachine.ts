@@ -445,9 +445,10 @@ export class VirtualMachine {
     GETM = (code: any[], pc: number) => {
         let _loc3_ = String(code[pc + 2]);
         if (code[pc + 1] instanceof DisplayObject) {
-            if (_loc3_ == "root" || _loc3_ == "parent" || _loc3_ == "stage") {
-                throw new Error("属性禁止访问！(禁止向上访问播放器的显示列表)");
-            }
+            // 移植后的沙盒这些属性是手动构造的，允许访问~
+            // if (_loc3_ == "root" || _loc3_ == "parent" || _loc3_ == "stage") {
+            //     throw new Error("属性禁止访问！(禁止向上访问播放器的显示列表)");
+            // }
             if (_loc3_ == "loaderInfo") {
                 throw new Error("属性无法访问。");
             }
@@ -474,9 +475,10 @@ export class VirtualMachine {
             if (typeof _loc3_ !== "number") {
                 _loc3_ = String(_loc3_);
             }
-            if (_loc3_ == "root" || _loc3_ == "parent" || _loc3_ == "stage") {
-                throw new Error("属性禁止访问！(禁止向上访问播放器的显示列表)");
-            }
+            // 移植后的沙盒这些属性是手动构造的，允许访问~
+            // if (_loc3_ == "root" || _loc3_ == "parent" || _loc3_ == "stage") {
+            //     throw new Error("属性禁止访问！(禁止向上访问播放器的显示列表)");
+            // }
             if (_loc3_ == "loaderInfo") {
                 throw new Error("属性无法访问。");
             }

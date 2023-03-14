@@ -1,6 +1,6 @@
 import { debug } from "../../debug";
-import { numberColor } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
+import { numberColor } from "../Utils";
 
 interface Transformation {
     mode: '2d' | '3d';

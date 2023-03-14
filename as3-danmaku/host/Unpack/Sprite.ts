@@ -1,5 +1,5 @@
-import { createElement } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
+import { createElement } from "../Utils";
 import { DisplayObject } from "./DisplayObject";
 
 export class Sprite extends DisplayObject {

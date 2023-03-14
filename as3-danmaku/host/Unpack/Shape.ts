@@ -1,6 +1,6 @@
 import { debug } from "../../debug";
-import { createElement, extend } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
+import { createElement, extend } from "../Utils";
 import { DisplayObject } from "./DisplayObject";
 
 interface LineContext {
