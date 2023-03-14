@@ -1,5 +1,4 @@
-### 构建
-本项目`Worker`部分需要单独使用`build`方法提前构建，才能使用worker相关的改动生效并打包仅父项目中。
+代码弹幕（mode8）兼容模块，分为两个部分，Web Worker提供沙箱环境进行弹幕解码，然后通过消息传递给代理主机进行DOM操作。
 
 ### 参考
 本子模块的引擎移植自[CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary/) （Licensed under the MIT license），不直接引用而进行移植原因如下：
@@ -8,29 +7,21 @@
 
 移植过程还参考了[弹幕艺术联合文档](http://biliscript-syndicate.github.io/reference.html)进行校正。
 
+`VirtualMachine`沙箱移植自[旧版flash播放器](https://static.hdslb.com/play.swf)，感谢[JPEXS Free Flash Decompiler](https://github.com/jindrapetrik/jpexs-decompiler)提供技术支持！
+
 ### 已知问题
-1. `ReferenceError: *** is not defined`：
-   - 之前时间轴有弹幕丢失，代码弹幕就是代码，先前定义的变量丢失了，后面访问自然出错。
-   - 调戏了进度条，导致先前的有些弹幕未执行，导致环境变量依赖未定义。
-   - 语法不规范，不知as3里如何，js里未定义的变量就是直接报错。
-   - 编写错误，可能是大小写？见过`function`写成`Function`、`if`写成`If`的。
-2. `SyntaxError: Invalid regular expression`：
-   - 弹幕代码不幸被截断，比如发送时超过字数被截断，引发语法错误。
-   - 语法不规范，比如各种括号未完全闭合。
-   - **本项目处理弹幕代码出错，请反馈视频连接进行测试。**
-3. `TypeError: Cannot read properties of undefined (reading '***')`：
-   - 1,2 中相同原因。
-   - 代码使用的特性未完全支持，环境依赖不存在。
-4. 卡顿：
-   - 短时间内大量效果，不知道flash里如何，js是单线程语言，短时间内大量读写必然卡顿。
+1. 卡顿：
+   - 短时间内大量效果，沙箱之间通信开销巨大。
    - 弹幕作者恶作剧，频繁暂停/播放。
    - 弹幕代码出现死循环！
    - 网络连接状况不好→_→
-5. 弹幕效果丢失：
-   - 上述问题引发的代码未完全执行。
+2. 弹幕效果丢失：
+   - 弹幕代码文本已不完整。
    - 代码使用的特性未完全支持，以弹幕游戏为甚。
    - **浏览器处于后台时不会渲染弹幕。**
    - 弹幕池里已获取不到代码弹幕，悲……
+3. 弹幕样式错乱
+   - 弹幕用到的一些功能仍在想办法支持中。。。
 
 ### 测试用例
 - [【黑屏字幕】花火空](https://www.bilibili.com/video/av71938)
