@@ -1,16 +1,23 @@
-import { BitmapData, Bitmap } from "./Bitmap";
-import { Button } from "./Button";
-import { Shape } from "./Shape";
-import { Sprite, SpriteRoot } from "./Sprite";
-import { TextField } from "./TextField";
-
-export function sensibleDefaults<T extends object>(objectA: T, defaults: T): T {
-    for (const prop in defaults) {
-        if (!objectA.hasOwnProperty(prop)) {
-            objectA[prop] = defaults[prop]
+export function extend<T extends object, U extends object>(target: T, source: U) {
+    for (const key in source) {
+        if (!(key in target)) {
+            Reflect.set(target, key, (<any>source)[key]);
         }
     }
-    return objectA;
+    return target;
+}
+export function numberColor(color: number | string = 0): string {
+    if (typeof color === 'string') {
+        color = parseInt(color.toString());
+        if (Number.isNaN(color)) {
+            color = 0;
+        }
+    }
+    let code: string = color.toString(16);
+    while (code.length < 6) {
+        code = '0' + code;
+    }
+    return '#' + code;
 }
 export function modernize<T extends object>(styles: T): T {
     const modernizeLibrary = {
@@ -50,26 +57,4 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(tagName: K 
         callback(elem);
     }
     return <HTMLElementTagNameMap[K]>elem;
-}
-export function color(color: number | string = 0): string {
-    if (typeof color === 'string') {
-        color = parseInt(color.toString());
-        if (Number.isNaN(color)) {
-            color = 0;
-        }
-    }
-    let code: string = color.toString(16);
-    while (code.length < 6) {
-        code = '0' + code;
-    }
-    return '#' + code;
-}
-export class Unpack {
-    static TextField = TextField;
-    static Shape = Shape;
-    static Sprite = Sprite;
-    static SpriteRoot = SpriteRoot;
-    static Button = Button;
-    static BitmapData = BitmapData;
-    static Bitmap = Bitmap;
 }

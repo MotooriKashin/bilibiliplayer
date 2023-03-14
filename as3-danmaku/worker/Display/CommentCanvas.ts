@@ -1,12 +1,11 @@
 import { __trace } from "../OOAPI";
-import { IComment } from "../Player";
+import { IComment } from "../Player/player";
 import { Runtime } from "../Runtime/Runtime";
 import { MotionManager } from "./MotionManager";
 import { Sprite } from "./Sprite";
 
-class CommentCanvas extends Sprite {
+export class CommentCanvas extends Sprite {
     private mM: MotionManager = new MotionManager(this);
-
     constructor(params: IComment) {
         super();
         this.setDefaults(params);
@@ -15,21 +14,17 @@ class CommentCanvas extends Sprite {
         this.bindParent(params);
         this.mM.play();
     }
-
     get motionManager() {
         return this.mM;
     }
-
     set motionManager(_m: MotionManager) {
         __trace("IComment.motionManager is read-only", "warn");
     }
-
     private bindParent(params: IComment) {
         if (params.hasOwnProperty("parent")) {
             params["parent"]?.addChild?.(this);
         }
     }
-
     public initStyle(style: IComment) {
         if (style["lifeTime"]) {
             this.mM.dur = style["lifeTime"] * 1000;
@@ -40,8 +35,4 @@ class CommentCanvas extends Sprite {
             this.mM.initTween(style["motion"]!, false);
         }
     }
-}
-
-export function createCanvas(params: IComment) {
-    return new CommentCanvas(params);
 }

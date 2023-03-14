@@ -1,13 +1,12 @@
 import { __trace } from "../OOAPI";
-import { IComment } from "../Player";
+import { IComment } from "../Player/player";
 import { Runtime } from "../Runtime/Runtime";
 import { MotionManager } from "./MotionManager";
 import { UIComponent } from "./Sprite";
 
-class CommentButton extends UIComponent {
+export class CommentButton extends UIComponent {
     protected mM = new MotionManager(this);
     protected label = "";
-
     constructor(params: IComment) {
         super();
         this.setDefaults(params);
@@ -16,15 +15,12 @@ class CommentButton extends UIComponent {
         this.bindParent(params);
         this.mM.play();
     }
-
     get motionManager() {
         return this.mM;
     }
-
     set motionManager(_m: MotionManager) {
         __trace("IComment.motionManager is read-only", "warn");
     }
-
     protected bindParent(params: IComment) {
         if (params.hasOwnProperty("parent")) {
             params["parent"]?.addChild?.(this);
@@ -33,7 +29,6 @@ class CommentButton extends UIComponent {
             this.addEventListener('click', params.onclick);
         }
     }
-
     initStyle(style: IComment) {
         if (typeof style === 'undefined' || style === null) {
             style = <any>{};
@@ -52,15 +47,10 @@ class CommentButton extends UIComponent {
             this.mM.initTween(style["motion"]!, false);
         }
     }
-
     serialize() {
         const serialized = super.serialize();
         serialized["class"] = "Button";
         serialized["text"] = this.label;
         return serialized;
     }
-}
-
-export function createButton(params: IComment) {
-    return new CommentButton(params);
 }

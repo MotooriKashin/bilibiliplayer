@@ -9,7 +9,8 @@ interface Message {
     channel: string;
     payload: unknown;
 }
-class OOAPI {
+
+export const __OOAPI = new (class OOAPI {
     /** 频道列表 */
     channels: Record<string, IChannel> = {};
     constructor() {
@@ -39,11 +40,7 @@ class OOAPI {
                 try {
                     d(msg.payload);
                 } catch (e) {
-                    if ((<Error>e).stack) {
-                        __trace((<Error>e).stack?.toString(), 'err');
-                    } else {
-                        __trace((<Error>e).toString(), 'err');
-                    }
+                    debug.error(e);
                 }
             });
         }
@@ -120,9 +117,7 @@ class OOAPI {
         this.channels[channel].listeners.push(listener);
         return true;
     };
-}
-
-export const __OOAPI = new OOAPI();
+})();
 /**
  * 日志
  * @param obj 内容

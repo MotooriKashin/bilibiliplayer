@@ -37,6 +37,8 @@ export class Graphics {
      * @param y y coordinate
      */
     public lineTo(x: number, y: number) {
+        x = Number(x) || 0;
+        y = Number(y) || 0;
         this._evaluateBoundingBox(x, y);
         this._callDrawMethod('lineTo', [x, y]);
     }
@@ -47,6 +49,8 @@ export class Graphics {
      * @param y y coordinate
      */
     public moveTo(x: number, y: number) {
+        x = Number(x) || 0;
+        y = Number(y) || 0;
         this._evaluateBoundingBox(x, y);
         this._callDrawMethod('moveTo', [x, y]);
     }
@@ -118,6 +122,10 @@ export class Graphics {
      * @param h height
      */
     public drawRect(x: number, y: number, w: number, h: number) {
+        x = Number(x) || 0;
+        y = Number(y) || 0;
+        w = Number(w) || 0;
+        h = Number(h) || 0;
         this._evaluateBoundingBox(x, y);
         this._evaluateBoundingBox(x + w, y + h);
         this._callDrawMethod('drawRect', [x, y, w, h]);
@@ -130,6 +138,9 @@ export class Graphics {
      * @param r radius
      */
     public drawCircle(x: number, y: number, r: number) {
+        x = Number(x) || 0;
+        y = Number(y) || 0;
+        r = Number(r) || 0;
         this._evaluateBoundingBox(x - r, y - r);
         this._evaluateBoundingBox(x + r, y + r);
         this._callDrawMethod('drawCircle', [x, y, r]);
@@ -212,7 +223,7 @@ export class Graphics {
             colors,
             alphas,
             ratios,
-            matrix ? matrix.serialize : null,
+            matrix ? matrix.serialize() : null,
             spreadMethod,
             interpolationMethod,
             focalPointRatio]);

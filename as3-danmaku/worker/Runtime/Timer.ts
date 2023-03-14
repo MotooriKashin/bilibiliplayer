@@ -1,3 +1,4 @@
+import { debug } from "../../debug";
 import { __trace } from "../OOAPI";
 
 /** 主机时间记录 */
@@ -41,7 +42,7 @@ export class TimerRuntime {
                             try {
                                 timer.callback();
                             } catch (e) {
-                                __trace((<Error>e).stack?.toString(), 'err');
+                                debug.error(e);
                             }
                             this.timers.splice(i, 1);
                             i--;
@@ -52,7 +53,7 @@ export class TimerRuntime {
                             try {
                                 timer.callback();
                             } catch (e) {
-                                __trace((<Error>e).stack?.toString(), 'err');
+                                debug.error(e);
                             }
                             timer.ttl += timer.dur;
                         }

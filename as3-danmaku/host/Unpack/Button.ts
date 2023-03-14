@@ -1,6 +1,6 @@
 import { ScriptingContext } from "../ScriptingContext";
+import { createElement } from "../Utils";
 import { DisplayObject } from "./DisplayObject";
-import { createElement } from "./Unpack";
 
 export class Button extends DisplayObject {
     DOM: HTMLDivElement;
@@ -9,10 +9,11 @@ export class Button extends DisplayObject {
         this.DOM = createElement("div", {
             "className": "bpui-button bpui-button-type-small",
             "style": {
-                "position": "absolute",
-                "top": data.y ? data.y + "px" : "0px",
-                "left": data.x ? data.x + "px" : "0px",
-                "pointer-events": "auto"
+                position: "absolute",
+                top: data.y ? data.y + "px" : "0px",
+                left: data.x ? data.x + "px" : "0px",
+                "pointer-events": "auto",
+                width: '60px'
             }
         });
         this.DOM.innerText = data.text.replace(/\/n/g, '\n');

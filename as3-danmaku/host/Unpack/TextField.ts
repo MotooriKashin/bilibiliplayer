@@ -1,17 +1,13 @@
 import { ScriptingContext } from "../ScriptingContext";
+import { createElement, extend, numberColor } from "../Utils";
 import { DisplayObject } from "./DisplayObject";
-import { color, createElement, sensibleDefaults } from "./Unpack";
 
-interface Transform {
-    mode: '2d' | '3d';
-    matrix: [number, number, number, number, number, number];
-}
 export class TextField extends DisplayObject {
     DOM: HTMLDivElement;
-    protected __transform!: Transform;
+    private textFormat: Record<string, any>;
     constructor(stage: HTMLElement, data: Record<string, any>, context: ScriptingContext) {
         super(stage, data, context);
-        sensibleDefaults(data, {
+        extend(data, {
             'text': '',
             'textFormat': {},
             'className': 'cmt'
@@ -25,18 +21,18 @@ export class TextField extends DisplayObject {
             "className": "cmt"
         });
         /** Load the text format **/
-        this.setTextFormat(data['textFormat']);
+        this.setTextFormat(this.textFormat = data['textFormat']);
         /** Load x,y **/
-        this.setX(data.x);
-        this.setY(data.y);
-        this.DOM.innerText = data['text'].replace(/\/n/g, '\n');
+        this.x = data.x;
+        this.y = data.y;
+        this.text = data.text;
         // Hook child
         stage.appendChild(this.DOM);
     }
     protected setTextFormat(textFormat: Record<string, any>) {
         this.DOM.style.fontFamily = textFormat.font;
         this.DOM.style.fontSize = textFormat.size + "px";
-        this.DOM.style.color = color(textFormat.color);
+        this.DOM.style.color = numberColor(textFormat.color);
         if (textFormat.color <= 16) {
             this.DOM.style.textShadow = "0 0 1px #fff";
         };
@@ -48,57 +44,9 @@ export class TextField extends DisplayObject {
             this.DOM.style.fontStyle = "italic";
         this.DOM.style.margin = textFormat.margin;
     }
-    protected setX(x: number) {
-        this.data.x = x;
-        this.DOM.style.left = x + "px";
-    }
-    protected setY(y: number) {
-        this.data.x = y;
-        this.DOM.style.top = y + "px";
-    }
-    protected setAlpha(a: string) {
-        this.data.alpha = a;
-        this.DOM.style.opacity = a;
-    }
     protected setText(text: string) {
         this.DOM.innerHTML = "";
         this.DOM.innerText = text.replace(/\/n/g, '\n');
-    }
-    protected setFilters(params: any[]) {
-        const shadows: any[] = [];
-        params.forEach(d => {
-            if (d.type === "blur") {
-                shadows.push([0, 0, Math.max(
-                    d.params.blurX, d.params.blurY) +
-                    "px"].join(" "));
-            } else if (d.type === "glow") {
-                for (let i = 0; i < Math.min(2, d.params.strength); i++) {
-                    shadows.push([0, 0, Math.max(
-                        d.params.blurX, d.params.blurY) +
-                        "px", color(d.params.color)].join(" "));
-                }
-            }
-        });
-        this.DOM.style.textShadow = shadows.join(",");
-    }
-
-    set alpha(a) {
-        this.setAlpha(a);
-    }
-    get alpha(): string {
-        return this.data.alpha;
-    }
-    set x(x) {
-        this.setX(x);
-    }
-    get x(): number {
-        return this.data.x;
-    }
-    set y(y) {
-        this.setY(y);
-    }
-    get y(): number {
-        return this.data.y;
     }
     set text(text) {
         this.setText(text)
@@ -106,23 +54,60 @@ export class TextField extends DisplayObject {
     get text() {
         return this.DOM.textContent!;
     }
-    set filters(f) {
-        this.setFilters(f);
+    get length() {
+        return this.text.length;
     }
-    get filters() {
-        return this.DOM.style.textShadow.split(',');
+    get htmlText() {
+        return this.text;
     }
-    set transform(f: Transform) {
-        this.__transform = f;
-        if (f.mode === "2d") {
-            const rm = [f.matrix[0], f.matrix[3], f.matrix[1], f.matrix[4], f.matrix[2], f.matrix[5]];
-            this.DOM.style.transform = "matrix(" + (rm.join(",")) + ")";
-        } else {
-            this.DOM.style.transform = "matrix3d(" + (f.matrix.join(",")) + ")";
-        }
+    set htmlText(text: string) {
+        this.text = text.replace(/<\/?[^>]+(>|$)/g, '');
     }
-    get transform() {
-        return this.__transform;
+    get textWidth() {
+        return this.DOM.style.width;
+    }
+    get textHeight() {
+        return this.DOM.style.height;
+    }
+    get color() {
+        return this.textFormat.color;
+    }
+    set color(c: number) {
+        this.textFormat.color = c;
+        this.setTextFormat(this.textFormat);
+    }
+    protected _background = false;
+    get background() {
+        return this._background;
+    }
+    set background(enabled: boolean) {
+        this._background = enabled;
+    }
+    protected _backgroundColor!: number;
+    get backgroundColor() {
+        return this._backgroundColor;
+    }
+    set backgroundColor(color: number) {
+        this._backgroundColor = color;
+        this.DOM.style.backgroundColor = numberColor(color);
+    }
+    protected _border = false;
+    get border() {
+        return this._border;
+    }
+    set border(enabled: boolean) {
+        this._border = enabled;
+    }
+    protected _borderColor!: number;
+    get borderColor() {
+        return this._borderColor;
+    }
+    set borderColor(color: number) {
+        this._borderColor = color;
+        this.DOM.style.borderColor = numberColor(color);
+    }
+    appendText(t: string) {
+        this.text += t;
     }
     getClass() {
         return 'TextField';
