@@ -1,9 +1,9 @@
 import { __trace, __pchannel, __schannel, __achannel } from "../OOAPI";
 import { NotCrypto } from "./NotCrypto";
 import { MetaObject } from "./Object";
-import { requestPermission, hasPermission, openWindow, injectStyle, privilegedCode } from "./Permissions";
+import { hasPermission, injectStyle, openWindow, privilegedCode, requestPermission } from "./Permissions";
 import { ScriptManager } from "./ScriptManager";
-import { supports, requestLibrary } from "./Supports";
+import { requestLibrary, supports } from "./Supports";
 import { TimeKeeper, Timer, TimerRuntime } from "./Timer";
 
 /** 运行时支持的事件 */
@@ -13,33 +13,74 @@ interface RegisterableObject {
     serialize(): Object;
     unload(): void;
 }
-export class Runtime {
-    static NotCrypto = NotCrypto;
-    static Timer = Timer;
-    static TimeKeeper = TimeKeeper;
-    static _defaultScriptManager = new ScriptManager();
-    static requestPermission = requestPermission;
-    static hasPermission = hasPermission;
-    static openWindow = openWindow;
-    static injectStyle = injectStyle;
-    static privilegedCode = privilegedCode;
-    static supports = supports;
-    static requestLibrary = requestLibrary;
-
+export const Runtime = new (class {
+    NotCrypto = NotCrypto;
+    Timer = Timer;
+    TimeKeeper = TimeKeeper;
+    ScriptManager = ScriptManager;
+    requestPermission = requestPermission;
+    hasPermission = hasPermission;
+    openWindow = openWindow;
+    injectStyle = injectStyle;
+    privilegedCode = privilegedCode;
+    supports = supports;
+    requestLibrary = requestLibrary;
     /** 对象计数，使对象名互斥 */
-    protected static objCount = 0;
-    protected static registeredObjects = {
+    protected objCount = 0;
+    protected registeredObjects = {
         '__self': new MetaObject('__self'),
         '__player': new MetaObject('__player'),
         '__root': new MetaObject('__root')
     };
+    /** 主机时间 */
+    masterTimer = new TimerRuntime();
+    /** 刷新时间 */
+    internalTimer = new Timer(40);
+    constructor() {
+        this.masterTimer.start();
+        this.internalTimer.start();
+        this.internalTimer.addEventListener('timer', this.enterFrameDispatcher);
+    }
+    enterFrameDispatcher = () => {
+        for (const object in this.registeredObjects) {
+            if (object.substring(0, 2) === '__' && object !== '__root') {
+                continue;
+            }
+            try {
+                this.registeredObjects[<'__self'>object].dispatchEvent('enterFrame');
+            } catch (e) { }
+        }
+    };
+    /** 获取主机时间 */
+    getTimer() {
+        return this.masterTimer;
+    }
+    /**
+    * 帧率同步
+    * @param frameRate 帧率
+    */
+    updateFrameRate(frameRate: number) {
+        if (frameRate > 60 || frameRate < 0) {
+            __trace('Frame rate should be in the range (0, 60]', 'warn');
+            return;
+        }
+        if (frameRate === 0) {
+            // Stop broadcasting of enterFrame
+            this.internalTimer.stop();
+            return;
+        }
+        this.internalTimer.stop();
+        this.internalTimer = new Timer(Math.floor(1000 / frameRate));
+        this.internalTimer.addEventListener('timer', this.enterFrameDispatcher);
+        this.internalTimer.start();
+    }
     /**
      * 分发对象事件
      * @param objectId 对象
      * @param event 事件名
      * @param payload 内容
      */
-    protected static dispatchEvent(objectId: string, event: string, payload: any) {
+    protected dispatchEvent(objectId: string, event: string, payload: any) {
         const obj = this.registeredObjects[<'__self'>objectId];
         if (typeof obj === "object") {
             if (obj.dispatchEvent) {
@@ -51,14 +92,14 @@ export class Runtime {
      * 检查对象是否已注册
      * @param objectId 对象id
      */
-    static hasObject(objectId: string): boolean {
+    hasObject(objectId: string): boolean {
         return this.registeredObjects.hasOwnProperty(objectId) &&
             this.registeredObjects[<'__self'>objectId] !== null;
     }
-    static getObject<T extends RegisterableObject>(objectId: string): T {
+    getObject<T extends RegisterableObject>(objectId: string): T {
         return <T><unknown>this.registeredObjects[<'__self'>objectId];
     }
-    static registerObject(object: RegisterableObject) {
+    registerObject(object: RegisterableObject) {
         if (!object.getId) {
             __trace('Cannot register object without getId method.', 'warn');
             return;
@@ -83,11 +124,11 @@ export class Runtime {
             return;
         }
     }
-    static eregisterObject(object: RegisterableObject) {
+    eregisterObject(object: RegisterableObject) {
         const objectId: string = object.getId();
         this.deregisterObjectById(objectId);
     }
-    protected static deregisterObjectById(objectId: string) {
+    protected deregisterObjectById(objectId: string) {
         if (Runtime.hasObject(objectId)) {
             if (objectId.substr(0, 2) === '__') {
                 __trace('Runtime.deregisterObject cannot de-register a MetaObject',
@@ -105,11 +146,11 @@ export class Runtime {
             delete (<any>this).registeredObjects[<'__self'>objectId];
         }
     }
-    protected static _makeId(type: string = "obj") {
+    protected _makeId(type: string = "obj") {
         return type + ":" + Date.now() + "|" +
             NotCrypto.random(16) + ":" + this.objCount;
     }
-    static generateId(type: string = "obj") {
+    generateId(type: string = "obj") {
         let id: string = this._makeId(type);
         while (this.hasObject(id)) {
             id = this._makeId(type);
@@ -117,7 +158,7 @@ export class Runtime {
         return id;
     };
     /** 注销所有对象（不再接收新事件） */
-    static reset() {
+    reset() {
         for (const i in this.registeredObjects) {
             if (i.substr(0, 2) !== "__") {
                 this.deregisterObjectById(i);
@@ -125,7 +166,7 @@ export class Runtime {
         }
     }
     /** 清空对象 */
-    static clear() {
+    clear() {
         for (const i in this.registeredObjects) {
             if (i.substr(0, 2) === "__") {
                 continue;
@@ -136,61 +177,19 @@ export class Runtime {
         }
     }
     /** 通知沙箱外停止运行脚本 */
-    static crash() {
+    crash() {
         __trace("Runtime.crash() : Manual crash", "fatal");
     }
-
     /** 正常退出引擎 */
-    static exit() {
+    exit() {
         __achannel("::worker:state", "worker", "terminated");
         self.close();
     }
-
     /**
      * 发送通知（主机有权拒绝）
      * @param msg 通知
      */
-    static alert(msg: string) {
+    alert(msg: string) {
         __achannel("Runtime::alert", "::Runtime", msg);
     }
-    /** 主机时间 */
-    static masterTimer = new TimerRuntime();
-    /** 刷新时间 */
-    static internalTimer = new Timer(40);
-    static enterFrameDispatcher = () => {
-        for (const object in this.registeredObjects) {
-            if (object.substring(0, 2) === '__' && object !== '__root') {
-                continue;
-            }
-            try {
-                this.registeredObjects[<'__self'>object].dispatchEvent('enterFrame');
-            } catch (e) { }
-        }
-    };
-    /** 获取主机时间 */
-    static getTimer() {
-        return this.masterTimer;
-    }
-    /**
-     * 帧率同步
-     * @param frameRate 帧率
-     */
-    static updateFrameRate(frameRate: number) {
-        if (frameRate > 60 || frameRate < 0) {
-            __trace('Frame rate should be in the range (0, 60]', 'warn');
-            return;
-        }
-        if (frameRate === 0) {
-            // Stop broadcasting of enterFrame
-            this.internalTimer.stop();
-            return;
-        }
-        this.internalTimer.stop();
-        this.internalTimer = new Timer(Math.floor(1000 / frameRate));
-        this.internalTimer.addEventListener('timer', this.enterFrameDispatcher);
-        this.internalTimer.start();
-    }
-}
-Runtime.masterTimer.start();
-Runtime.internalTimer.start();
-Runtime.internalTimer.addEventListener('timer', Runtime.enterFrameDispatcher);
+})();

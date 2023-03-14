@@ -319,12 +319,3 @@ export const TweenEasing = {
         }
     }
 };
-Object.entries(TweenEasing).forEach(d => {
-    Reflect.set(self, ...d);
-});
-Reflect.set(self, 'Circ', TweenEasing.Circular);
-Reflect.set(self, 'Expo', TweenEasing.Exponential);
-Reflect.set(self, 'Quad', TweenEasing.Quadratic);
-Reflect.set(self, 'Quart', TweenEasing.Quartic);
-Reflect.set(self, 'Quint', TweenEasing.Quintic);
-Reflect.set(self, 'SIne', sine);

@@ -114,4 +114,12 @@ export class Rectangle {
     clone() {
         return new Rectangle(this.x, this.y, this.width, this.height);
     }
+    serialize() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height
+        };
+    }
 }

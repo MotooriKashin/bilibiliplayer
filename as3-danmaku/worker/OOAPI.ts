@@ -9,7 +9,8 @@ interface Message {
     channel: string;
     payload: unknown;
 }
-class OOAPI {
+
+export const __OOAPI = new (class OOAPI {
     /** 频道列表 */
     channels: Record<string, IChannel> = {};
     constructor() {
@@ -120,9 +121,7 @@ class OOAPI {
         this.channels[channel].listeners.push(listener);
         return true;
     };
-}
-
-export const __OOAPI = new OOAPI();
+})();
 /**
  * 日志
  * @param obj 内容

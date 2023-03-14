@@ -9,14 +9,15 @@ export class VirtualMachine {
     private programCounter = 1;
     private byteCode: any[] = [];
     private stack: any[] = [];
-    private global: IGlobalValue = {
-        __scope: <any>null
-    };
-    private localObject = this.global;
-    private thisObject = this.global;
     private byteCodeLength = 0;
+    private localObject: IGlobalValue;
+    private thisObject: IGlobalValue;
     optimized = false;
     private returnValue: any;
+    constructor(private global: IGlobalValue = { __scope: <any>null }) {
+        this.localObject = global;
+        this.thisObject = global;
+    }
     rewind() {
         this.programCounter = 1;
     }
@@ -122,7 +123,7 @@ export class VirtualMachine {
         }
         let _loc7_ = code[pc + 2] + 1;
         const _loc8_ = this.stack;
-        const _loc9_ = [];
+        const _loc9_: any[] = [];
         while (--_loc7_) {
             _loc9_.push(_loc8_.pop());
         }
@@ -146,7 +147,7 @@ export class VirtualMachine {
         const _loc4_ = this.localObject[code[pc + 1]];
         let _loc5_ = code[pc + 2] + 1;
         const _loc6_ = this.stack;
-        const _loc7_ = [];
+        const _loc7_: any[] = [];
         while (--_loc5_) {
             _loc7_.push(_loc6_.pop());
         }
@@ -171,7 +172,7 @@ export class VirtualMachine {
         const _loc5_ = (_loc4_ = code[pc + 1])[code[pc + 2]];
         let _loc6_ = code[pc + 3] + 1;
         const _loc7_ = this.stack;
-        const _loc8_ = [];
+        const _loc8_: any[] = [];
         while (--_loc6_) {
             _loc8_.push(_loc7_.pop());
         }
@@ -195,7 +196,7 @@ export class VirtualMachine {
         const _loc4_ = code[pc + 1];
         let _loc5_ = code[pc + 2] + 1;
         const _loc6_ = this.stack;
-        const _loc7_ = [];
+        const _loc7_: any[] = [];
         while (--_loc5_) {
             _loc7_.push(_loc6_.pop());
         }
@@ -489,7 +490,7 @@ export class VirtualMachine {
         const _loc4_ = _loc3_;
         let _loc5_ = code[pc + 2] + 1;
         const _loc6_ = this.stack;
-        const _loc7_ = [];
+        const _loc7_: any[] = [];
         while (--_loc5_) {
             _loc7_.push(_loc6_.pop());
         }

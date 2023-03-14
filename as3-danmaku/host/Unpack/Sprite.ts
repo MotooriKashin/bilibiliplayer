@@ -1,6 +1,6 @@
+import { createElement } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
 import { DisplayObject } from "./DisplayObject";
-import { createElement } from "./Unpack";
 
 export class Sprite extends DisplayObject {
     DOM: HTMLDivElement;

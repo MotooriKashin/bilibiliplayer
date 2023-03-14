@@ -1,4 +1,4 @@
-export class GlobalVariables {
+export const Global = new (class {
     _store: Record<string, any> = {};
     _set = (key: string, val: any) => {
         this._store[key] = val;
@@ -9,4 +9,4 @@ export class GlobalVariables {
     _ = (key: string) => {
         return this._get(key);
     };
-}
+})();

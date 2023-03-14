@@ -1,7 +1,7 @@
 import { debug } from "../../debug";
+import { createElement, extend } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
 import { DisplayObject } from "./DisplayObject";
-import { createElement, sensibleDefaults } from "./Unpack";
 
 interface LineContext {
     line: {
@@ -98,7 +98,7 @@ export class Shape extends DisplayObject {
     protected _filters: any[] = [];
     constructor(stage: HTMLElement, data: Record<string, any>, context: ScriptingContext) {
         super(stage, data, context);
-        sensibleDefaults(data, {
+        extend(data, {
             'x': 0,
             'y': 0,
             'alpha': 1

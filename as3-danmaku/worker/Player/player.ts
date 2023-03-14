@@ -1,10 +1,11 @@
-import { BitmapData } from "./Display/Bitmap";
-import { DisplayObject } from "./Display/DisplayObject";
-import { Filter } from "./Display/Filter";
-import { __schannel, __pchannel, __trace } from "./OOAPI";
-import { Runtime } from "./Runtime/Runtime";
-import { TimeKeeper } from "./Runtime/Timer";
-import { Utils } from "./Utils";
+import { BitmapData } from "../Display/BitmapData";
+import { DisplayObject } from "../Display/DisplayObject";
+import { Filter } from "../Display/Filter";
+import { __pchannel, __schannel, __trace } from "../OOAPI";
+import { Runtime } from "../Runtime/Runtime";
+import { TimeKeeper } from "../Runtime/Timer";
+import { Utils } from "../Utils";
+import { Sound } from "./sound";
 
 export interface IComment {
     dbid: number;
@@ -60,116 +61,73 @@ class CommentData {
         this.date = comment["date"];
     }
 }
-class Sound {
-    protected id = Runtime.generateId('obj-snd');
-    protected isPlaying: boolean = false;
-
-    constructor(protected source: string, protected onload?: Function) { }
-
-    createFromURL(url: string) {
-        this.source = url;
-    }
-
-    play() {
-        if (this.isPlaying) {
-            return;
-        }
-    }
-
-    remove() {
-
-    }
-
-    stop() {
-        if (!this.isPlaying) {
-            return;
-        }
-    }
-
-    loadPercent(): number {
-        return 0;
-    }
-
-    getId(): string {
-        return this.id;
-    }
-
-    dispatchEvent(eventName: string, params: any) {
-
-    }
-
-    unload() {
-        this.stop();
-    }
-
-    serialize() {
-        return {
-            'class': 'Sound',
-            'url': this.source
-        };
-    }
-}
-
-function createSound(sample: string, onload?: Function) {
-    return new Sound(sample, onload);
-}
-
-export class Player {
-    static createSound = createSound;
-    static state: string = '';
-    static _time: string = '';
-    static commentList: CommentData[] = [];
-    static refreshRate: number = 0;
-    static width: number = 0;
-    static height: number = 0;
-    static videoWidth: number = 0;
-    static videoHeight: number = 0;
-    static version: number = 0;
-    static lastUpdate: TimeKeeper = new TimeKeeper();
-
-    static get time() {
+export const Player = new (class {
+    protected state = 'pause';
+    protected _time = 0;
+    protected commentList: CommentData[] = [];
+    protected refreshRate = 0;
+    width = 0;
+    height = 0;
+    videoWidth = 0;
+    videoHeight = 0;
+    screenWidth = 0;
+    screenHeight = 0;
+    version = 0;
+    protected lastUpdate = new TimeKeeper();
+    get time() {
         if (this.state !== 'playing') {
             return this._time;
         } else {
             return this._time + this.lastUpdate.elapsed;
         }
     }
-
-    static play() {
+    constructor() {
+        __schannel('Update:DimensionUpdate', (payload: any) => {
+            payload.stageWidth && (this.width = payload.stageWidth);
+            payload.stageHeight && (this.height = payload.stageHeight);
+            payload.videoWidth && (this.videoWidth = payload.videoWidth);
+            payload.videoHeight && (this.videoHeight = payload.videoHeight);
+            payload.screenWidth && (this.screenWidth = payload.screenWidth);
+            payload.screenHeight && (this.screenHeight = payload.screenHeight);
+        });
+        __schannel("Update:TimeUpdate", (payload: any) => {
+            payload.state && (this.state = payload.state);
+            payload.time && (this._time = payload.time);
+            this.lastUpdate.reset();
+        });
+    }
+    play() {
         __pchannel("Player::action", {
             "action": "play"
         });
     }
-    static pause() {
+    pause() {
         __pchannel("Player::action", {
             "action": "pause"
         });
     }
-    static seek(offset: number) {
+    seek(offset: number) {
         __pchannel("Player::action", {
             "action": "seek",
             "params": offset
         });
     }
-    /**
-     * 跳转新视频
-     * @param video vid
-     * @param page p
-     * @param newWindow 是否新建标签页（默认 否）
-     */
-    static jump(
-        video: string,
-        page: number = 1,
-        newWindow: boolean = false) {
+    jump(
+        av: string,
+        page = 1,
+        newWindow = false) {
 
         __pchannel("Player::action", {
             "action": "jump",
             "params": {
-                "vid": video,
+                "vid": av,
                 "page": page,
                 "window": newWindow
             }
         });
+    }
+    createSound(name: string, onload?: Function) {
+        return new Sound(name, onload);
     }
     /**
      * 弹幕监听
@@ -197,7 +155,7 @@ export class Player {
      * @param timeout 延时
      * @param triggerOnUp 是否松开按钮再回调（默认 否）
      */
-    static keyTrigger(callback: (key: string) => void,
+    keyTrigger(callback: (key: string) => void,
         timeout = 1000,
         triggerOnUp = false) {
         if (!Runtime.hasObject('__player')) {
@@ -213,26 +171,10 @@ export class Player {
         (<any>player).addEventListener(eventName, temp);
         Utils.timer(() => (<any>player).removeEventListener(eventName, temp), timeout);
     }
-    static setMask(_mask: any) {
+    setMask(_mask: any) {
         __trace('Masking not supported yet', 'warn');
     }
-    static toString() {
+    toString() {
         return '[player Player]';
     }
-}
-
-__schannel('Update:DimensionUpdate', (payload: any) => {
-    Player.width = payload["stageWidth"];
-    Player.height = payload["stageHeight"];
-    if (payload.hasOwnProperty("videoWidth") &&
-        payload.hasOwnProperty("videoHeight")) {
-
-        Player.videoWidth = payload["videoWidth"];
-        Player.videoHeight = payload["videoHeight"];
-    }
-});
-__schannel("Update:TimeUpdate", (payload: any) => {
-    Player.state = payload["state"];
-    Player._time = payload["time"];
-    Player.lastUpdate.reset();
-});
+})();

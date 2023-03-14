@@ -1,14 +1,28 @@
+import { numberColor } from "../../worker/Utils";
 import { ScriptingContext } from "../ScriptingContext";
 
 interface Transformation {
     mode: '2d' | '3d';
     matrix: [number, number, number, number, number, number];
 }
+interface Rectangle {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+interface Filter {
+    type: string;
+    params: Record<string, any>;
+}
 export abstract class DisplayObject {
-    abstract DOM: HTMLDivElement | SVGSVGElement | HTMLCanvasElement;
+    abstract DOM: HTMLElement | SVGSVGElement;
     protected _x!: number;
     protected _y!: number;
     protected _transform = <Transformation>{};
+    protected _boundingBox = <Rectangle>{};
+    protected _filters = <Filter[]>[];
+    protected _name!: string;
     constructor(protected stage: HTMLElement, protected data: Record<string, any>, protected context: ScriptingContext) {
         data && (data.children = []);
     }
@@ -16,12 +30,6 @@ export abstract class DisplayObject {
         try {
             this.DOM.remove();
         } catch (e) { };
-    }
-    set visible(v) {
-        this.DOM.style.visibility = v ? "visible" : "hidden";
-    }
-    get visible() {
-        return this.DOM.style.visibility === "hidden" ? false : true;
     }
     set alpha(a) {
         this.DOM.style.opacity = a;
@@ -31,17 +39,89 @@ export abstract class DisplayObject {
     }
     set x(x) {
         this._x = x;
-        this.setX(x);
+        this.DOM.style.left = x + "px";
     }
     get x() {
         return this._x;
     }
     set y(y) {
         this._y = y;
-        this.setY(y);
+        this.DOM.style.top = y + "px";
     }
     get y() {
         return this._y;
+    }
+    set boundingBox(r: Rectangle) {
+        this._boundingBox = r;
+        this.x = r.x;
+        this.y = r.y;
+        this.width = r.width;
+        this.height = r.height;
+    }
+    get boundingBox() {
+        return this._boundingBox;
+    }
+    /** End Transform Area **/
+    set width(width) {
+        this._boundingBox.width = width;
+        this.DOM.style.width = width + "px";
+    }
+    get width() {
+        return this._boundingBox.width;
+    }
+    set height(height) {
+        this._boundingBox.height = height;
+        this.DOM.style.height = height + "px";
+    }
+    get height() {
+        return this._boundingBox.height;
+    }
+    set filters(filters: Filter[]) {
+        this._filters = filters ?? [];
+        const shadows: string[] = [];
+        this._filters.forEach(d => {
+            switch (d.type) {
+                case 'blur': {
+                    shadows.push([0, 0, Math.max(d.params.blurX, d.params.blurY) + "px"].join(" "));
+                    break;
+                }
+                case 'glow': {
+                    for (let i = 0; i < Math.min(2, d.params.strength); i++) {
+                        shadows.push([0, 0, Math.max(d.params.blurX, d.params.blurY) + "px", numberColor(d.params.color)].join(" "));
+                    }
+                    break;
+                }
+            }
+        });
+        this.DOM.style.textShadow = shadows.join(",");
+    }
+    get filters() {
+        return this._filters;
+    }
+    set transform(transformation) {
+        this._transform = transformation;
+        if (transformation.mode === '2d') {
+            const rm = [
+                transformation.matrix[0],
+                transformation.matrix[3],
+                transformation.matrix[1],
+                transformation.matrix[4],
+                transformation.matrix[2],
+                transformation.matrix[5]
+            ];
+            this.DOM.style.transform = `matrix(${rm.join(',')})`;
+        } else if (transformation.mode === '3d') {
+            this.DOM.style.transform = `matrix3d(${transformation.matrix.join(',')})`;
+        }
+    }
+    get transform() {
+        return this._transform;
+    }
+    set visible(v) {
+        this.DOM.style.visibility = v ? "visible" : "hidden";
+    }
+    get visible() {
+        return this.DOM.style.visibility === "hidden" ? false : true;
     }
     set blendMode(f) {
         this.DOM.style.backgroundBlendMode = f;
@@ -50,31 +130,12 @@ export abstract class DisplayObject {
     get blendMode() {
         return this.DOM.style.backgroundBlendMode || this.DOM.style.mixBlendMode;
     }
-    set transform(transformation) {
-        this._transform = transformation;
-        if (transformation.mode === '2d') {
-            const rm = [transformation.matrix[0], transformation.matrix[3], transformation.matrix[1], transformation.matrix[4], transformation.matrix[2], transformation.matrix[5]];
-            this.DOM.style.transform = "matrix(1,0,0,1,0,0)";
-        } else if (transformation.mode === '3d') {
-            this.DOM.style.transform = `matrix3d(${transformation.matrix.join(',')})`;
-        }
+    set name(name: string) {
+        this._name = name;
     }
-    get transform() {
-        return this._transform;
+    get name() {
+        return this._name;
     }
-
-    protected setX(x: number) {
-        this.DOM.style.left = x + "px";
-    };
-    protected setY(y: number) {
-        this.DOM.style.top = y + "px";
-    };
-    protected setWidth(width: number) {
-        this.DOM.style.width = width + "px";
-    };
-    protected setHeight(height: number) {
-        this.DOM.style.height = height + "px";
-    };
     protected addChild(childitem: any) {
         const child = this.context.getObject(childitem);
         this.data.children.push(child);
@@ -92,8 +153,8 @@ export abstract class DisplayObject {
             this.context.invokeError("Sprite.addChild failed. Attempted to add non object", "err");
         }
     };
-    protected removeChild(childitem: any) {
-        const child = this.context.getObject(childitem);
+    protected removeChild(id: string) {
+        const child = this.context.getObject(id);
         if (!child)
             return;
         try {
@@ -102,6 +163,9 @@ export abstract class DisplayObject {
             this.context.invokeError((<Error>e).stack, "err");
         }
     };
+    protected removeChildren(ids: string[]) {
+        ids.forEach(d => this.removeChild(d));
+    }
     protected offset(x: number, y: number) { }
     getClass() {
         return 'DisplayObject';

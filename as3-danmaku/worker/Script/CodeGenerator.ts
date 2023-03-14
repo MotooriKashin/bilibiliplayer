@@ -276,7 +276,7 @@ export class CodeGenerator {
         this.putIncDec(this.vmtarget == null ? "DEC" : this.vmtarget.DEC, true, param1);
     }
     private putIncDec(param1: any, param2: Boolean, param3: ExpressionResult) {
-        let _loc4_ = undefined;
+        let _loc4_;
         let _loc5_: ExpressionResult;
         let _loc6_: ExpressionResult;
         let _loc7_: String;

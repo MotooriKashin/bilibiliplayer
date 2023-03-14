@@ -23,18 +23,76 @@ function HSV2RGB(hue: number, saturation: number, brightness: number) {
     b *= 255 * brightness;
     return r << 16 | g << 8 | b;
 }
-
-export class Utils {
+export function extend<T extends object, U extends object>(target: T, source: U) {
+    for (const key in source) {
+        if (!(key in target)) {
+            Reflect.set(target, key, (<any>source)[key]);
+        }
+    }
+    return target;
+}
+export function numberColor(color: number | string = 0): string {
+    if (typeof color === 'string') {
+        color = parseInt(color.toString());
+        if (Number.isNaN(color)) {
+            color = 0;
+        }
+    }
+    let code: string = color.toString(16);
+    while (code.length < 6) {
+        code = '0' + code;
+    }
+    return '#' + code;
+}
+export function modernize<T extends object>(styles: T): T {
+    const modernizeLibrary = {
+        "transform": ["webkitTransform"],
+        "transformOrigin": ["webkitTransformOrigin"],
+        "transformStyle": ["webkitTransformStyle"],
+        "perspective": ["webkitPerspective"],
+        "perspectiveOrigin": ["webkitPerspectiveOrigin"]
+    };
+    for (const key in modernizeLibrary) {
+        if (styles.hasOwnProperty(key)) {
+            for (let i = 0; i < modernizeLibrary[<'transform'>key].length; i++) {
+                (<any>styles)[modernizeLibrary[<'transform'>key][i]] = (<any>styles)[key];
+            }
+        }
+    }
+    return styles;
+}
+export function createElement<K extends keyof HTMLElementTagNameMap>(tagName: K | 'svg', props: Record<string, any>, children: HTMLElement[] = [], callback?: Function) {
+    const elem = tagName === 'svg' ? document.createElementNS("http://www.w3.org/2000/svg", "svg") : document.createElement(tagName);
+    for (const key in props) {
+        if (props.hasOwnProperty(key)) {
+            if (key === "style") {
+                props[key] = modernize(props[key]);
+                for (const style in props[key]) {
+                    (<any>elem)["style"][style] = props[key][style];
+                }
+            } else if (key === "className") {
+                elem.classList.add(...props[key].split(' '));
+            } else {
+                elem.setAttribute(key, props[key]);
+            }
+        }
+    }
+    elem.append(...children);
+    if (typeof callback === "function") {
+        callback(elem);
+    }
+    return <HTMLElementTagNameMap[K]>elem;
+}
+export const Utils = new (class {
     /** 启动时间 */
-    static startTime: number = Date.now();
-
+    startTime: number = Date.now();
     /**
      * RGB 转数字
      * @param r 红 (0-255)
      * @param g 绿 (0-255)
      * @param b 蓝 (0-255)
      */
-    static rgb(r: number, g: number, b: number) {
+    rgb(r: number, g: number, b: number) {
         return r << 16 | g << 8 | b;
     }
     /**
@@ -43,14 +101,14 @@ export class Utils {
      * @param s 饱和度 (default 1, 0-1)
      * @param v 明度 (default 1, 0-1)
      */
-    static hue(h: number, s: number = 1, v: number = 1): number {
+    hue(h: number, s: number = 1, v: number = 1): number {
         return HSV2RGB(h, s, v);
     }
     /**
      * 格式化秒数
      * @param time 秒数
      */
-    static formatTimes(time: number) {
+    formatTimes(time: number) {
         return Math.floor(time / 60) + ":" + (time % 60 > 9 ? "" : "0") + time % 60;
     }
     /**
@@ -60,7 +118,7 @@ export class Utils {
      * @param x2 点 2 横坐标
      * @param y2 点 2 横坐标
      */
-    static distance(x1: number, y1: number, x2: number, y2: number) {
+    distance(x1: number, y1: number, x2: number, y2: number) {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
     }
     /**
@@ -68,11 +126,11 @@ export class Utils {
      * @param min 下限
      * @param max 上限
      */
-    static rand(min: number, max: number) {
+    rand(min: number, max: number) {
         return min + Math.floor(Math.random() * (max - min));
     }
     /** 已运行时间（毫秒） */
-    static getTimer() {
+    getTimer = () => {
         return Date.now() - this.startTime;
     }
     /**
@@ -81,7 +139,7 @@ export class Utils {
      * @param delay 延时 (默认 1000 毫秒)
      * @returns 用于取消回调的id（`clearTimeout`）
      */
-    static timer(callback: Function, delay: number = 1000): number {
+    timer = (callback: Function, delay: number = 1000) => {
         return Runtime.getTimer().setTimeout(callback, delay);
     }
     /**
@@ -91,10 +149,10 @@ export class Utils {
      * @param repeatCount 周期 (默认 1)
      * @returns 用于取消回调的id（`clearInterval`）
      */
-    static interval(
+    interval = (
         callback: Function,
         interval: number = 1000,
-        repeatCount: number = 1): number {
+        repeatCount: number = 1) => {
 
         if (repeatCount === 0) {
             return Runtime.getTimer().setInterval(callback, interval);
@@ -113,14 +171,14 @@ export class Utils {
      * 取消延时回调
      * @param tid id
      */
-    static clearTimeout(tid: number) {
+    clearTimeout = (tid: number) => {
         Runtime.getTimer().clearTimeout(tid);
     }
     /**
      * 取消周期回调
      * @param iid id
      */
-    static clearInterval(iid: number) {
+    clearInterval = (iid: number) => {
         Runtime.getTimer().clearInterval(iid);
     }
-}
+})();

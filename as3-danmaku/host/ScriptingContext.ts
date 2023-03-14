@@ -1,7 +1,7 @@
 import { As3Danmaku } from "..";
 import { debug } from "../debug";
+import { Unpack } from "./Unpack";
 import { DisplayObject } from "./Unpack/DisplayObject";
-import { Unpack } from "./Unpack/Unpack";
 
 interface ISerializedData {
     class: string;

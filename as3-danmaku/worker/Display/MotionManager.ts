@@ -17,7 +17,6 @@ export class MotionManager {
     protected _independentTimer: boolean;
     protected _tween?: ITween;
     oncomplete?: Function;
-
     constructor(o: DisplayObject,
         dur = 1000,
         independentTimer = false) {
@@ -45,21 +44,17 @@ export class MotionManager {
             });
         }
     }
-
     set dur(dur: number) {
         this._timeKeeper.reset();
         this._ttl = dur;
         this._dur = dur;
     }
-
     get dur(): number {
         return this._dur;
     }
-
     get running(): boolean {
         return this._isRunning;
     }
-
     /**
      * protected method invoked every time a timer event is fired
      */
@@ -82,12 +77,10 @@ export class MotionManager {
             this._parent.unload();
         }
     }
-
     reset() {
         this._ttl = this._dur;
         this._timeKeeper.reset();
     }
-
     play() {
         if (this._isRunning) {
             return;
@@ -101,7 +94,6 @@ export class MotionManager {
             this._tween.play();
         }
     }
-
     stop() {
         if (!this._isRunning) {
             return;
@@ -112,12 +104,10 @@ export class MotionManager {
             this._tween.stop();
         }
     }
-
     forecasting(_time: number) {
         __trace('MotionManager.forecasting always returns false', 'warn');
         return false;
     }
-
     setPlayTime(playtime: number) {
         this._ttl = this._dur - playtime;
         if (this._tween) {
@@ -128,7 +118,6 @@ export class MotionManager {
             }
         }
     }
-
     protected motionSetToTween(motion: Record<string, any>) {
         const tweens: Array<ITween> = [];
         for (const movingconsts in motion) {
@@ -172,11 +161,9 @@ export class MotionManager {
         }
         return Tween.parallel.apply(Tween, tweens);
     }
-
     initTween(motion: Object, _repeat: boolean) {
         this._tween = this.motionSetToTween(motion);
     }
-
     initTweenGroup(motionGroup: Array<Object>, _lifeTime: number) {
         const tweens: Array<ITween> = [];
         for (let i = 0; i < motionGroup.length; i++) {
@@ -184,7 +171,6 @@ export class MotionManager {
         }
         this._tween = Tween.serial.apply(Tween, tweens);
     }
-
     setCompleteListener(listener: Function) {
         this.oncomplete = listener;
     }

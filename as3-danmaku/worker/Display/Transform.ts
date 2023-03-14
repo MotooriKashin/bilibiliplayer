@@ -1,30 +1,24 @@
-import { __trace } from "../OOAPI";
+import { debug } from "../../debug";
 import { ColorTransform } from "./ColorTransform";
-import { Matrix, Matrix3D, Point, Vector3D } from "./Matrix";
-
-interface Transformable {
-    width: number;
-    height: number;
-    transform: Transform;
-}
-
+import { DisplayObject } from "./DisplayObject";
+import { Matrix } from "./Matrix";
+import { Matrix3D } from "./Matrix3D";
+import { Point } from "./Point";
+import { Vector3D } from "./Vector3D";
 export class PerspectiveProjection {
     fieldOfView = 55;
     projectionCenter = new Point(0, 0);
     focalLength = 0;
-
-    constructor(t?: Transformable) {
+    constructor(t?: DisplayObject) {
         if (t) {
             this.projectionCenter = new Point(t.width / 2, t.height / 2);
             this.fieldOfView = 55;
             this.focalLength = t.width / 2 / Math.tan(this.fieldOfView / 2);
         }
     }
-
     toMatrix3D() {
         return new Matrix3D();
     }
-
     clone() {
         const proj = new PerspectiveProjection();
         proj.fieldOfView = this.fieldOfView;
@@ -33,37 +27,30 @@ export class PerspectiveProjection {
         return proj;
     }
 }
-
 export class Transform {
     private _matrix = new Matrix();
     private _matrix3d?: Matrix3D;
     private _perspectiveProjection?: PerspectiveProjection;
     private _colorTransform?: ColorTransform;
-
-    constructor(public parent?: Transformable) { }
-
+    constructor(public parent?: DisplayObject) { }
     set perspectiveProjection(projection: PerspectiveProjection) {
         this._perspectiveProjection = projection;
     }
-
     get perspectiveProjection() {
         if (typeof this._perspectiveProjection === 'undefined') {
             this._perspectiveProjection = new PerspectiveProjection(this.parent);
         }
         return this._perspectiveProjection;
     }
-
     set colorTransform(colorTransform: ColorTransform) {
         this._colorTransform = colorTransform;
     }
-
     get colorTransform() {
         if (typeof this._colorTransform === 'undefined') {
             this._colorTransform = new ColorTransform();
         }
         return this._colorTransform;
     }
-
     set matrix3D(m: Matrix3D) {
         if (m === null) {
             if (this._matrix3d === null) {
@@ -77,7 +64,9 @@ export class Transform {
         }
         this.update();
     }
-
+    get matrix3D() {
+        return this._matrix3d!;
+    }
     set matrix(m: Matrix) {
         if (m === null) {
             if (this._matrix === null) {
@@ -91,15 +80,9 @@ export class Transform {
         }
         this.update();
     }
-
-    get matrix3D() {
-        return this._matrix3d!;
-    }
-
     get matrix() {
         return this._matrix;
     }
-
     box3d(sX = 1,
         sY = 1,
         sZ = 1,
@@ -121,7 +104,6 @@ export class Transform {
         this._matrix3d.appendScale(sX, sY, sZ);
         this._matrix3d.appendTranslation(tX, tY, tZ);
     }
-
     box(sX = 1, sY = 1, rot = 0, tX = 0, tY = 0) {
         if (this._matrix) {
             this._matrix.createBox(sX, sY, rot, tX, tY);
@@ -129,19 +111,16 @@ export class Transform {
             this.box3d(sX, sY, 1, 0, 0, rot, tX, tY, 0);
         }
     }
-
     private update() {
         if (!this.parent) {
             return;
         }
         this.parent.transform = this;
     }
-
     getRelativeMatrix3D(relativeTo: any) {
-        __trace('Transform.getRelativeMatrix3D not implemented', 'warn');
+        debug.warn('Transform.getRelativeMatrix3D not implemented');
         return new Matrix3D();
     }
-
     /**
      * Returns the working matrix as a serializable object
      * @returns Serializable Matrix
@@ -153,7 +132,6 @@ export class Transform {
             return this._matrix3d;
         }
     }
-
     /**
      * Returns matrix type in use
      * @returns - "2d" or "3d"
@@ -161,7 +139,6 @@ export class Transform {
     getMatrixType() {
         return this._matrix ? '2d' : '3d';
     }
-
     /**
      * Clones the current transform object
      * The new transform does not bind to any object until it
@@ -171,17 +148,18 @@ export class Transform {
      * @returns Clone of transform object
      */
     clone() {
-        const t = new Transform();
+        const t = new Transform(this.parent);
         t._matrix = this._matrix;
         t._matrix3d = this._matrix3d;
         return t;
     }
-
+    get mode() {
+        return this.getMatrixType();
+    }
     serialize() {
         return {
-            'mode': this.getMatrixType(),
-            'matrix': this.getMatrix()?.serialize()
+            mode: this.getMatrixType(),
+            matrix: this.getMatrix()?.serialize()
         };
     }
-
 }

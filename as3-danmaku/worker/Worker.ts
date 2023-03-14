@@ -1,82 +1,148 @@
-import { __achannel, __OOAPI, __schannel, __trace } from './OOAPI'
-import { Runtime } from './Runtime/Runtime';
-import { Display } from './Display/Display';
-import { Tween } from './Tween/Tween';
-import { Utils } from './Utils';
-import { Player } from './Player';
-import { Global } from './Global/Global';
-import { ScriptManager } from './Runtime/ScriptManager';
-import { trace, load, clone, foreach, stopExecution, wrap } from './Function';
-import { CommentBitmap } from './Display/CommentBitmap';
-import { TweenEasing } from './Tween/Easing';
+import { IDanmaku } from "..";
+import { debug } from "../debug";
+import { Display } from "./Display/Display";
+import { DisplayObject } from "./Display/DisplayObject";
+import { Rectangle } from "./Display/Rectangle";
+import { Global } from "./Global";
+import { __achannel, __OOAPI, __schannel } from "./OOAPI";
+import { IComment, Player } from "./Player/player";
+import { ScriptManager } from "./Runtime/ScriptManager";
+import { Parser } from "./Script/Parser";
+import { Scanner } from "./Script/Scanner";
+import { VirtualMachine } from "./Script/VirtualMachine";
+import { sine, TweenEasing } from "./Tween/Easing";
+import { Tween } from "./Tween/Tween";
+import { Utils } from "./Utils";
 
 // 建立频道
 __OOAPI.createChannel("::eval", 1, Math.round(Math.random() * 100000));
 __OOAPI.createChannel("::debug", 1, Math.round(Math.random() * 100000));
 
-// 暴露接口
-Object.defineProperties(self, {
-    Runtime: { value: Runtime },
-    Display: { value: Display },
-    $: { value: Display },
-    Player: { value: Player },
-    Tween: { value: Tween },
-    TweenEasing: { value: TweenEasing },
-    Utils: { value: Utils },
-    Global: { value: Global },
-    $G: { value: Global },
-    Bitmap: { value: CommentBitmap },
-    trace: { value: trace },
-    load: { value: load },
-    clone: { value: clone },
-    foreach: { value: foreach },
-    stopExecution: { value: stopExecution },
-    ScriptManager: { value: ScriptManager },
-    getTimer: { value: Utils.getTimer.bind(Utils) },
-    interval: { value: Utils.interval.bind(Utils) },
-    timer: { value: Utils.timer.bind(Utils) },
-    clearTimeout: { value: Utils.clearTimeout.bind(Utils) },
-    clearInterval: { value: Utils.clearInterval.bind(Utils) },
-    none: { value: null },
+/** 顶层对象 */
+const GLOBAL = {
+    trace: (...arg: any[]) => debug.log(...arg),
+    clear: () => console.clear(),
+    clone: (target: any) => {
+        if (null === target || 'object' !== typeof target) {
+            return target;
+        }
+
+        if (typeof target['clone'] === 'function') {
+            return target.clone();
+        }
+
+        if (Array.isArray(target)) {
+            return target.slice(0);
+        }
+
+        const copy = <Record<string, any>>{};
+        copy.constructor = copy.constructor;
+        copy.prototype = copy.prototype;
+        for (const x in target) {
+            copy[x] = target[x];
+        }
+        return copy;
+    },
+    foreach: (enumerable: ArrayLike<any>, callback: Function) => {
+        if (null === enumerable || "object" !== typeof enumerable) {
+            return;
+        }
+        // DisplayObjects 不可例举
+        if (enumerable instanceof DisplayObject) {
+            return;
+        }
+
+        for (const x in enumerable) {
+            if (enumerable.hasOwnProperty(x)) {
+                callback(x, enumerable[x]);
+            }
+        }
+    },
+    getTimer: Utils.getTimer,
+    clearTimeout: Utils.clearTimeout,
+    clearInterval: Utils.clearInterval,
+    interval: Utils.interval,
+    timer: Utils.timer,
+    parseInt,
+    parseFloat,
+    Math,
+    String,
+    Utils,
+    Player,
+    Display,
+    $: Display,
+    Global,
+    $G: Global,
+    ScriptManager,
+    Tween,
+    TweenEasing,
+    Circ: TweenEasing.Circular,
+    Expo: TweenEasing.Exponential,
+    Quad: TweenEasing.Quadratic,
+    Quart: TweenEasing.Quartic,
+    Quint: TweenEasing.Quintic,
+    SIne: sine,
+    stopExecution: () => { throw new Error('stopExecution') },
+    load: (library: string, onComplete: Function) => {
+        // 所有模块已内置，直接返回
+        if (typeof onComplete === 'function') {
+            onComplete();
+        }
+    },
+    Bitmap: {
+        createBitmap: (style: IComment) => Display.createBitmap(style),
+        createParticle: (style: any) => Display.createParticle(style),
+        createBitmapData: (width: number, height: number, transparent?: boolean, fillColor?: number) => {
+            if (transparent === void 0) { transparent = true; }
+            if (fillColor === void 0) { fillColor = 0xffffffff; }
+            return Display.createBitmapData(width, height, transparent, fillColor);
+        },
+        createRectangle: (x?: number, y?: number, width?: number, height?: number) => {
+            return new Rectangle(x, y, width, height);
+        }
+    },
     // 以下是兼容数据
     // 似乎很多作品将true拼错了？
-    ture: { value: true },
+    ture: true,
     // [[弹幕大赛]Q&A リサイタル! ~TV ver~](av399127)
-    Arial: { value: 'Arial' },
+    Arial: 'Arial',
     // [拜年祭2012](av203614)
-    ph: {
-        get: () => Player.height,
-        set: v => Player.height = v
-    },
-    pw: {
-        get: () => Player.width,
-        set: v => Player.width = v
-    }
-})
-
-// 主频道
-__schannel("::eval", function (msg: string) {
-    try {
-        (0, eval)('let importScripts,postMessage,addEventListener,self;\n' + wrap(msg)
-            .replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
-                // 处理误当成xml非法字符的转义字符
-                return <string>{
-                    '&amp;': '&',
-                    '&lt;': '<',
-                    '&gt;': '>',
-                    '&apos;': '\'',
-                    '&quot;': '"'
-                }[a]
-            })
-            // .replace(/\/n/g, '\n') // 处理所有换行符 TODO: 类似于【除以n】的情况怎么办？
-            // .replace(/"[^"]+"/g, d => d.replace(/\n/g, '\\n')) // 双引号中的/n可能被误伤
-            // .replace(/'[^']+'/g, d => d.replace(/\n/g, '\\n')) // 单引号中的/n可能被误伤
-            // .replace(/\\\n/g, '\\/n') // 正则表达式中的\/n可能被误伤
-        );
-    } catch (e) {
-        if ((<Error>e).message === 'stopExecution') return;
-        throw e;
-    }
+    get ph() { return Player.height },
+    get pw() { return Player.width }
+};
+Object.entries(TweenEasing).forEach(d => {
+    Reflect.set(GLOBAL, ...d);
+});
+// 弹幕解析栈
+const Parse: Record<string, VirtualMachine> = {};
+// 清空弹幕
+__schannel('::clear', function () {
+    Object.keys(Parse).forEach(async d => delete Parse[d]);
+});
+// 解析弹幕
+__schannel('::parse', function (dms: IDanmaku[]) {
+    dms.forEach(async dm => {
+        const vm = new VirtualMachine(GLOBAL);
+        const s = new Scanner(dm.text.replace(/(\/n|\\n|\n|\r\n)/g, "\r").replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
+            // 处理误当成xml非法字符的转义字符
+            return <string>{
+                '&amp;': '&',
+                '&lt;': '<',
+                '&gt;': '>',
+                '&apos;': '\'',
+                '&quot;': '"'
+            }[a]
+        }));
+        const p = new Parser(s);
+        vm.rewind();
+        vm.setByteCode(p.parse(vm));
+        Parse[dm.dmid] = vm;
+    });
+});
+// 运行弹幕
+__schannel("::eval", function (dmid: string) {
+    const vm = Parse[dmid];
+    vm?.execute();
 });
 // 调试频道
 __schannel("::debug", function (msg: any) {

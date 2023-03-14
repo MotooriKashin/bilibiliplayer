@@ -3,6 +3,7 @@ import ParserWorker from "./host/worker";
 
 import './css/index.less';
 import { debug } from "./debug";
+import { Sound } from "./host/Unpack/Sound";
 
 /** 配置数据 */
 interface IOption {
@@ -23,7 +24,7 @@ interface IPlayer {
     [key: string]: any;
 }
 /** 弹幕 */
-interface IDanmaku {
+export interface IDanmaku {
     stime: number;
     mode: number;
     size: number;
@@ -130,6 +131,10 @@ export class As3Danmaku {
         dms.forEach(d => {
             d.stime === 0 ? this.preList.push(d) : this.dmList.push(d);
         });
+        if (dms.length) {
+            this.worker || this.InitWorker();
+            this.sendWorkerMessage('::parse', dms);
+        }
     }
     /** 移除弹幕 */
     remove(dmid: string) {
@@ -138,9 +143,7 @@ export class As3Danmaku {
     /** 解析弹幕 */
     protected parse(dm: IDanmaku) {
         this.worker || this.InitWorker();
-        // 调试具体报错弹幕时用
-        // debug(dm);
-        this.sendWorkerMessage('::eval', dm.text);
+        this.sendWorkerMessage('::eval', dm.dmid);
     }
     /** 初始化沙箱 */
     protected InitWorker() {
@@ -201,6 +204,35 @@ export class As3Danmaku {
                 default: break;
             }
         });
+        const sounds: Record<string, Sound> = {};
+        this.addWorkerListener('Sound::action', (msg: any) => {
+            if (msg.name) {
+                switch (msg.action) {
+                    case 'new': {
+                        const sound = new Sound(msg.name);
+                        sounds[msg.name] = sound;
+                        msg.onload && sound._sound.addEventListener('onloadedmetadata', e => {
+                            this.sendWorkerMessage(`Sound::${msg.name}`, true);
+                        });
+                        break;
+                    }
+                    case 'play': {
+                        const sound = sounds[msg.name];
+                        sound?.play(msg.startTime, msg.loops);
+                    }
+                    case 'stop': {
+                        const sound = sounds[msg.name];
+                        sound?.stop();
+                    }
+                    case 'remove': {
+                        const sound = sounds[msg.name];
+                        sound?.remove();
+                        delete sounds[msg.name];
+                    }
+                    default: break;
+                }
+            }
+        });
         this.addWorkerListener('Runtime:RegisterObject', (pl: any) => {
             this.scriptContext?.registerObject(pl.id, pl.data);
         });
@@ -219,7 +251,7 @@ export class As3Danmaku {
         this.scriptContext?.registerObject('__root', { 'class': 'SpriteRoot' });
         this.sendWorkerMessage('Update:TimeUpdate', {
             state: 'pause',
-            time: this.time0
+            time: this.cTime
         });
         debug('engine load success!', 'Enjoy youself!');
 
@@ -253,7 +285,9 @@ export class As3Danmaku {
             stageWidth: this.wrap?.offsetWidth,
             stageHeight: this.wrap?.offsetHeight,
             screenWidth: window.screen.width,
-            screenHeight: window.screen.height
+            screenHeight: window.screen.height,
+            videoWidth: this.resolutionWidth,
+            videoHeight: this.resolutionHeight
         });
     }
     /** 渲染流程 */
@@ -330,7 +364,7 @@ export class As3Danmaku {
             this.render();
             this.sendWorkerMessage('Update:TimeUpdate', {
                 state: 'playing',
-                time: this.time0
+                time: this.cTime
             });
         }
     }
@@ -346,7 +380,7 @@ export class As3Danmaku {
         this.pauseTime = this.time0 + currentTime - this.startTime;
         this.sendWorkerMessage('Update:TimeUpdate', {
             state: 'pause',
-            time: this.time0
+            time: this.cTime
         });
     }
     /** 播放/暂停 */
@@ -413,6 +447,7 @@ export class As3Danmaku {
     /** 清空弹幕 */
     clearList() {
         this.dmList = [];
+        this.sendWorkerMessage('::clear', true);
     }
     /** 销毁实例 */
     destroy() {

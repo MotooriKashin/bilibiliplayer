@@ -136,4 +136,7 @@ export class Matrix3D {
     clone() {
         return new Matrix3D(this._data);
     }
+    serialize() {
+        return this._data;
+    }
 }

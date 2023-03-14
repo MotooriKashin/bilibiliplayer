@@ -15,4 +15,15 @@ export class TextFormat {
         public indent = 0,
         public leading = 0
     ) { }
+    serialize() {
+        return {
+            class: "TextFormat",
+            font: this.font,
+            size: this.size,
+            color: this.color,
+            bold: this.bold,
+            underline: this.underline,
+            italic: this.italic
+        };
+    }
 }

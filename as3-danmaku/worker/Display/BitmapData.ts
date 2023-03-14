@@ -1,5 +1,5 @@
-import { debug } from "../../debug";
-import { Bitmap } from "./Bitmap";
+import { __pchannel, __trace } from "../OOAPI";
+import { Runtime } from "../Runtime/Runtime";
 import { ByteArray } from "./ByteArray";
 import { ColorTransform } from "./ColorTransform";
 import { DisplayObject } from "./DisplayObject";
@@ -36,24 +36,23 @@ class DirtyArea {
         delete this.yEnd;
     }
 }
-export class BitmapData extends DisplayObject {
+export class BitmapData {
     protected rect: Rectangle;
     protected locked = false;
     protected dirtyArea = new DirtyArea();
     protected byteArray: number[] = [];
-    private _data: ImageData;
-    protected _notifyList: Bitmap[] = [];
-    constructor(
-        public __root: HTMLElement,
-        width: number,
+    constructor(width: number,
         height: number,
         protected transparent = true,
-        protected fillColor = 0xffffffff
-    ) {
-        super(__root);
+        protected fillColor = 0xffffffff,
+        protected id = Runtime.generateId('obj-bmp-data')) {
+
         this.rect = new Rectangle(0, 0, width, height);
-        this._data = new ImageData(width, height);
+
         this._fill();
+
+        // Register this
+        Runtime.registerObject(this);
     }
     protected _fill() {
         this.byteArray = [];
@@ -61,20 +60,7 @@ export class BitmapData extends DisplayObject {
             this.byteArray.push(this.fillColor);
         }
     }
-    _registerNotify(bitmap: Bitmap) {
-        if (this._notifyList.indexOf(bitmap) < 0) {
-            this._notifyList.push(bitmap);
-            // Also notify immediately
-            bitmap._draw(this._data);
-        }
-    };
-    _deregisterNotify(bitmap: Bitmap) {
-        const index = this._notifyList.indexOf(bitmap);
-        if (index >= 0) {
-            this._notifyList.splice(index, 1);
-        }
-    };
-    protected _updateBoxP(changeRect?: Rectangle) {
+    protected _updateBox(changeRect?: Rectangle) {
         if (this.dirtyArea.isEmpty()) {
             // Don't update anything if nothing was changed
             return;
@@ -87,8 +73,8 @@ export class BitmapData extends DisplayObject {
 
         // Make sure we're not out-of-bounds
         if (!this.rect.containsRect(change)) {
-            debug.error('BitmapData._updateBox box ' + change.toString() +
-                ' out of bonunds ' + this.rect.toString());
+            __trace('BitmapData._updateBox box ' + change.toString() +
+                ' out of bonunds ' + this.rect.toString(), 'err');
             throw new Error('Rectangle provided was not within image bounds.');
         }
         // Extract the values
@@ -99,36 +85,30 @@ export class BitmapData extends DisplayObject {
                     change.x + j]!);
             }
         }
-        this.updateBox(change, region);
+        this._methodCall('updateBox', {
+            'box': change.serialize(),
+            'values': region
+        });
         this.dirtyArea.reset();
     }
-    protected updateBox(box: Rectangle, region: number[]) {
-        for (let y = box.y; y < box.y + box.height; y++) {
-            for (let x = box.x; x < box.x + box.width; x++) {
-                // Unpack ARGB
-                const color = region[y * box.width + x];
-                const r = (color >> 16) & 0xff,
-                    g = (color >> 8) & 0xff,
-                    b = color & 0xff,
-                    a = (color >> 24) & 0xff;
-                const i = 4 * (y * this._data.width + x);
-                this._data.data[i] = r;
-                this._data.data[i + 1] = g;
-                this._data.data[i + 2] = b;
-                this._data.data[i + 3] = a;
-            }
-        }
-
-        // Update all relevant images
-        this._notifyList.forEach((image) => {
-            image._draw(this._data);
+    protected _methodCall(methodName: string, params: any) {
+        __pchannel("Runtime:CallMethod", {
+            "id": this.id,
+            "method": methodName,
+            "params": params
         });
     }
     get height() {
         return this.rect.height;
     }
+    set height(_height: number) {
+        __trace('BitmapData.height is read-only', 'warn');
+    }
     get width() {
         return this.rect.width;
+    }
+    set width(_width: number) {
+        __trace('BitmapData.height is read-only', 'warn');
     }
     draw(source: DisplayObject | BitmapData,
         matrix?: Matrix,
@@ -137,20 +117,20 @@ export class BitmapData extends DisplayObject {
         clipRect?: Rectangle,
         smoothing = false) {
         if (!(source instanceof BitmapData)) {
-            debug.error('Drawing non BitmapData is not supported!');
+            __trace('Drawing non BitmapData is not supported!', 'err');
             return;
         }
         if (matrix) {
-            debug.warn('Matrix transforms not supported yet.');
+            __trace('Matrix transforms not supported yet.', 'warn');
         }
         if (colorTransform) {
-            debug.warn('Color transforms not supported yet.');
+            __trace('Color transforms not supported yet.', 'warn');
         }
         if (blendMode && blendMode !== 'normal') {
-            debug.warn('Blend mode [' + blendMode + '] not supported yet.');
+            __trace('Blend mode [' + blendMode + '] not supported yet.', 'warn');
         }
         if (smoothing !== false) {
-            debug.warn('Smoothign not supported!');
+            __trace('Smoothign not supported!', 'warn');
         }
         this.lock();
         if (clipRect) {
@@ -181,7 +161,7 @@ export class BitmapData extends DisplayObject {
         if (rect.width === 0 || rect.height === 0) {
             return new ByteArray();
         }
-        const region: ByteArray = new ByteArray();
+        const region = new ByteArray();
         for (let i = 0; i < rect.height; i++) {
             this.byteArray.slice((rect.y + i) * this.rect.width + rect.x,
                 (rect.y + i) * this.rect.width + rect.x + rect.width).forEach(function (v) {
@@ -201,7 +181,7 @@ export class BitmapData extends DisplayObject {
         }
         this.byteArray[y * this.rect.width + x] = color;
         this.dirtyArea.expand(x, y);
-        this._updateBoxP();
+        this._updateBox();
     }
     setPixels(rect: Rectangle, input: Array<number>) {
         if (rect.width === 0 || rect.height === 0) {
@@ -224,7 +204,7 @@ export class BitmapData extends DisplayObject {
                 this.dirtyArea.expand(i, j);
             }
         }
-        this._updateBoxP();
+        this._updateBox();
     }
     getVector(rect: Rectangle): number[] {
         if (this.rect.equals(rect)) {
@@ -244,22 +224,32 @@ export class BitmapData extends DisplayObject {
     unlock(changeRect?: Rectangle) {
         this.locked = false;
         if (!changeRect) {
-            this._updateBoxP();
+            this._updateBox();
         } else {
-            this._updateBoxP(changeRect);
+            this._updateBox(changeRect);
         }
     }
     dispatchEvent(_event: string, _data?: any) {
 
     }
-    get fill() {
-        return this.fillColor;
+    getId() {
+        return this.id;
+    }
+    serialize() {
+        return {
+            class: 'BitmapData',
+            width: this.rect.width,
+            height: this.rect.height,
+            fill: this.fillColor
+        };
+    }
+    unload() {
+        this._methodCall('unload', undefined);
     }
     clone() {
-        const data = new BitmapData(this.__root, this.width, this.height,
-            this.transparent, this.fillColor);
+        const data = new BitmapData(this.width, this.height, this.transparent, this.fillColor);
         data.byteArray = this.byteArray.slice(0);
-        data._updateBoxP(data.rect);
+        data._updateBox(data.rect);
         return data;
     }
 }
