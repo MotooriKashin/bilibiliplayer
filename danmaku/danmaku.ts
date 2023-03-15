@@ -19,14 +19,14 @@ import IRenderExtInterface from './interface/render_ext';
 import Workers from './insert.worker';
 
 class Danmaku {
-    public config: IDanmakuConfigExtInterface;
-    public danmakuArray: ITextDataInterface[];
-    public container: HTMLElement;
-    public time: number; // 弹幕时间轴
-    public paused: boolean;
-    public manager!: DivManager | CanvasManager;
-    public visualArray: BinaryArray<IRenderExtInterface>;
-    public timeLine: OrderList;
+    config: IDanmakuConfigExtInterface;
+    danmakuArray: ITextDataInterface[];
+    container: HTMLElement;
+    time: number; // 弹幕时间轴
+    paused: boolean;
+    manager!: DivManager | CanvasManager;
+    visualArray: BinaryArray<IRenderExtInterface>;
+    timeLine: OrderList;
 
     private timeZero: number; // 在 startTime 时间下的视频时间，单位毫秒
     private pauseTime: number; // 记录暂停时的时间
@@ -155,14 +155,14 @@ class Danmaku {
             })();
     }
 
-    public writingMode(verticalDanmaku: boolean) {
+    writingMode(verticalDanmaku: boolean) {
         if (this.config.verticalDanmaku !== verticalDanmaku) {
             this.config.verticalDanmaku = verticalDanmaku;
             this.seek(this.time / 1000, true);
         }
     }
 
-    public addTimely(danmaku: ITextDataInterface) {
+    addTimely(danmaku: ITextDataInterface) {
         const renderDanmaku = this.renderDanmaku(danmaku);
         const mustShow = renderDanmaku.border && this.config.visible;
         if (danmaku.stime === -1) {
@@ -179,7 +179,7 @@ class Danmaku {
             }
         }
     }
-    public addAll(danmakuArray: ITextDataInterface[]) {
+    addAll(danmakuArray: ITextDataInterface[]) {
         for (let i = 0, len = danmakuArray.length; i < len; i++) {
             danmakuArray[i] = this.renderDanmaku(danmakuArray[i]);
         }
@@ -193,7 +193,7 @@ class Danmaku {
             } else {
                 this.timeLine.push.apply(this.timeLine, message.data);
             }
-            this.worker!.terminate();
+            this.worker?.terminate();
             this.worker = null;
         };
     }
@@ -243,7 +243,7 @@ class Danmaku {
         }
     }
 
-    public count(): number {
+    count(): number {
         return this.danmakuArray ? this.danmakuArray.length : 0;
     }
 
@@ -262,7 +262,7 @@ class Danmaku {
         return manager;
     }
 
-    public danmakuType(type?: string): string {
+    danmakuType(type?: string): string {
         if (!type) {
             return this.config.type;
         }
@@ -282,7 +282,7 @@ class Danmaku {
         return type;
     }
 
-    public exportDanmaku(precise?: number): HTMLElement {
+    exportDanmaku(precise?: number): HTMLElement {
         const gifContainer = document.createElement('canvas');
         const giftext = gifContainer.getContext('2d') as CanvasRenderingContext2D;
         this.config.devicePR = 2;
@@ -311,7 +311,7 @@ class Danmaku {
         return gifContainer;
     }
 
-    public play(precise?: number): void {
+    play(precise?: number): void {
         this.paused = false;
 
         // 恢复时间
@@ -327,7 +327,7 @@ class Danmaku {
         });
     }
 
-    public pause(): void {
+    pause(): void {
         if (!this.paused) {
             this.realFps();
         }
@@ -338,11 +338,11 @@ class Danmaku {
         this.pauseTime = this.timeZero + currentTime - this.startTime;
     }
 
-    public toggle(): void {
+    toggle(): void {
         this.paused ? this.play() : this.pause();
     }
 
-    public seek(pos: number, inPosition?: boolean): void {
+    seek(pos: number, inPosition?: boolean): void {
         this.timeZero = pos * 1000;
         if (!inPosition && (this.timeZero - this.time > 1000 || this.timeZero - this.time < -500)) {
             this.clear();
@@ -381,7 +381,7 @@ class Danmaku {
         this.add(danmaku);
     }
 
-    public add(danmaku: ITextDataInterface, liveDm?: boolean): any {
+    add(danmaku: ITextDataInterface, liveDm?: boolean): any {
         if (danmaku.canvas && danmaku.canvas.length < 1) {
             return;
         }
@@ -401,7 +401,7 @@ class Danmaku {
         }
     }
 
-    public remove(dmid: string) {
+    remove(dmid: string) {
         if (this.manager) {
             for (let i = 0; i < this.danmakuArray.length; i++) {
                 if (dmid === this.danmakuArray[i].dmid) {
@@ -412,7 +412,7 @@ class Danmaku {
         }
     }
 
-    public multipleAdd(danmakuList: ITextDataInterface[]) {
+    multipleAdd(danmakuList: ITextDataInterface[]) {
         if (danmakuList && danmakuList.length) {
             this.danmakuArray = this.danmakuArray.concat(danmakuList);
             this.sortDmById(this.danmakuArray);
@@ -452,7 +452,7 @@ class Danmaku {
         }
     }
 
-    public searchAreaDanmaku(x: number, y: number) {
+    searchAreaDanmaku(x: number, y: number) {
         x = (x || 0) * this.config.devicePR;
         y = (y || 0) * this.config.devicePR;
         let searchedList: IRenderExtInterface[] = [];
@@ -507,7 +507,7 @@ class Danmaku {
         return searchedList;
     }
 
-    public option(key: any, value: any): any {
+    option(key: any, value: any): any {
         if (!key) {
             return;
         }
@@ -748,7 +748,7 @@ class Danmaku {
     /**
      * 设置或者读取当前的可视性
      */
-    public visible(value?: boolean): boolean {
+    visible(value?: boolean): boolean {
         if (typeof value === 'undefined') {
             return this.config.visible;
         } else {
@@ -772,32 +772,28 @@ class Danmaku {
         }
     }
 
-    /**
-     * 设置弹幕层的大小
-     */
-    public resize(show?: boolean): void {
+    /** 设置弹幕层的大小 */
+    resize(show?: boolean): void {
         if (this.manager) {
             this.manager.resize(show);
             this.time && show && this.seek(this.time / 1000, true);
         }
     }
 
-    /**
-     * 清屏
-     */
-    public clear(): void {
+    /** 清屏 */
+    clear(): void {
         this.manager.clearVisualList();
         this.animateTime = 0;
     }
 
-    public destroy(): void {
+    destroy(): void {
         this.worker && this.worker.terminate();
         this.pause();
         this.clear();
         this.outDmidList = [];
     }
 
-    public reload(reserved?: boolean, lastDuration?: number) {
+    reload(reserved?: boolean, lastDuration?: number) {
         if (reserved) {
             let currentTime: number = Date.now();
             let videoTime: number = this.config.timeSyncFunc();
@@ -820,7 +816,7 @@ class Danmaku {
         }
     }
 
-    public imgExposure(flag: number) {
+    imgExposure(flag: number) {
         switch (flag) {
             case -2:
                 this.dmTrack.imgexposure++;
@@ -834,7 +830,7 @@ class Danmaku {
                 break;
         }
     }
-    public updateTrackInfo(obj: any, exposure = 0) {
+    updateTrackInfo(obj: any, exposure = 0) {
         const type = this.config.type;
         this.dmTrack.dmexposure += exposure;
         this.dmTrack[type] = this.dmTrack[type] || <any>{

@@ -446,9 +446,9 @@ export class AstHelper {
         this.templateTable[tpl_name] = tpl;
     }
 
-    on_enter_scope() {}
+    on_enter_scope() { }
 
-    on_leave_scope() {}
+    on_leave_scope() { }
 
     on_enter_tpl() {
         this.allowsVariable.push(true);
@@ -494,8 +494,8 @@ export class AstHelper {
 }
 
 export class AstValue {
-    public type: AstValueType;
-    public value: any;
+    type: AstValueType;
+    value: any;
 
     constructor(obj: any) {
         this.type = obj.type;

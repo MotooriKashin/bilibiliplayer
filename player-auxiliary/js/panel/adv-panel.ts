@@ -521,7 +521,7 @@ class AdvPanel {
         if (this.userStatus.role === STATE.USER_ADVANCED || this.userStatus.role === STATE.USER_VIP) {
             this.template.advDanmakuTab.addClass("active");
             this.template.basDanmakuTab.show();
-            // this.template.codeDanmakuTab.show(); // 代码弹幕由于安全原因暂时禁用
+            this.template.codeDanmakuTab.show();
 
             new Button(this.template.advDanmakuTab, {
                 type: "small",

@@ -24,7 +24,7 @@ class OrderList extends BinaryArray<any> {
     /**
      * 插入一个项目：并且维护一个指向特定元素的指针
      */
-    public insert(...args: BinaryItemInterface[]): this {
+    insert(...args: BinaryItemInterface[]): this {
         let i = 0;
 
         while (i < args.length) {
@@ -35,11 +35,11 @@ class OrderList extends BinaryArray<any> {
         return this;
     }
 
-    public insertMulti(arr: Array<any>) : this {
+    insertMulti(arr: Array<any>): this {
         arr = arr.concat(this as Array<any>);
         arr.sort(this.fnCompare);
         this.splice(0, this.length);
-        for(let i = 0; i < arr.length; i++) {
+        for (let i = 0; i < arr.length; i++) {
             this[i] = arr[i];
         }
         return this;
@@ -48,7 +48,7 @@ class OrderList extends BinaryArray<any> {
     /**
      * 尝试移除一个元素：利用有序的条件优化搜索
      */
-    public remove(a: BinaryItemInterface): boolean {
+    remove(a: BinaryItemInterface): boolean {
         let index: number = this.bsearch(a, this.fnCompare);
 
         while (index >= 0) {
@@ -65,7 +65,7 @@ class OrderList extends BinaryArray<any> {
     /**
      * 取得一定范围内的所有元素，对于相等的元素，取后不取前（包含与第二个相等的元素，不包含与第一个元素相等的元素）
      */
-    public getItemsByRange(startItem: AnyObject, endItem: AnyObject): BinaryItemInterface[] {
+    getItemsByRange(startItem: AnyObject, endItem: AnyObject): BinaryItemInterface[] {
         let startIndex: number = this.bsearch(startItem, this.fnCompare);
         let endIndex: number = this.bsearch(endItem, this.fnCompare);
         return this.getItemsByIndexRange(startIndex, endIndex);
@@ -74,7 +74,7 @@ class OrderList extends BinaryArray<any> {
     /**
      * 获得一个范围内的元素列表，返回有序的范围内的列表，取前不取后
      */
-    public getItemsByIndexRange(startIndex: number, endIndex: number): BinaryItemInterface[] {
+    getItemsByIndexRange(startIndex: number, endIndex: number): BinaryItemInterface[] {
         let output: BinaryItemInterface[] = [];
         if (endIndex <= startIndex) return output;
 

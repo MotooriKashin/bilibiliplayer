@@ -71,6 +71,7 @@ import { FlvEventHandler } from './player/flv-event-handler';
 import { ReloadMedia } from './player/reload-media';
 import { Track } from './player/track';
 import { screenshot } from './plugins/screenshot';
+import { CodePanel } from './player/code-panel';
 
 export interface IReceivedInterface {
     _id: number;
@@ -162,7 +163,8 @@ class Player {
     advDanmaku!: AdvDanmaku;
     basDanmaku!: BasDanmaku;
     as3Danmaku!: As3Danmaku;
-    baspanel!: BasPanel;
+    baspanel?: BasPanel;
+    CodePanel?: CodePanel;
     eventLog!: EventLogger;
     user!: User;
     ui!: IUIInterface;
@@ -2084,6 +2086,7 @@ class Player {
                 this.video && this.popup.resize(this.video.videoWidth, this.video.videoHeight);
             });
             this.baspanel = new BasPanel(this, this.basDanmaku);
+            this.CodePanel = new CodePanel(this, this.as3Danmaku);
 
             if (!this.config.isAudio && !this.config.gamePlayer) {
                 this.subtitle = new Subtitle(

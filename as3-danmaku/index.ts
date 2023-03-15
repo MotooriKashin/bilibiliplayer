@@ -358,9 +358,7 @@ export class As3Danmaku {
         this.paused = false;
         this.wrap && this.wrap.classList.remove('as3-danmaku-pause');
         if (this.dmList.length || this.preList.length) {
-            if (!this.inited) {
-                this.init();
-            }
+            this.inited || this.init();
             this.render();
             this.sendWorkerMessage('Update:TimeUpdate', {
                 state: 'playing',
@@ -371,9 +369,7 @@ export class As3Danmaku {
     /** 暂停 */
     pause() {
         this.paused = true;
-        if (!this.inited) {
-            this.init();
-        }
+        this.inited || this.init();
         this.wrap?.classList.add('as3-danmaku-pause');
         // 记录时间
         const currentTime = new Date().getTime();
@@ -395,9 +391,7 @@ export class As3Danmaku {
     seek(time: number) {
         this.time0 = time * 1000;
         this.startTime = new Date().getTime();
-        if (!this.inited) {
-            this.init();
-        }
+        this.inited || this.init();
         if (this.dmList.length && this.visibleStatus && this.wrap) {
             this.pTime = time * 1000;
             this.cTime = time * 1000;
@@ -459,5 +453,13 @@ export class As3Danmaku {
     /** 监听发送弹幕 */
     sendDanmaku(dm: IDanmaku) {
         this.sendWorkerMessage('comment', dm);
+    }
+    test(code: string) {
+        this.inited || this.init();
+        this.worker || this.InitWorker();
+        this.sendWorkerMessage('::debug', {
+            action: 'raw-eval',
+            code
+        });
     }
 }

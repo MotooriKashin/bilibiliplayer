@@ -36,7 +36,7 @@ export class Graphics {
      * @param x x coordinate
      * @param y y coordinate
      */
-    public lineTo(x: number, y: number) {
+    lineTo(x: number, y: number) {
         x = Number(x) || 0;
         y = Number(y) || 0;
         this._evaluateBoundingBox(x, y);
@@ -48,7 +48,7 @@ export class Graphics {
      * @param x x coordinate
      * @param y y coordinate
      */
-    public moveTo(x: number, y: number) {
+    moveTo(x: number, y: number) {
         x = Number(x) || 0;
         y = Number(y) || 0;
         this._evaluateBoundingBox(x, y);
@@ -62,7 +62,7 @@ export class Graphics {
      * @param ax Anchor x
      * @param ay Anchor y
      */
-    public curveTo(cx: number, cy: number, ax: number, ay: number) {
+    curveTo(cx: number, cy: number, ax: number, ay: number) {
         this._evaluateBoundingBox(ax, ay);
         this._evaluateBoundingBox(cx, cy);
         this._callDrawMethod('curveTo', [cx, cy, ax, ay]);
@@ -77,7 +77,7 @@ export class Graphics {
      * @param ax Anchor x
      * @param ay Anchor y
      */
-    public cubicCurveTo(cax: number,
+    cubicCurveTo(cax: number,
         cay: number,
         cbx: number,
         cby: number,
@@ -101,7 +101,7 @@ export class Graphics {
      * @param joints line joint mode (default "round")
      * @param miterlim miter limit (default 3)
      */
-    public lineStyle(thickness: number,
+    lineStyle(thickness: number,
         color = 0,
         alpha = 1.0,
         hinting = false,
@@ -121,7 +121,7 @@ export class Graphics {
      * @param w width
      * @param h height
      */
-    public drawRect(x: number, y: number, w: number, h: number) {
+    drawRect(x: number, y: number, w: number, h: number) {
         x = Number(x) || 0;
         y = Number(y) || 0;
         w = Number(w) || 0;
@@ -137,7 +137,7 @@ export class Graphics {
      * @param y center y
      * @param r radius
      */
-    public drawCircle(x: number, y: number, r: number) {
+    drawCircle(x: number, y: number, r: number) {
         x = Number(x) || 0;
         y = Number(y) || 0;
         r = Number(r) || 0;
@@ -153,7 +153,7 @@ export class Graphics {
      * @param w width
      * @param h height
      */
-    public drawEllipse(cx: number, cy: number, w: number, h: number) {
+    drawEllipse(cx: number, cy: number, w: number, h: number) {
         this._evaluateBoundingBox(cx - w / 2, cy - h / 2);
         this._evaluateBoundingBox(cx + w / 2, cy + h / 2);
         this._callDrawMethod('drawEllipse', [cx + w / 2, cy + h / 2, w / 2, h / 2]);
@@ -168,7 +168,7 @@ export class Graphics {
      * @param elw ellipse corner width
      * @param elh ellipse corner height
      */
-    public drawRoundRect(x: number,
+    drawRoundRect(x: number,
         y: number,
         w: number,
         h: number,
@@ -186,7 +186,7 @@ export class Graphics {
      * @param data List of data
      * @param winding evenOdd or nonZero
      */
-    public drawPath(commands: Array<number>, data: Array<number>, winding = "evenOdd") {
+    drawPath(commands: Array<number>, data: Array<number>, winding = "evenOdd") {
         /** TODO: Evaluate bounding box **/
         this._callDrawMethod('drawPath', [commands, data, winding]);
     }
@@ -196,14 +196,14 @@ export class Graphics {
      * @param color color RGB values
      * @param alpha alpha value
      */
-    public beginFill(color: number, alpha = 1.0) {
+    beginFill(color: number, alpha = 1.0) {
         this._callDrawMethod('beginFill', [color, alpha]);
     }
 
     /**
      * Gradient Fill Not Supported yet
      */
-    public beginGradientFill(fillType: string,
+    beginGradientFill(fillType: string,
         colors: Array<number>,
         alphas: Array<number>,
         ratios: Array<number>,
@@ -232,14 +232,14 @@ export class Graphics {
     /**
      * Shader Fill Not Supported yet
      */
-    public beginShaderFill(shader: any, matrix: Matrix) {
+    beginShaderFill(shader: any, matrix: Matrix) {
         __trace('Graphics.beginShaderFill not supported.', 'warn');
     }
 
     /**
      * Stop and finalize fill
      */
-    public endFill() {
+    endFill() {
         this._callDrawMethod('endFill', []);
     }
 
@@ -250,7 +250,7 @@ export class Graphics {
      * @param uvtData Texture mapping stuff. Not supported any time soon.
      * @param culling "none" shows all triangles, "positive"/"negative" will cull triangles by normal along z-axis
      */
-    public drawTriangles(verts: Array<number>,
+    drawTriangles(verts: Array<number>,
         indices?: Array<number>,
         uvtData?: Array<number>,
         culling = 'none') {
@@ -294,7 +294,7 @@ export class Graphics {
     /**
      * Clears everything the current graphics context has drawn
      */
-    public clear() {
+    clear() {
         this.parent.boundingBox.setEmpty();
         this._callDrawMethod('clear', []);
     }

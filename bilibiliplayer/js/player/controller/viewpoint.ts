@@ -260,7 +260,7 @@ class ViewPointList {
 }
 
 class BaseViewPoint {
-    public ui: HTMLElement;
+    ui: HTMLElement;
     constructor(className: string, v: IViewPoint) {
         this.ui = document.createElement("div");
         this.ui.className = className;

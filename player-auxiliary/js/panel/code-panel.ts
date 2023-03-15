@@ -12,13 +12,21 @@ import { Checkbox } from '../ui/checkbox';
 interface IPanelOptions {
     panel: JQuery;
     onTest?: Function;
+    pid?: number;
 }
 
 interface ITextData {
+    type?: number;
+    oid?: number;
+    msg: string;
+    aid?: number;
     color?: number;
     fontsize?: number;
     progress: number;
-    msg: string;
+    pool?: number;
+    mode?: number;
+    rnd?: number;
+    plat?: number;
 }
 
 interface IEditor {
@@ -185,6 +193,11 @@ class CodePanel {
                 {
                     type: 'cancel',
                     text: '确定',
+                    click: () => {
+                        this.modal.close();
+                        this.enable();
+                        this.status = true;
+                    }
                 },
             ],
             appendTo: that.options.panel,
@@ -292,6 +305,7 @@ class CodePanel {
             type: 'small',
             click: () => {
                 console.log('InputRefer');
+                window.open('https://docs.bilibili.com/wiki/%E5%88%86%E7%B1%BB:Script', '_blank')
             }
         });
     }
@@ -304,7 +318,6 @@ class CodePanel {
         // h = offset ? h - offset : h;
         // this.template && this.template.container.css('height', h - this.auxiliary.filtersHeight + 'px');
 
-        this.container.css("width", this.auxiliary.player.container.outerWidth()!);
         if (this.auxiliary.player.iframe && this.showing) {
             if ($(this.auxiliary.window.document).find("body").hasClass("widescreen")) {
                 this.auxiliary.player.$iframe?.css("height", "1240px")
@@ -441,10 +454,18 @@ class CodePanel {
         // 226001
         this.auxiliary.directiveManager.sender(WD.VI_RETRIEVE_DATA, null, (received?: IReceived) => {
             textData = {
-                msg: this.editor['getValue'](),
+                type: 1, // 主题类型，1：视频
+                oid: this.auxiliary.config.cid, // 主题id
+                msg: this.editor['getValue'](), // 弹幕内容
+                aid: this.auxiliary.config.aid, // 稿件id
+                // bvid: this.auxiliary.config.bvid, // 稿件bvid
                 progress: received!['data']['currentTime'], // 单位：秒
                 color: 0,
                 fontsize: 0,
+                pool: 2, // 弹幕池,0:普通弹幕，1：字幕弹幕，2：特殊弹幕
+                mode: 8, // 弹幕模式：1,4,5,6,7,8,9
+                rnd: this.options.pid, // 发送时带的随机数
+                plat: 1, // 来源平台
             };
         });
 
@@ -483,7 +504,7 @@ class CodePanel {
                 let time = 0;
 
                 time = Number(this.stimeInput.val());
-                data.progress = this.serializeToSecond(time) || currentTime;
+                data.progress = Math.ceil((this.serializeToSecond(time) || currentTime) * 1000);
 
                 // 217006
                 this.auxiliary.directiveManager.sender(WD.CDM_SEND_DANMAKU, data, (received?: IReceived) => {

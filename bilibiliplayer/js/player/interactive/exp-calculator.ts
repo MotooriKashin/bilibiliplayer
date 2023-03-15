@@ -7,7 +7,7 @@ class Calculator {
         this.table = table || {};
     }
 
-    public Eval(exp: string) {
+    Eval(exp: string) {
         this.ts = new TokenStream(exp);
 
         let result = 0;
@@ -29,7 +29,7 @@ class Calculator {
         return result;
     }
 
-    public GetVars() {
+    GetVars() {
         return this.table;
     }
 

@@ -8,9 +8,9 @@ import IDanmakuConfigExtInterface from '../interface/danmaku_config_ext';
 import IRenderExtInterface from '../interface/render_ext';
 
 class SpaceManager {
-    public config: IDanmakuConfigExtInterface;
-    public scroll: boolean | undefined;
-    public lists: BinaryArray<IRenderExtInterface>[];
+    config: IDanmakuConfigExtInterface;
+    scroll: boolean | undefined;
+    lists: BinaryArray<IRenderExtInterface>[];
 
     constructor(config: IDanmakuConfigExtInterface, scroll?: boolean) {
         this.config = config;
@@ -18,11 +18,11 @@ class SpaceManager {
         this.lists = [];
     }
 
-    public clean(): void {
+    clean(): void {
         this.lists = [];
     }
 
-    public add(txt: IRenderExtInterface): void {
+    add(txt: IRenderExtInterface): void {
         if (this.scroll) {
             txt.x = txt.distance;
         } else {
@@ -44,7 +44,7 @@ class SpaceManager {
         }
     }
 
-    public remove(txt: IRenderExtInterface): void {
+    remove(txt: IRenderExtInterface): void {
         if (txt.index !== -1 && this.lists[txt.index] !== undefined) {
             const list = this.lists[txt.index];
             list.bremove(txt);
