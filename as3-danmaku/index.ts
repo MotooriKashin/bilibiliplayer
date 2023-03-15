@@ -460,4 +460,10 @@ export class As3Danmaku {
     sendDanmaku(dm: IDanmaku) {
         this.sendWorkerMessage('comment', dm);
     }
+    test(dm: IDanmaku) {
+        this.sendWorkerMessage('::debug', {
+            action: 'raw-eval',
+            code: dm.text
+        });
+    }
 }

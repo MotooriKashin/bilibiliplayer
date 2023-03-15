@@ -67,7 +67,7 @@ class TokenStream {
         return this.ch;
     }
 
-    public GetNext(): IToken {
+    GetNext(): IToken {
         let tmp;
         do {
             this.putforward();
@@ -177,7 +177,7 @@ class TokenStream {
         }
     }
 
-    public GetCurrent(): IToken {
+    GetCurrent(): IToken {
         return this.ct;
     }
 }

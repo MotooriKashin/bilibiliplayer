@@ -9,7 +9,7 @@ class CSS3Manager extends Manager {
         super(danmaku);
     }
 
-    public getText(danmaku: ITextDataInterface, precise: number) {
+    getText(danmaku: ITextDataInterface, precise: number) {
         this.config.devicePR = 1;
 
         let recyclingDiv: ICycDiv;
