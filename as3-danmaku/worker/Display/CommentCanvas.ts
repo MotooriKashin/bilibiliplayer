@@ -25,7 +25,7 @@ export class CommentCanvas extends Sprite {
             params["parent"]?.addChild?.(this);
         }
     }
-    public initStyle(style: IComment) {
+    initStyle(style: IComment) {
         if (style["lifeTime"]) {
             this.mM.dur = style["lifeTime"] * 1000;
         }

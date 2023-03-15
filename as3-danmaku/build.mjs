@@ -6,7 +6,7 @@ const banner = `import worker from '@jsc/danmaku/worker-loader/inline';
 // 运行在work中的弹幕解析器，须提前构建
 export default function () {
   return worker(\``;
-const footer = `\`, "Worker", undefined, undefined);
+const footer = `//@ sourceURL=as3-parser.js\`, "Worker", undefined, undefined);
 }
 `;
 const plugin = {

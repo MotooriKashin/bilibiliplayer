@@ -24,7 +24,7 @@ export class BinaryArray<T extends { stime: number }> extends Array<T> {
      * first is a, second is the item in array, returns a positivem number if a yields precedence to
      * item @return {int} the index where a should be inserted
      */
-    public bsearch(a: T, fn: FnCompareInterface): number {
+    bsearch(a: T, fn: FnCompareInterface): number {
         if (this.length === 0) return 0;
         if (fn(a, this[0]) < 0) return 0;
         if (fn(a, this[this.length - 1]) >= 0) return this.length;
@@ -59,13 +59,13 @@ export class BinaryArray<T extends { stime: number }> extends Array<T> {
         return -1;
     }
 
-    public binsert(a: T, fn: FnCompareInterface): number {
+    binsert(a: T, fn: FnCompareInterface): number {
         let i: number = this.bsearch(a, fn);
         this.splice(i, 0, a);
         return i;
     }
 
-    public cinsert(a: T, fn: FnCompareInterface): number {
+    cinsert(a: T, fn: FnCompareInterface): number {
         let i: number = this.bsearch(a, fn);
         if (this[i - 1]?.stime === a.stime) {
             this[i - 1] = a;
@@ -77,7 +77,7 @@ export class BinaryArray<T extends { stime: number }> extends Array<T> {
         return i;
     }
 
-    public bremove(a: T): void {
+    bremove(a: T): void {
         for (let i = 0; i < this.length; i++) {
             if (this[i] === a) {
                 this.splice(i, 1);

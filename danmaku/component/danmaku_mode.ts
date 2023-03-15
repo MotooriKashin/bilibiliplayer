@@ -13,25 +13,25 @@ import { ISubModeSetInterface, IInstanceSetInterface, DanmakuModeInterface } fro
  * 原管理者特化为空间管理器
  */
 export abstract class BaseMode {
-    public config: IDanmakuConfigExtInterface;
-    public spaceManager!: SpaceManager;
+config: IDanmakuConfigExtInterface;
+spaceManager!: SpaceManager;
 
     constructor(config: IDanmakuConfigExtInterface) {
         this.config = config;
     }
 
-    public onStart(text: IRenderExtInterface): void {
+onStart(text: IRenderExtInterface): void {
         this.spaceManager.add(text);
         text.manager = this;
     }
 
-    public onEnd(text: IRenderExtInterface, isRemoveRecycling?: boolean): HTMLElement | void {
+onEnd(text: IRenderExtInterface, isRemoveRecycling?: boolean): HTMLElement | void {
         this.spaceManager.remove(text);
         text.manager = null;
         text.free();
     }
 
-    public abstract onUpdate(text: IRenderExtInterface, time: number): boolean;
+abstract onUpdate(text: IRenderExtInterface, time: number): boolean;
 }
 
 /**
@@ -43,7 +43,7 @@ class Mode1 extends BaseMode {
         this.spaceManager = new SpaceManager(config, true);
     }
 
-    public onUpdate(text: IRenderExtInterface, time: number): boolean {
+onUpdate(text: IRenderExtInterface, time: number): boolean {
         if (text.isHover) {
             return true;
         }
@@ -56,7 +56,7 @@ class Mode1 extends BaseMode {
         }
     }
 
-    public onEnd(text: IRenderExtInterface, isRemoveRecycling?: boolean): HTMLElement | void {
+onEnd(text: IRenderExtInterface, isRemoveRecycling?: boolean): HTMLElement | void {
         this.spaceManager.remove(text);
         text.manager = null;
         return text.free(isRemoveRecycling);
@@ -72,7 +72,7 @@ class Mode4 extends BaseMode {
         this.spaceManager = new SpaceManager(config);
     }
 
-    public onUpdate(text: IRenderExtInterface, time: number): boolean {
+onUpdate(text: IRenderExtInterface, time: number): boolean {
         if (text.isHover) {
             return true;
         }
@@ -100,7 +100,7 @@ class Mode5 extends BaseMode {
         this.spaceManager = new SpaceManager(config);
     }
 
-    public onUpdate(text: IRenderExtInterface, time: number): boolean {
+onUpdate(text: IRenderExtInterface, time: number): boolean {
         if (text.isHover) {
             return true;
         }
@@ -123,7 +123,7 @@ class Mode6 extends BaseMode {
         this.spaceManager = new SpaceManager(config, true);
     }
 
-    public onUpdate(text: IRenderExtInterface, time: number): boolean {
+onUpdate(text: IRenderExtInterface, time: number): boolean {
         if (text.isHover) {
             return true;
         }
@@ -136,7 +136,7 @@ class Mode6 extends BaseMode {
         }
     }
 
-    public onEnd(text: IRenderExtInterface, isRemoveRecycling?: boolean): HTMLElement | void {
+onEnd(text: IRenderExtInterface, isRemoveRecycling?: boolean): HTMLElement | void {
         this.spaceManager.remove(text);
         text.manager = null;
         return text.free(isRemoveRecycling);

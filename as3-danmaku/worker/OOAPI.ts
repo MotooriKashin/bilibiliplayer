@@ -10,7 +10,7 @@ interface Message {
     payload: unknown;
 }
 
-export const __OOAPI = new (class OOAPI {
+export const OOAPI = new (class {
     /** 频道列表 */
     channels: Record<string, IChannel> = {};
     constructor() {
@@ -155,7 +155,7 @@ export function __channel(id: string, payload: object, callback: Function) {
         'payload': payload,
         'callback': true
     }));
-    __OOAPI.addListenerChannel(id, callback);
+    OOAPI.addListenerChannel(id, callback);
 };
 /**
  * 监听频道
@@ -163,7 +163,7 @@ export function __channel(id: string, payload: object, callback: Function) {
  * @param callback 回调
  */
 export function __schannel(id: string, callback: Function) {
-    __OOAPI.addListenerChannel(id, callback);
+    OOAPI.addListenerChannel(id, callback);
 };
 /**
  * 发送消息（不回调）
