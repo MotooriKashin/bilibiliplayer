@@ -1,4 +1,3 @@
-import { IDanmaku } from "../..";
 import { debug } from "../../debug";
 import { Display } from "../Display/Display";
 import { DisplayObject } from "../Display/DisplayObject";
@@ -108,9 +107,9 @@ const GLOBAL = {
 Object.entries(TweenEasing).forEach(d => {
     Reflect.set(GLOBAL, ...d);
 });
-export function Execute(dm: IDanmaku) {
+export function Execute(code: string) {
     const vm = new VirtualMachine(GLOBAL);
-    const s = new Scanner(dm.text
+    const s = new Scanner(code
         .replace(/(\/n|\\n|\n|\r\n)/g, "\n")
         .replace(/(&amp;)|(&lt;)|(&gt;)|(&apos;)|(&quot;)/g, (a: string) => {
             // 处理误当成xml非法字符的转义字符

@@ -101,6 +101,7 @@ class Auxiliary {
         });
         this.codePanel = new CodePanel(this, {
             panel: this.template.codeDanmakuPanel,
+            pid: this.pid
         });
         this.list = new List(this, {
             timestamp: dateParser(this.config.d!, 8), // 北京时间0点时候的UTC时间

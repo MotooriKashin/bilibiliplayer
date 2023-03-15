@@ -18,7 +18,7 @@ __schannel('::clear', function () {
 __schannel('::parse', function (dms: IDanmaku[]) {
     dms.forEach(async dm => {
         try {
-            Parse[dm.dmid] = Execute(dm);
+            Parse[dm.dmid] = Execute(dm.text);
         } catch (e) {
             debug.error(e);
         }
