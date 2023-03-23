@@ -141,7 +141,7 @@ class Watchlater {
                     },
                     (received?: IReceived) => { },
                 );
-                if (e.target.classList.contains(`${this.prefixName}-info-remove`)) {
+                if ($(e.target).parents(`.${this.prefixName}-info-remove`).length) {
                     // 删除
                     this.auxiliary.directiveManager.sender(
                         WD.PL_DEL_VIDEO,
