@@ -366,6 +366,10 @@ class Quality {
             this.container.find('.bilibili-player-auto-hidden').html('');
         }
     }
+
+    hide() {
+        this.container.hide();
+    }
 }
 
 export default Quality;

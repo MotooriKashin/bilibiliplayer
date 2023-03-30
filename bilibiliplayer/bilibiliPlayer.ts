@@ -261,6 +261,9 @@ export class BilibiliPlayer {
             /** 获取弹幕 */
             getDanmaku() {
                 return player.danmaku.loadPb?.allRawDM;
+            },
+            changeNaiveVideo(file: File) {
+                return player.reloadMedia.changeNaiveVideo(file);
             }
         });
     }
