@@ -535,6 +535,65 @@ export class ReloadMedia {
         );
     }
 
+    changeNaiveVideo(file: File) {
+        if (!file || file.type !== 'video/mp4') throw new Error(`${File.name} 似乎不是mp4文件！`);
+        if (!this.player.initialized) {
+            this.player.loadingpanel.reset(2);
+            this.player.loadingpanel.reset(3);
+            this.player.loadingpanel.ready(2);
+        }
+
+        this.player.trigger(STATE.EVENT.VIDEO_PLAYURL_LOAD);
+        this.player.backupURLIndex = 0;
+        this.player.eventLog.log(`\r\n本地文件：${file.name}\r\n`, 3);
+        this.player.errorHandler.hideErrorMsg();
+        this.player.controller.clearTimeMark();
+
+        this.player.trigger(STATE.EVENT.VIDEO_PLAYURL_LOADED);
+        this.player._setVideoQuality(0);
+        this.player.controller.quality.hide(); // 隐藏画质切换按钮
+        this.player.videoQuality = 0;
+        delete this.player.mediaDataSource;
+
+        const video = document.createElement('video');
+        const config = {
+            enableWorker: false,
+            stashInitialSize: 1024 * 64,
+            accurateSeek: true,
+            seekType: 'param',
+            rangeLoadZeroStart: false,
+            lazyLoadMaxDuration: 100,
+            lazyLoadRecoverDuration: 50,
+            deferLoadAfterSourceOpen: false,
+            fixAudioTimestampGap: false,
+            reuseRedirectedURL: true,
+        };
+        const mediaDataSource = {
+            duration: 0,
+            type: 'mp4',
+            url: URL.createObjectURL(file),
+            backupURL: []
+        };
+        this.player.videoReuse = false;
+        this.player.trigger(STATE.EVENT.VIDEO_METADATA_LOAD);
+        const flvPlayer = window['flvjs']['createPlayer'](mediaDataSource, <any>config);
+        this.player.flvEventHandler.registerFlvPlayerEvents(flvPlayer);
+        flvPlayer['currentTime'] = 0;
+        flvPlayer['attachMediaElement'](video);
+        flvPlayer['load']();
+
+        if (flvPlayer['type'] === 'FlvPlayer') {
+            this.player.state.video_type = 1;
+        } else {
+            this.player.state.video_type = 2;
+        }
+        if (!this.player.initialized) {
+            this.player.loadingpanel.ready(3);
+        }
+        $(video).appendTo(this.player.template.videoWrp).addClass('seamless');
+        this.player.reloadMedia._setVideoWrap(video, flvPlayer, false, 'flv');
+    }
+
     callNextPart(options: any, defaultCallback: Function | null, immediately?: boolean) {
         const that = this;
         this.player.initPartmanager().load(
