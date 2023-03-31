@@ -250,6 +250,8 @@ class SubtitleButton {
                             };
                         }),
                     );
+                } else {
+                    this.wrap.hide();
                 }
 
                 if (userStatus.subtitle) {
