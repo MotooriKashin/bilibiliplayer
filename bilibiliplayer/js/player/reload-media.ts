@@ -574,6 +574,7 @@ export class ReloadMedia {
             url: URL.createObjectURL(file),
             backupURL: []
         };
+        this.player.pause();
         this.player.videoReuse = false;
         this.player.trigger(STATE.EVENT.VIDEO_METADATA_LOAD);
         const flvPlayer = window['flvjs']['createPlayer'](mediaDataSource, <any>config);
