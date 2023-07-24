@@ -7,7 +7,7 @@
   "devDependencies": {
     "@types/jquery": "^3.5.16",
     "@types/mcustomscrollbar": "^2.8.33",
-    "esbuild": "^0.18.13",
+    "esbuild": "^0.18.16",
     "reverse-sourcemap": "^1.0.4",
     "typescript": "^5.1.6"
   },
