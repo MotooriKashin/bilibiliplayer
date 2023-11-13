@@ -5,7 +5,7 @@
     "build-as3-danmaku": "node ./as3-danmaku/build.mjs"
   },
   "devDependencies": {
-    "@types/jquery": "^3.5.25",
+    "@types/jquery": "^3.5.27",
     "@types/mcustomscrollbar": "^2.8.35",
     "esbuild": "^0.19.5",
     "reverse-sourcemap": "^1.0.4",
