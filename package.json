@@ -9,7 +9,7 @@
     "@types/mcustomscrollbar": "^2.8.37",
     "esbuild": "^0.20.1",
     "reverse-sourcemap": "^1.0.4",
-    "typescript": "^5.3.3"
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "@jsc/ace": "file:ace",
